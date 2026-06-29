@@ -55,3 +55,58 @@ export const produkty = [
         dostepnosc: true,
     },
 ];
+// ... (tutaj znajdują się wcześniej dodane: firma, hero, uslugi, produkty)
+
+export const dlaczegoMy = [
+    {
+        id: "szybko",
+        tytul: "Szybki czas realizacji",
+        opis: "Szanujemy Twój czas. Działamy sprawnie i terminowo, bez zbędnych opóźnień.",
+        ikona: "⚡",
+    },
+    {
+        id: "sprzet",
+        tytul: "Własny sprzęt",
+        opis: "Korzystamy z profesjonalnych myjek ciśnieniowych i sprawdzonych środków czyszczących.",
+        ikona: "🛠️",
+    },
+    {
+        id: "gwarancja",
+        tytul: "Gwarancja jakości",
+        opis: "Jesteśmy pewni naszych usług. Pozostawiamy po sobie absolutną czystość.",
+        ikona: "🛡️",
+    },
+    {
+        id: "doswiadczenie",
+        tytul: "Doświadczenie",
+        opis: "Umyte tysiące metrów kwadratowych kostki i elewacji. Wiemy, co robimy.",
+        ikona: "🎓",
+    },
+];
+
+export const galeria = [
+    // Jeśli wujek będzie miał własne zdjęcia, wystarczy że wrzuci je do folderu public/zdjecia/
+    // i zmieni tu ścieżkę na np. "/zdjecia/przed1.jpg"
+    { id: "g1", url: "https://picsum.photos/seed/bruk1/600/400", alt: "Mycie podjazdu - po" },
+    { id: "g2", url: "https://picsum.photos/seed/bruk2/600/400", alt: "Czyszczenie elewacji przed i po" },
+    { id: "g3", url: "https://picsum.photos/seed/bruk3/600/400", alt: "Odświeżona kostka na tarasie" },
+    { id: "g4", url: "https://picsum.photos/seed/bruk4/600/400", alt: "Mycie ogrodzenia" },
+];
+
+export const faq = [
+    {
+        id: "f1",
+        pytanie: "Czy wyjeżdżacie poza miasto?",
+        odpowiedz: "Tak, obsługujemy Warszawę oraz teren w promieniu do 50 km od miasta.",
+    },
+    {
+        id: "f2",
+        pytanie: "Czy muszę przygotować dostęp do prądu i wody?",
+        odpowiedz: "Wymagamy jedynie dostępu do ujęcia wody (kranu zewnętrznego). Posiadamy długie węże, więc odległość zazwyczaj nie jest problemem. O prąd zapytamy w zależności od używanego sprzętu.",
+    },
+    {
+        id: "f3",
+        pytanie: "Czy środki chemiczne są bezpieczne dla roślin?",
+        odpowiedz: "Używamy profesjonalnej, w 100% biodegradowalnej chemii, która nie zagraża trawnikom, krzewom ani zwierzętom domowym.",
+    },
+];
