@@ -1,11 +1,12 @@
 // === EDYTUJ TYLKO TUTAJ — reszta kodu aktualizuje się automatycznie ===
 
 export const firma = {
-    nazwa: "Mycie Bruku Kowalski",
-    telefon: "+48 600 000 000",
-    email: "kontakt@myciebruku.pl",
-    miasto: "Warszawa i okolice",
-    nip: "000-000-00-00",
+    nazwa: "Eco-Power Artur Tomczyk",
+    telefon: "+48 609 447 056",
+    email: "twoj@email.pl", // <-- wpisz swój adres e-mail
+    miasto: "ul. Targowa 29 lok. 25, 99-210 Uniejów",
+    nip: "8281383349", // <-- wpisz NIP (opcjonalnie)
+    facebook: "https://www.facebook.com/profile.php?id=100048712626636"
 };
 
 export const hero = {

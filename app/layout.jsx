@@ -3,8 +3,17 @@ import Footer from '../components/Footer';
 import './globals.css'; // Zakładam, że tu jest standardowy konfig Tailwind z Next.js
 
 export const metadata = {
-  title: 'Mycie Bruku Kowalski | Kostka i Elewacje',
+  title: 'ECO-POWER | Kostka i Elewacje',
   description: 'Profesjonalne mycie kostki brukowej i elewacji.',
+    icons: {
+        icon: [
+            { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+            { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+        ],
+        shortcut: '/favicon.ico',
+        apple: '/apple-touch-icon.png',
+    },
+    manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({ children }) {
