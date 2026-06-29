@@ -98,12 +98,24 @@ export const dlaczegoMy = [
 ];
 
 export const galeria = [
-    // Jeśli wujek będzie miał własne zdjęcia, wystarczy że wrzuci je do folderu public/zdjecia/
-    // i zmieni tu ścieżkę na np. "/zdjecia/przed1.jpg"
-    { id: "g1", url: "https://picsum.photos/seed/bruk1/600/400", alt: "Mycie podjazdu - po" },
-    { id: "g2", url: "https://picsum.photos/seed/bruk2/600/400", alt: "Czyszczenie elewacji przed i po" },
-    { id: "g3", url: "https://picsum.photos/seed/bruk3/600/400", alt: "Odświeżona kostka na tarasie" },
-    { id: "g4", url: "https://picsum.photos/seed/bruk4/600/400", alt: "Mycie ogrodzenia" },
+    {
+        id: "g1",
+        tytul: "Mycie zabrudzonej kostki brukowej",
+        zdjeciePrzed: "https://picsum.photos/seed/brudny1/800/600",
+        zdjeciePo: "https://picsum.photos/seed/czysty1/800/600"
+    },
+    {
+        id: "g2",
+        tytul: "Czyszczenie jasnej elewacji",
+        zdjeciePrzed: "https://picsum.photos/seed/brudny2/800/600",
+        zdjeciePo: "https://picsum.photos/seed/czysty2/800/600"
+    },
+    {
+        id: "g3",
+        tytul: "Usuwanie mchu z tarasu",
+        zdjeciePrzed: "https://picsum.photos/seed/brudny3/800/600",
+        zdjeciePo: "https://picsum.photos/seed/czysty3/800/600"
+    }
 ];
 
 export const faq = [
