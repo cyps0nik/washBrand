@@ -110,3 +110,12 @@ export const faq = [
         odpowiedz: "Używamy profesjonalnej, w 100% biodegradowalnej chemii, która nie zagraża trawnikom, krzewom ani zwierzętom domowym.",
     },
 ];
+// Przyszła struktura dla wujka
+// export const galeria = [
+//     {
+//         id: "projekt1",
+//         tytul: "Mycie podjazdu z kostki",
+//         zdjeciePrzed: "/zdjecia/podjazd-przed.jpg",
+//         zdjeciePo: "/zdjecia/podjazd-po.jpg"
+//     }
+// ];
