@@ -27,6 +27,7 @@ export default function Navbar() {
                     <div className="hidden md:flex space-x-8 items-center">
                         <Link href="/#uslugi" className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors">Usługi</Link>
                         <Link href="/produkty" className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors">Produkty</Link>
+                        <Link href="/wspolpraca" className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors">Współpraca</Link>
                         <Link href="/#kontakt" className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors">Kontakt</Link>
                         <a
                             href={`tel:${firma.telefon.replace(/\s/g, '')}`}
@@ -71,6 +72,9 @@ export default function Navbar() {
                         </Link>
                         <Link href="/produkty" onClick={closeMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50">
                             Produkty
+                        </Link>
+                        <Link href="/wspolpraca" onClick={closeMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50">
+                            Współpraca
                         </Link>
                         <Link href="/#kontakt" onClick={closeMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50">
                             Kontakt

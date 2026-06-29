@@ -135,6 +135,13 @@ export const faq = [
         odpowiedz: "Używamy profesjonalnej, w 100% biodegradowalnej chemii, która nie zagraża trawnikom, krzewom ani zwierzętom domowym.",
     },
 ];
+export const zaufaliNam = [
+    { id: "z1", nazwa: "Wspólnota Mieszkaniowa 'Słoneczna'" },
+    { id: "z2", nazwa: "Firma Budowlana Kowalbud" },
+    { id: "z3", nazwa: "Urząd Gminy w XYZ" },
+    { id: "z4", nazwa: "Osiedle Zielone Tarasy" },
+    { id: "z5", nazwa: "Zarząd Dróg i Zieleni" }
+];
 // Przyszła struktura dla wujka
 // export const galeria = [
 //     {
