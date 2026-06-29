@@ -41,31 +41,52 @@ export default function ProduktyPage() {
                     </div>
                 </div>
 
+                // ... (początek pliku pozostaje bez zmian)
+
                 {/* Siatka produktów */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {produkty.map((produkt) => (
-                        <div key={produkt.id} className="bg-white rounded-xl p-6 shadow-sm border border-slate-200 flex flex-col h-full hover:shadow-md transition-shadow">
+                        <div key={produkt.id} className="bg-white rounded-xl shadow-sm border border-slate-200 flex flex-col h-full overflow-hidden hover:shadow-md transition-shadow">
 
-                            <div className="flex justify-between items-start mb-4 gap-4">
-                                <h2 className="text-xl font-bold text-gray-900">{produkt.nazwa}</h2>
-                                {/* Logika odznaki: Jeśli dostepnosc to true -> zielony, jeśli false -> czerwony */}
-                                <span className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap ${
-                                    produkt.dostepnosc
-                                        ? 'bg-green-100 text-green-800'
-                                        : 'bg-red-100 text-red-800'
-                                }`}>
-                  {produkt.dostepnosc ? 'Dostępny' : 'Brak'}
-                </span>
+                            {/* Sekcja zdjęcia produktu */}
+                            <div className="aspect-square w-full bg-slate-100 relative border-b border-slate-100">
+                                {produkt.zdjecie ? (
+                                    <img
+                                        src={produkt.zdjecie}
+                                        alt={`Zdjęcie produktu: ${produkt.nazwa}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                ) : (
+                                    <div className="w-full h-full flex items-center justify-center text-slate-400">
+                                        <span className="text-4xl">📦</span>
+                                    </div>
+                                )}
                             </div>
 
-                            <p className="text-gray-600 flex-grow mb-6">{produkt.opis}</p>
+                            {/* Sekcja treści pod zdjęciem */}
+                            <div className="p-6 flex flex-col flex-grow">
+                                <div className="flex justify-between items-start mb-4 gap-4">
+                                    <h2 className="text-xl font-bold text-gray-900 leading-tight">{produkt.nazwa}</h2>
 
-                            <div className="text-2xl font-black text-blue-700 border-t border-slate-100 pt-4 mt-auto">
-                                {produkt.cena}
+                                    <span className={`px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap mt-1 ${
+                                        produkt.dostepnosc
+                                            ? 'bg-green-100 text-green-800'
+                                            : 'bg-red-100 text-red-800'
+                                    }`}>
+                    {produkt.dostepnosc ? 'Dostępny' : 'Brak'}
+                  </span>
+                                </div>
+
+                                <p className="text-gray-600 flex-grow mb-6">{produkt.opis}</p>
+
+                                <div className="text-2xl font-black text-blue-700 border-t border-slate-100 pt-4 mt-auto">
+                                    {produkt.cena}
+                                </div>
                             </div>
                         </div>
                     ))}
                 </div>
+
 
             </div>
         </div>

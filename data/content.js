@@ -39,21 +39,34 @@ export const uslugi = [
     }
 ];
 
+// we fragmentach pliku data/content.js znajdź i zaktualizuj:
+
 export const produkty = [
     {
         id: "p1",
         nazwa: "Środek do mycia kostki XYZ Pro",
-        opis: "Usuwa mech i glony, bezpieczny dla betonu. Pojemność: 5L.",
+        opis: "Profesjonalny preparat usuwający głębokie zabrudzenia, mech i glony. Bezpieczny dla wszystkich rodzajów betonu. Pojemność: 5L.",
         cena: "89 zł",
         dostepnosc: true,
+        // Ścieżka do zdjęcia (może być link zewnętrzny lub plik w folderze public np. "/zdjecia/produkt-1.jpg")
+        zdjecie: "https://picsum.photos/seed/chemia1/400/400"
     },
     {
         id: "p2",
         nazwa: "Impregnator do kostki ABC",
-        opis: "Ochrona na 3 lata. Pojemność: 10L.",
+        opis: "Zaawansowana ochrona przed wchłanianiem wody i brudu. Zapewnia ochronę na minimum 3 lata. Pojemność: 10L.",
         cena: "149 zł",
         dostepnosc: true,
+        zdjecie: "https://picsum.photos/seed/chemia2/400/400"
     },
+    {
+        id: "p3",
+        nazwa: "Pianka aktywna do elewacji",
+        opis: "Wydajny środek do mycia ciśnieniowego fasad budynków. Skutecznie usuwa sadzę i kurz. Pojemność: 5L.",
+        cena: "110 zł",
+        dostepnosc: false, // Przykładowo produkt chwilowo niedostępny
+        zdjecie: "https://picsum.photos/seed/chemia3/400/400"
+    }
 ];
 // ... (tutaj znajdują się wcześniej dodane: firma, hero, uslugi, produkty)
 
