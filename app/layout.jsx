@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import './globals.css'; // Zakładam, że tu jest standardowy konfig Tailwind z Next.js
 
 export const metadata = {
-  title: 'ECO-POWER | Kostka i Elewacje',
+  title: 'ECO-POWER | Elewacja i Fotowoltaika',
   description: 'Profesjonalne mycie kostki brukowej i elewacji.',
     icons: {
         icon: [

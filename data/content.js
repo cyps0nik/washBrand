@@ -1,17 +1,18 @@
 // === EDYTUJ TYLKO TUTAJ — reszta kodu aktualizuje się automatycznie ===
 
 export const firma = {
-    nazwa: "Eco-Power Artur Tomczyk",
+    nazwa: "Eco-Power",
     telefon: "+48 609 447 056",
-    email: "twoj@email.pl", // <-- wpisz swój adres e-mail
+    email: "arti19-89@o2.pl", // <-- wpisz swój adres e-mail
     miasto: "ul. Targowa 29 lok. 25, 99-210 Uniejów",
     nip: "8281383349", // <-- wpisz NIP (opcjonalnie)
-    facebook: "https://www.facebook.com/profile.php?id=100048712626636"
+    facebook: "https://www.facebook.com/profile.php?id=100048712626636",
+    instagram: "https://www.instagram.com/ecopower2023/"
 };
 
 export const hero = {
-    naglowek: "Profesjonalne mycie kostki i elewacji",
-    podtytul: "Przywracamy blask Twojej posesji. Działamy szybko, czysto i skutecznie na terenie Warszawy i w promieniu 50 km.",
+    naglowek: "Profesjonalne mycie elewacji, fotowoltaiki oraz sprzątanie wspólnot mieszkaniowych", //do zmiany bo za dlugie
+    podtytul: "Przywracamy blask Twojej posesji. Działamy szybko, czysto i skutecznie na terenie Uniejowa i okolic.",
     przyciskGlosny: "Zadzwoń teraz",
     przyciskCichy: "Zobacz usługi"
 };
@@ -21,22 +22,22 @@ export const uslugi = [
         id: "kostka",
         nazwa: "Mycie kostki brukowej",
         opis: "Usuwamy mech, glony i ciężkie zabrudzenia z chodników, podjazdów i placów.",
-        cena: "od 15 zł/m²",
+        cena: "od 10 zł/m²",
         ikona: "🧹",
     },
     {
         id: "elewacja",
         nazwa: "Czyszczenie elewacji",
-        opis: "Mycie ciśnieniowe i chemiczne elewacji budynków jedno- i wielorodzinnych.",
-        cena: "od 20 zł/m²",
+        opis: "Mycie ciśnieniowe i chemiczne elewacji budynków jedno i wielorodzinnych.",
+        cena: "od 13 zł/m²",
         ikona: "🏠",
     },
     {
-        id: "dach",
-        nazwa: "Mycie dachów",
-        opis: "Bezpieczne usuwanie zabrudzeń i mchu z dachówek ceramicznych i blachy.",
-        cena: "od 25 zł/m²",
-        ikona: "Roof", // Możemy tu wstawić emoji 🧱 lub ikonę
+        id: "panele",
+        nazwa: "Mycie paneli fotowoltaicznych",
+        opis: "Bezpieczne mycie wodą demineralizowaną, co pozwala przywrócić maksymalną wydajność instalacji bez ryzyka smug i zarysowań.",
+        cena: "od 12 zł/m²",
+        ikona: "⚡", // Możemy tu wstawić emoji 🧱 lub ikonę
     }
 ];
 
@@ -93,7 +94,7 @@ export const dlaczegoMy = [
     {
         id: "doswiadczenie",
         tytul: "Doświadczenie",
-        opis: "Umyte tysiące metrów kwadratowych kostki i elewacji. Wiemy, co robimy.",
+        opis: "Umyte tysiące metrów kwadratowych paneli fotowoltaicznych i elewacji. Wiemy, co robimy.",
         ikona: "🎓",
     },
 ];
@@ -123,7 +124,7 @@ export const faq = [
     {
         id: "f1",
         pytanie: "Czy wyjeżdżacie poza miasto?",
-        odpowiedz: "Tak, obsługujemy Warszawę oraz teren w promieniu do 50 km od miasta.",
+        odpowiedz: "Tak, obsługujemy Uniejów oraz teren w promieniu do 70 km od miasta.",
     },
     {
         id: "f2",
@@ -132,9 +133,9 @@ export const faq = [
     },
     {
         id: "f3",
-        pytanie: "Czy środki chemiczne są bezpieczne dla roślin?",
-        odpowiedz: "Używamy profesjonalnej, w 100% biodegradowalnej chemii, która nie zagraża trawnikom, krzewom ani zwierzętom domowym.",
-    },
+        pytanie: "Czy wycena usługi kosztuje?",
+        odpowiedz: "Nie, cena usługi jest w pełni bezpłatna.",
+    }
 ];
 export const zaufaliNam = [
     { id: "z1", nazwa: "Wspólnota Mieszkaniowa 'Słoneczna'" },
