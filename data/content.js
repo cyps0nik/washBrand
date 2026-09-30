@@ -1,17 +1,24 @@
-// === EDYTUJ TYLKO TUTAJ — reszta kodu aktualizuje się automatycznie ===
+// =====================================================================
+// data/content.js – JEDNO miejsce z treścią strony Eco-Power.
+// Zmieniasz tekst w cudzysłowach. Nie usuwaj przecinków, nawiasów ani nazw
+// przed dwukropkiem (np. "nazwa:"), bo strona przestanie działać.
+// Pola z "TODO" to dane przykładowe – trzeba je podmienić na prawdziwe.
+// =====================================================================
 
 export const firma = {
     nazwa: "Eco-Power",
     telefon: "+48 609 447 056",
-    email: "arti19-89@o2.pl", // <-- wpisz swój adres e-mail
-    miasto: "ul. Targowa 29 lok. 25, 99-210 Uniejów",
-    nip: "8281383349", // <-- wpisz NIP (opcjonalnie)
+    email: "arti19-89@o2.pl",
+    miasto: "ul. Targowa 29 lok. 25, 99-210 Uniejów", // UWAGA: to pełny adres (nazwa pola historyczna)
+    miejscowosc: "Uniejów",                           // do SEO i nagłówków
+    zasiegKm: 70,                                     // promień dojazdu; zgodny z FAQ
+    nip: "8281383349",
     facebook: "https://www.facebook.com/profile.php?id=100048712626636",
     instagram: "https://www.instagram.com/ecopower2023/"
 };
 
 export const hero = {
-    naglowek: "Profesjonalne mycie elewacji, fotowoltaiki oraz sprzątanie wspólnot mieszkaniowych", //do zmiany bo za dlugie
+    naglowek: "Mycie elewacji, kostki brukowej i paneli fotowoltaicznych",
     podtytul: "Przywracamy blask Twojej posesji. Działamy szybko, czysto i skutecznie na terenie Uniejowa i okolic.",
     przyciskGlosny: "Zadzwoń teraz",
     przyciskCichy: "Zobacz usługi"
@@ -37,12 +44,18 @@ export const uslugi = [
         nazwa: "Mycie paneli fotowoltaicznych",
         opis: "Bezpieczne mycie wodą demineralizowaną, co pozwala przywrócić maksymalną wydajność instalacji bez ryzyka smug i zarysowań.",
         cena: "od 12 zł/m²",
-        ikona: "⚡", // Możemy tu wstawić emoji 🧱 lub ikonę
+        ikona: "💧",
+    },
+    {
+        id: "wspolnoty",
+        nazwa: "Sprzątanie wspólnot mieszkaniowych",
+        opis: "Regularne sprzątanie i utrzymanie czystości terenów wspólnot oraz części wspólnych.",
+        cena: "wycena indywidualna",
+        ikona: "🏢",
     }
 ];
 
-// we fragmentach pliku data/content.js znajdź i zaktualizuj:
-
+// TODO: dane przykładowe (zdjęcia z picsum, ceny i nazwy produktów) – podmienić lub usunąć sekcję
 export const produkty = [
     {
         id: "p1",
@@ -50,7 +63,7 @@ export const produkty = [
         opis: "Profesjonalny preparat usuwający głębokie zabrudzenia, mech i glony. Bezpieczny dla wszystkich rodzajów betonu. Pojemność: 5L.",
         cena: "89 zł",
         dostepnosc: true,
-        // Ścieżka do zdjęcia (może być link zewnętrzny lub plik w folderze public np. "/zdjecia/produkt-1.jpg")
+        // Zdjęcie: link zewnętrzny albo plik z folderu public, np. "/zdjecia/produkt-1.jpg"
         zdjecie: "https://picsum.photos/seed/chemia1/400/400"
     },
     {
@@ -66,11 +79,10 @@ export const produkty = [
         nazwa: "Pianka aktywna do elewacji",
         opis: "Wydajny środek do mycia ciśnieniowego fasad budynków. Skutecznie usuwa sadzę i kurz. Pojemność: 5L.",
         cena: "110 zł",
-        dostepnosc: false, // Przykładowo produkt chwilowo niedostępny
+        dostepnosc: false, // false = produkt chwilowo niedostępny
         zdjecie: "https://picsum.photos/seed/chemia3/400/400"
     }
 ];
-// ... (tutaj znajdują się wcześniej dodane: firma, hero, uslugi, produkty)
 
 export const dlaczegoMy = [
     {
@@ -99,6 +111,8 @@ export const dlaczegoMy = [
     },
 ];
 
+// TODO: zdjęcia przykładowe z picsum – podmienić na prawdziwe realizacje.
+// Własne zdjęcia wrzuć do public/zdjecia/ i wpisz ścieżkę, np. "/zdjecia/podjazd-przed.jpg"
 export const galeria = [
     {
         id: "g1",
@@ -134,9 +148,12 @@ export const faq = [
     {
         id: "f3",
         pytanie: "Czy wycena usługi kosztuje?",
-        odpowiedz: "Nie, cena usługi jest w pełni bezpłatna.",
+        odpowiedz: "Nie, wycena usługi jest w pełni bezpłatna.",
     }
 ];
+
+// TODO: to są NIEPRAWDZIWE nazwy przykładowe. Przed publikacją wpisać realnych
+// klientów (za ich zgodą) albo usunąć sekcję – fałszywe referencje to ryzyko prawne i wizerunkowe.
 export const zaufaliNam = [
     { id: "z1", nazwa: "Wspólnota Mieszkaniowa 'Słoneczna'" },
     { id: "z2", nazwa: "Firma Budowlana Kowalbud" },
@@ -144,12 +161,16 @@ export const zaufaliNam = [
     { id: "z4", nazwa: "Osiedle Zielone Tarasy" },
     { id: "z5", nazwa: "Zarząd Dróg i Zieleni" }
 ];
-// Przyszła struktura dla wujka
-// export const galeria = [
-//     {
-//         id: "projekt1",
-//         tytul: "Mycie podjazdu z kostki",
-//         zdjeciePrzed: "/zdjecia/podjazd-przed.jpg",
-//         zdjeciePo: "/zdjecia/podjazd-po.jpg"
-//     }
-// ];
+
+// NOWE (jeszcze nieużywane przez komponenty – sekcja pojawi się w kolejnym kroku).
+// Dodawaj tylko PRAWDZIWE opinie, najlepiej za zgodą klienta. Wzór:
+// { id: "o1", imie: "Anna K.", miejscowosc: "Uniejów", tresc: "Kostka jak nowa, polecam!", ocena: 5 },
+export const opinie = [];
+
+// NOWE: stawki do kalkulatora orientacyjnej ceny (zgodne z cennikiem w `uslugi`).
+// Klucz = id usługi, wartość = zł za m². Zmiana tutaj nie zmienia wyświetlanej ceny w `uslugi`.
+export const stawki = {
+    kostka: 10,
+    elewacja: 13,
+    panele: 12
+};
