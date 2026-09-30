@@ -1,79 +1,132 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# washBrand
 
-## Getting Started
+Content-driven marketing website for **Eco-Power**, a local cleaning company in Uniejów, Poland (paving stones, facades, photovoltaic panels). Built with Next.js and Tailwind CSS.
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white)
+![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white)
+![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?logo=vercel&logoColor=white)
+
+<!-- TODO: tu bedzie link do działającej strony -->
+**Live demo:** [your-domain.com](https://your-domain.com)
+
+<!-- TODO: tutaj screenshoty -->
+<p align="center">
+  <img src="docs/desktop.png" alt="Desktop view" width="70%">
+  <img src="docs/mobile.png" alt="Mobile view" width="25%">
+</p>
+
+> The website itself is in Polish, the target audience being local customers.
+
+## Overview
+
+A small business needs a website it can actually maintain. This project is a production site for a family member's company, designed around one constraint: **the owner is not a developer and must be able to update prices, offers, products and contact details without touching application code.**
+
+All business content lives in a single data module, completely separated from the UI. Components only render what they receive, so the site is updated by editing one file and pushing to `main`.
+
+## Features
+
+- **Service offer with pricing** – per-m² prices for paving, facade and photovoltaic panel cleaning
+- **Product catalog** – cleaning chemicals with price and an availability flag (in stock / unavailable)
+- **Before / after gallery** – paired images showing the effect of each job
+- **"Why us" section, FAQ and social proof** – all rendered from data
+- **Call-to-action hero** with a primary "call now" action and a secondary link to the services
+- **Contact and social links** – phone, e-mail, address, Facebook and Instagram, defined once and reused across the page
+
+## Key decisions
+
+- **Content separated from presentation.** Everything the owner may want to change is in `data/content.js`. Components in `components/` contain no business data.
+- **Zero backend.** No database, no CMS, no API to maintain. This keeps hosting costs near zero and the attack surface minimal.
+- **Git-based publishing.** Every push to `main` triggers an automatic deployment, so a content change goes live within about a minute.
+- **App Router.** Built on the Next.js App Router with React 19.
+
+## Tech stack
+
+| Area       | Technology                                  |
+| ---------- | ------------------------------------------- |
+| Framework  | Next.js 16 (App Router)                     |
+| UI         | React 19                                    |
+| Styling    | Tailwind CSS 4 (via `@tailwindcss/postcss`) |
+| Linting    | ESLint 9 with `eslint-config-next`          |
+| Hosting    | Vercel                                      |
+
+## Getting started
+
+### Prerequisites
+
+- Node.js 20.9 or newer
+- npm
+
+### Installation
 
 ```bash
+git clone https://github.com/cyps0nik/washBrand.git
+cd washBrand
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The site is now available at [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.jsx`. The page auto-updates as you edit the file.
+### Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Command         | Description                          |
+| --------------- | ------------------------------------ |
+| `npm run dev`   | Start the development server         |
+| `npm run build` | Create an optimized production build |
+| `npm run start` | Serve the production build           |
+| `npm run lint`  | Run ESLint                           |
 
-## Learn More
+## Project structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+.
+├── app/            # Routes, layout and global styles (App Router)
+├── components/     # Presentational components
+├── data/
+│   └── content.js  # Single source of truth for all site content
+└── public/         # Static assets (images, icons)
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Content model
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+`data/content.js` exports one constant per page section:
 
-## Deploy on Vercel
+| Export        | Purpose                                                        |
+| ------------- | -------------------------------------------------------------- |
+| `firma`       | Company name, phone, e-mail, address, tax ID, social links     |
+| `hero`        | Headline, subtitle and button labels                           |
+| `uslugi`      | Services: name, description, price, icon                       |
+| `produkty`    | Products: name, description, price, image, availability flag   |
+| `dlaczegoMy`  | "Why us" value propositions                                    |
+| `galeria`     | Before/after image pairs with a title                          |
+| `faq`         | Questions and answers                                          |
+| `zaufaliNam`  | Client references                                              |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Example: adding a service means appending one object to `uslugi`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```js
+{
+  id: "kostka",
+  nazwa: "Mycie kostki brukowej",
+  opis: "Usuwamy mech, glony i ciężkie zabrudzenia z chodników, podjazdów i placów.",
+  cena: "od 10 zł/m²",
+  ikona: "🧹",
+}
+```
 
-# Panel Zarządzania Stroną - Mycie Bruku i Elewacji
+Images can be external URLs or files placed in `public/` (for example `/zdjecia/podjazd-po.jpg`).
 
-Ta strona została zaprojektowana tak, aby jej edycja była maksymalnie prosta.
-**Nie musisz znać się na programowaniu, aby zmienić ceny, dodać zdjęcia czy nowe produkty.**
+## Deployment
 
-Wszystkie informacje na stronie znajdują się w **jednym pliku**.
-Ten plik to: `data/content.js`. Otwórz go w dowolnym edytorze tekstu.
+The project is deployed on [Vercel](https://vercel.com).
 
----
+1. Import the repository in the Vercel dashboard.
+2. Keep the default settings (the Next.js preset is detected automatically).
+3. Every push to `main` is built and published automatically.
 
-## 📝 Jak edytować stronę?
+A custom domain can be attached under **Settings → Domains**. Deployment from the command line is also possible with `npx vercel`.
 
-### 1. Zmiana numeru telefonu lub e-maila
-Na samej górze pliku znajdziesz sekcję `export const firma`. Po prostu podmień tekst w cudzysłowach:
-```javascript```
-export const firma = {
-  nazwa: "Nowa Nazwa Firmy",
-  telefon: "+48 111 222 333", // Zmień numer tutaj
-  email: "nowy@email.pl",
-  // ...
-};
----
+## Author
 
-### Krok 4: Deployment (Publikacja w Internecie)
-
-Skoro kod korzysta z Next.js, najprostszym, darmowym i najszybszym sposobem na wrzucenie tej strony do sieci (tak aby wujek miał do niej link) jest platforma **Vercel** (twórcy Next.js).
-
-Masz na to dwa szybkie sposoby, skoro pracujesz na WSL z repozytorium (masz folder `.git`):
-
-**Opcja A (Zalecana, pełen automat):**
-1. Wypchnij (push) projekt na swojego GitHuba (jako prywatne lub publiczne repo).
-2. Zaloguj się na [vercel.com](https://vercel.com/) kontem GitHub.
-3. Kliknij "Add New" -> "Project" -> Zaimportuj repozytorium ze stroną wujka.
-4. Kliknij `Deploy`. Vercel sam rozpozna, że to Next.js i zbuduje stronę. Przy każdym kolejnym `git push` strona zaktualizuje się automatycznie.
-
-**Opcja B (Z terminala WebStorm / WSL):**
-1. W terminalu wpisz: `npx vercel`
-2. Zaloguj się (przekieruje Cię do przeglądarki).
-3. Odpowiadaj `Enterem` na domyślne pytania w terminalu (czy podpiąć projekt, w jakim jest folderze itp.). Narzędzie samo wrzuci stronę na serwer i wygeneruje Ci gotowy link.
-
-### Podsumowanie
-Gratulacje! Stworzyłeś dla wujka kompletną, ultraszybką, bezpieczną od awarii i banaln
+**Cyprian Antreou** · [GitHub](https://github.com/cyps0nik) 
