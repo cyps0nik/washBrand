@@ -2,7 +2,7 @@ import { zaufaliNam, firma } from '../../data/content';
 
 // Ustawiamy tytuł karty w przeglądarce dla lepszego SEO
 export const metadata = {
-    title: `Zaufali nam | ${firma.nazwa}`,
+    title: `Współpraca | ${firma.nazwa}`,
     description: 'Lista firm, instytucji i wspólnot, z którymi współpracowaliśmy.',
 };
 
