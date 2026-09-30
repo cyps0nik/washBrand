@@ -46,6 +46,10 @@ next-env.d.ts
 .vscode/*
 !.vscode/settings.json
 
+# AI
+AGENTS.md
+CLAUDE.md
+
 # system files
 .DS_Store
 Thumbs.db
