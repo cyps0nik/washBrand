@@ -32,11 +32,15 @@ All business content lives in a single data module, completely separated from th
 - **"Why us" section, FAQ and social proof** – all rendered from data
 - **Call-to-action hero** with a primary "call now" action and a secondary link to the services
 - **Contact and social links** – phone, e-mail, address, Facebook and Instagram, defined once and reused across the page
+- **Price calculator** – sliders per service (m²) with a live estimate based on per-m² rates, plus a shortcut to the quote form or WhatsApp
+- **Quote request form** – handled by a Server Action that e-mails the lead to the owner via [Resend](https://resend.com); input is HTML-escaped before it goes into the e-mail
+- **Privacy policy and GDPR notice** – a `/polityka-prywatnosci` page and an information clause under the form, both driven by data
+- **Local SEO** – title/description and Open Graph from data, JSON-LD (`LocalBusiness` with service area, services and social profiles, plus `FAQPage`), `sitemap.xml` and `robots.txt`
 
 ## Key decisions
 
-- **Content separated from presentation.** Everything the owner may want to change is in `data/content.js`. Components in `components/` contain no business data.
-- **Zero backend.** No database, no CMS, no API to maintain. This keeps hosting costs near zero and the attack surface minimal.
+- **Content separated from presentation.** Everything the owner may want to change – prices, contact details, offers, calculator rates, form and privacy policy texts – is in `data/content.js`. Components read it and render it.
+- **Minimal backend.** No database, no CMS, no API routes to maintain. The only server-side code is a single Server Action that forwards the quote form by e-mail. This keeps hosting costs near zero and the attack surface small.
 - **Git-based publishing.** Every push to `main` triggers an automatic deployment, so a content change goes live within about a minute.
 - **App Router.** Built on the Next.js App Router with React 19.
 
@@ -47,6 +51,7 @@ All business content lives in a single data module, completely separated from th
 | Framework  | Next.js 16 (App Router)                     |
 | UI         | React 19                                    |
 | Styling    | Tailwind CSS 4 (via `@tailwindcss/postcss`) |
+| E-mail     | Resend (quote form)                         |
 | Linting    | ESLint 9 with `eslint-config-next`          |
 | Hosting    | Vercel                                      |
 
@@ -68,6 +73,17 @@ npm run dev
 
 The site is now available at [http://localhost:3000](http://localhost:3000).
 
+### Environment variables
+
+The site runs without any configuration. Only the quote form needs a key to actually send e-mails; without it, submitted leads are just written to the server log.
+
+| Variable         | Required | Description                                                                                   |
+| ---------------- | -------- | --------------------------------------------------------------------------------------------- |
+| `RESEND_API_KEY` | for e-mail | API key from Resend. Leads are sent to `firma.email` from `data/content.js`.                |
+| `RESEND_FROM`    | no       | Sender address, e.g. `Eco-Power <wycena@your-domain.pl>`. Defaults to `onboarding@resend.dev`, which Resend only delivers to the address the Resend account was created with – verify your own domain in Resend and set this for production. |
+
+Locally, put them in `.env.local` (ignored by git). On Vercel, add them under **Settings → Environment Variables**.
+
 ### Scripts
 
 | Command         | Description                          |
@@ -82,6 +98,8 @@ The site is now available at [http://localhost:3000](http://localhost:3000).
 ```
 .
 ├── app/            # Routes, layout and global styles (App Router)
+│   ├── actions/    # Server Action for the quote form
+│   ├── polityka-prywatnosci/, produkty/, wspolpraca/   # Subpages
 ├── components/     # Presentational components
 ├── data/
 │   └── content.js  # Single source of truth for all site content
@@ -94,7 +112,10 @@ The site is now available at [http://localhost:3000](http://localhost:3000).
 
 | Export        | Purpose                                                        |
 | ------------- | -------------------------------------------------------------- |
-| `firma`       | Company name, phone, e-mail, address, tax ID, social links     |
+| `firma`       | Company name, phone, e-mail, address, tax ID, social links, service area, site URL |
+| `menu`        | Navigation items                                               |
+| `seo`         | Page title, description and share image                        |
+| `kontakt`, `stopka` | Contact section and footer texts                         |
 | `hero`        | Headline, subtitle and button labels                           |
 | `uslugi`      | Services: name, description, price, icon                       |
 | `produkty`    | Products: name, description, price, image, availability flag   |
@@ -102,6 +123,11 @@ The site is now available at [http://localhost:3000](http://localhost:3000).
 | `galeria`     | Before/after image pairs with a title                          |
 | `faq`         | Questions and answers                                          |
 | `zaufaliNam`  | Client references                                              |
+| `opinie`      | Customer reviews (prepared, section not shown yet)             |
+| `stawki`      | Per-m² rates used by the price calculator                      |
+| `kalkulator`  | Calculator texts and sliders (range, step, start value)        |
+| `formularz`   | Quote form labels, placeholders, messages and GDPR clause      |
+| `politykaPrywatnosci` | Privacy policy sections (administrator data comes from `firma`) |
 
 Example: adding a service means appending one object to `uslugi`.
 
@@ -123,7 +149,8 @@ The project is deployed on [Vercel](https://vercel.com).
 
 1. Import the repository in the Vercel dashboard.
 2. Keep the default settings (the Next.js preset is detected automatically).
-3. Every push to `main` is built and published automatically.
+3. Add the environment variables described above (at least `RESEND_API_KEY`).
+4. Every push to `main` is built and published automatically.
 
 A custom domain can be attached under **Settings → Domains**. Deployment from the command line is also possible with `npx vercel`.
 
