@@ -1,0 +1,12 @@
+# Jednolite końce linii (LF) w repozytorium, niezależnie od Windowsa/WSL/edytora.
+* text=auto eol=lf
+
+# Pliki binarne – bez żadnej konwersji
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.gif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
