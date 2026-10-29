@@ -1,6 +1,8 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PasekMobilny from '../components/PasekMobilny';
+import { firma, seo } from '../data/content';
+import { adresStrony } from '../lib/adresStrony';
 import { Inter } from 'next/font/google';
 import './globals.css';
 
@@ -12,8 +14,21 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: 'ECO-POWER | Elewacje i Fotowoltaika',
-  description: 'Profesjonalne mycie kostki brukowej i elewacji.',
+  metadataBase: new URL(adresStrony),
+  title: {
+    default: seo.tytul,
+    template: `%s | ${firma.nazwa}`, // podstrony: „Polityka prywatności | Eco-Power"
+  },
+  description: seo.opis,
+  applicationName: firma.nazwa,
+  openGraph: {
+    type: 'website',
+    locale: 'pl_PL',
+    siteName: firma.nazwa,
+    title: seo.tytul,
+    description: seo.opis,
+    images: [{ url: seo.obrazek, alt: firma.nazwa }],
+  },
     icons: {
         icon: [
             { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },

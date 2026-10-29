@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { firma, politykaPrywatnosci } from '../data/content';
+import { firma, politykaPrywatnosci, stopka } from '../data/content';
 
 export default function Footer() {
     const rok = new Date().getFullYear();
@@ -9,7 +9,7 @@ export default function Footer() {
             <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
                 <div>
                     <h3 className="text-xl font-bold mb-4">{firma.nazwa}</h3>
-                    <p className="text-gray-400">Profesjonalne czyszczenie elewacji i kostki brukowej.</p>
+                    <p className="text-gray-400">{stopka.opis}</p>
                 </div>
                 <div>
                     <h3 className="text-xl font-bold mb-4">Kontakt</h3>

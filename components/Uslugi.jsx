@@ -17,7 +17,7 @@ export default function Uslugi() {
                     <p className="mt-4 text-lg text-gray-600">Profesjonalne czyszczenie z wykorzystaniem najlepszego sprzętu</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 xl:gap-8">
                     {uslugi.map((usluga) => (
                         <div key={usluga.id} className="flex flex-col bg-slate-50 rounded-xl p-6 shadow-sm border border-slate-100 hover:shadow-md transition-shadow">
                             <div className="text-4xl mb-4">{usluga.ikona}</div>

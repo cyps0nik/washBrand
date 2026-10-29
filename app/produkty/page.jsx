@@ -1,8 +1,10 @@
 import { produkty, firma } from '../../data/content';
 
-// Optymalizacja SEO dla podstrony
+// Podstrona ukryta (dane przykładowe): nie ma jej w menu ani w sitemap, a Google jej nie indeksuje.
+// Gdy pojawią się prawdziwe dane, usuń blok "robots" i przywróć link w `menu` w content.js.
 export const metadata = {
-    title: `Produkty | ${firma.nazwa}`,
+    robots: { index: false, follow: false },
+    title: 'Produkty',
     description: 'Profesjonalne środki czyszczące i impregnaty do kostki brukowej oraz elewacji.',
 };
 

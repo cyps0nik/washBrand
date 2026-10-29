@@ -21,6 +21,10 @@ export default function Galeria() {
                                     <img
                                         src={projekt.zdjeciePrzed}
                                         alt={`Przed: ${projekt.tytul}`}
+                                        width={800}
+                                        height={600}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-48 sm:h-64 object-cover hover:scale-105 transition-transform duration-500"
                                     />
                                 </div>
@@ -33,6 +37,10 @@ export default function Galeria() {
                                     <img
                                         src={projekt.zdjeciePo}
                                         alt={`Po: ${projekt.tytul}`}
+                                        width={800}
+                                        height={600}
+                                        loading="lazy"
+                                        decoding="async"
                                         className="w-full h-48 sm:h-64 object-cover hover:scale-105 transition-transform duration-500"
                                     />
                                 </div>

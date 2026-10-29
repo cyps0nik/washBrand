@@ -14,6 +14,9 @@ export const firma = {
     ulica: "ul. Targowa 29 lok. 25",                  // do danych dla Google (sama ulica i numer)
     kodPocztowy: "99-210",                            // do danych dla Google
     zasiegKm: 70,                                     // promień dojazdu; zgodny z FAQ
+    // Miejscowości w zasięgu – do opisu w Google i danych o obszarze działania
+    obszar: ["Uniejów", "Turek", "Koło", "Poddębice", "Dąbie", "Łęczyca", "Konin", "Sieradz"], // TODO: potwierdzić z właścicielem, które miejscowości wymieniać
+    adresStrony: "",                                  // TODO: adres strony, np. "https://eco-power-uniejow.pl" (pusty = adres z Vercela)
     nip: "8281383349",
     wlasciciel: "",                                   // TODO: imię i nazwisko właściciela (administrator danych w polityce prywatności)
     facebook: "https://www.facebook.com/profile.php?id=100048712626636",
@@ -25,10 +28,36 @@ export const menu = [
     { id: "uslugi", nazwa: "Usługi", link: "/#uslugi" },
     { id: "kalkulator", nazwa: "Kalkulator", link: "/#kalkulator" },
     { id: "wycena", nazwa: "Wycena", link: "/#formularz" },
-    { id: "produkty", nazwa: "Produkty", link: "/produkty" },
-    { id: "wspolpraca", nazwa: "Współpraca", link: "/wspolpraca" },
+    // Ukryte, dopóki podstrony mają dane przykładowe. Aby przywrócić: usuń "// " z początku linii
+    // i w pliku app/produkty/page.jsx lub app/wspolpraca/page.jsx usuń blok "robots".
+    // { id: "produkty", nazwa: "Produkty", link: "/produkty" },
+    // { id: "wspolpraca", nazwa: "Współpraca", link: "/wspolpraca" },
     { id: "kontakt", nazwa: "Kontakt", link: "/#kontakt" }
 ];
+
+// Opis strony dla Google i przy udostępnianiu linku (Facebook, Messenger, WhatsApp).
+// Tytuł najlepiej do ~60 znaków, opis do ~155 znaków.
+export const seo = {
+    tytul: "Eco-Power – mycie kostki, elewacji i paneli PV | Uniejów, Turek, Koło",
+    opis: "Mycie kostki brukowej, elewacji i paneli fotowoltaicznych oraz sprzątanie wspólnot. Uniejów, Turek, Koło, Poddębice i okolice do 70 km. Bezpłatna wycena.",
+    // Obrazek przy udostępnianiu linku. TODO: podmienić na zdjęcie realizacji 1200×630 px, np. "/zdjecia/udostepnianie.jpg"
+    obrazek: "/android-chrome-512x512.png"
+};
+
+// Sekcja „Kontakt" na dole strony głównej
+export const kontakt = {
+    naglowek: "Gotowy na lśniącą kostkę, elewację i czyste panele?",
+    opis: "Zadzwoń do nas lub napisz, aby umówić się na bezpłatną wycenę.",
+    // Wyłączone, dopóki podstrona /produkty jest ukryta. Poprzedni tekst:
+    // "Zakup naszych produktów możliwy jest również bezpośrednio przez telefon."
+    dopisek: "",
+    przyciskEmail: "Napisz do nas"
+};
+
+// Stopka (na każdej podstronie)
+export const stopka = {
+    opis: "Profesjonalne mycie kostki brukowej, elewacji i paneli fotowoltaicznych oraz sprzątanie wspólnot mieszkaniowych."
+};
 
 // Pasek z przyciskami przyklejony do dołu ekranu (widoczny tylko na telefonach).
 export const pasekMobilny = {

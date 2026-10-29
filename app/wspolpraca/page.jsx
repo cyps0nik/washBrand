@@ -1,8 +1,10 @@
 import { zaufaliNam, firma } from '../../data/content';
 
-// Ustawiamy tytuł karty w przeglądarce dla lepszego SEO
+// Podstrona ukryta (dane przykładowe): nie ma jej w menu ani w sitemap, a Google jej nie indeksuje.
+// Gdy pojawią się prawdziwe dane, usuń blok "robots" i przywróć link w `menu` w content.js.
 export const metadata = {
-    title: `Współpraca | ${firma.nazwa}`,
+    robots: { index: false, follow: false },
+    title: 'Współpraca',
     description: 'Lista firm, instytucji i wspólnot, z którymi współpracowaliśmy.',
 };
 

@@ -1,8 +1,9 @@
 import { politykaPrywatnosci, firma } from '../../data/content';
 
 export const metadata = {
-    title: `${politykaPrywatnosci.tytul} | ${firma.nazwa}`,
+    title: politykaPrywatnosci.tytul,
     description: `Jak ${firma.nazwa} przetwarza dane osobowe przekazane przez stronę i formularz wyceny.`,
+    alternates: { canonical: '/polityka-prywatnosci' },
 };
 
 export default function PolitykaPrywatnosciPage() {
