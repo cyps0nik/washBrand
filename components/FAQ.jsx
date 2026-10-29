@@ -1,8 +1,23 @@
 import { faq } from '../data/content';
 
+// Dane dla Google (FAQPage) – pytania mogą pojawić się bezpośrednio w wynikach wyszukiwania
+const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faq.map((element) => ({
+        "@type": "Question",
+        "name": element.pytanie,
+        "acceptedAnswer": { "@type": "Answer", "text": element.odpowiedz },
+    })),
+};
+
 export default function FAQ() {
     return (
-        <section className="py-16 bg-slate-50 px-4 sm:px-6 lg:px-8">
+        <section id="faq" className="py-16 bg-slate-50 px-4 sm:px-6 lg:px-8">
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd).replace(/</g, '\\u003c') }}
+            />
             <div className="max-w-3xl mx-auto">
                 <h2 className="text-3xl font-bold text-center text-gray-900 mb-8">Często zadawane pytania</h2>
                 <div className="space-y-4">

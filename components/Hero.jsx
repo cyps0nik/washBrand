@@ -24,6 +24,20 @@ export default function Hero() {
                         {hero.przyciskCichy}
                     </a>
                 </div>
+
+                {/* Atuty – krótkie hasła budujące zaufanie */}
+                {hero.atuty?.length > 0 && (
+                    <ul className="mt-10 flex flex-wrap justify-center gap-x-6 gap-y-3 text-sm sm:text-base font-semibold text-gray-700">
+                        {hero.atuty.map((atut) => (
+                            <li key={atut} className="flex items-center gap-2">
+                                <svg className="w-5 h-5 text-green-600 shrink-0" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
+                                {atut}
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </section>
     );

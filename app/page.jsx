@@ -3,7 +3,7 @@ import Uslugi from '../components/Uslugi';
 import KalkulatorWyceny from '../components/KalkulatorWyceny';
 import DlaczegoMy from '../components/DlaczegoMy';
 import Galeria from '../components/Galeria';
-//import Opinie from '../components/Opinie';
+import Opinie from '../components/Opinie';
 import FAQ from '../components/FAQ';
 import FormularzWyceny from '../components/FormularzWyceny';
 import Kontakt from '../components/Kontakt';
@@ -15,12 +15,11 @@ const jsonLd = {
     "name": firma.nazwa,
     "telephone": firma.telefon,
     "email": firma.email,
-    "priceRange": "$$",
     "address": {
         "@type": "PostalAddress",
-        "streetAddress": firma.miasto,
+        "streetAddress": firma.ulica,
         "addressLocality": firma.miejscowosc,
-        "postalCode": "99-210",
+        "postalCode": firma.kodPocztowy,
         "addressCountry": "PL"
     }
 };
@@ -30,16 +29,16 @@ export default function Home() {
         <>
             <script
                 type="application/ld+json"
-                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, '\\u003c') }}
             />
             <Hero />
             <Uslugi />
             <KalkulatorWyceny />
+            <FormularzWyceny />
             <DlaczegoMy />
             <Galeria />
-            {/*<Opinie />*/}
+            <Opinie />
             <FAQ />
-            <FormularzWyceny />
             <Kontakt />
         </>
     );

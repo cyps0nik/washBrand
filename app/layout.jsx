@@ -1,6 +1,15 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
-import './globals.css'; // Zakładam, że tu jest standardowy konfig Tailwind z Next.js
+import PasekMobilny from '../components/PasekMobilny';
+import { Inter } from 'next/font/google';
+import './globals.css';
+
+// Czcionka z polskimi znakami (latin-ext), wczytywana lokalnie przez Next.js – bez skoków układu
+const inter = Inter({
+  subsets: ['latin', 'latin-ext'],
+  display: 'swap',
+  variable: '--font-inter',
+});
 
 export const metadata = {
   title: 'ECO-POWER | Elewacje i Fotowoltaika',
@@ -18,13 +27,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-      <html lang="pl" className="scroll-smooth" data-scroll-behavior="smooth">
-      <body className="bg-white text-gray-900 antialiased flex flex-col min-h-screen">
+      <html lang="pl" className={`${inter.variable} scroll-smooth scroll-pt-20`} data-scroll-behavior="smooth">
+      <body className="font-sans bg-white text-gray-900 antialiased flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-grow">
         {children}
       </main>
       <Footer />
+      <PasekMobilny />
       </body>
       </html>
   );

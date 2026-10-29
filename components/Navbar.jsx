@@ -1,8 +1,8 @@
 "use client";
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { firma } from '../data/content';
+import { useEffect, useRef, useState } from 'react';
+import { firma, menu } from '../data/content';
 
 export default function Navbar() {
     // Stan przechowujący informację, czy menu mobilne jest otwarte
@@ -10,9 +10,27 @@ export default function Navbar() {
 
     // Funkcja zamykająca menu po kliknięciu w link (na telefonie)
     const closeMenu = () => setIsMenuOpen(false);
+    const navRef = useRef(null);
+
+    // Otwarte menu zamyka klawisz Esc oraz kliknięcie poza paskiem nawigacji
+    useEffect(() => {
+        if (!isMenuOpen) return;
+        const naKlawisz = (e) => {
+            if (e.key === 'Escape') setIsMenuOpen(false);
+        };
+        const naKlikniecie = (e) => {
+            if (navRef.current && !navRef.current.contains(e.target)) setIsMenuOpen(false);
+        };
+        document.addEventListener('keydown', naKlawisz);
+        document.addEventListener('pointerdown', naKlikniecie);
+        return () => {
+            document.removeEventListener('keydown', naKlawisz);
+            document.removeEventListener('pointerdown', naKlikniecie);
+        };
+    }, [isMenuOpen]);
 
     return (
-        <nav className="bg-white shadow-md sticky top-0 z-50">
+        <nav ref={navRef} className="bg-white shadow-md sticky top-0 z-50">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
 
@@ -24,11 +42,12 @@ export default function Navbar() {
                     </div>
 
                     {/* Menu na duże ekrany (komputery) */}
-                    <div className="hidden md:flex space-x-8 items-center">
-                        <Link href="/#uslugi" className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors">Usługi</Link>
-                        <Link href="/produkty" className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors">Produkty</Link>
-                        <Link href="/wspolpraca" className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors">Współpraca</Link>
-                        <Link href="/#kontakt" className="text-gray-700 hover:text-blue-600 px-3 py-2 font-medium transition-colors">Kontakt</Link>
+                    <div className="hidden md:flex gap-2 lg:gap-6 items-center">
+                        {menu.map((pozycja) => (
+                            <Link key={pozycja.id} href={pozycja.link} className="text-gray-700 hover:text-blue-600 px-2 py-2 font-medium transition-colors">
+                                {pozycja.nazwa}
+                            </Link>
+                        ))}
                         <a
                             href={`tel:${firma.telefon.replace(/\s/g, '')}`}
                             className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-bold transition-colors shadow-sm"
@@ -47,10 +66,14 @@ export default function Navbar() {
                         </a>
                         {/* Przycisk "Hamburger" do otwierania menu */}
                         <button
+                            type="button"
                             onClick={() => setIsMenuOpen(!isMenuOpen)}
-                            className="text-gray-600 hover:text-gray-900 focus:outline-none p-1"
+                            aria-label={isMenuOpen ? 'Zamknij menu' : 'Otwórz menu'}
+                            aria-expanded={isMenuOpen}
+                            aria-controls="menu-mobilne"
+                            className="text-gray-600 hover:text-gray-900 p-1 rounded-md"
                         >
-                            <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg aria-hidden="true" className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 {isMenuOpen ? (
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 ) : (
@@ -65,20 +88,13 @@ export default function Navbar() {
 
             {/* Rozwijane menu mobilne */}
             {isMenuOpen && (
-                <div className="md:hidden bg-white border-t border-gray-100 shadow-xl absolute w-full left-0">
+                <div id="menu-mobilne" className="md:hidden bg-white border-t border-gray-100 shadow-xl absolute w-full left-0">
                     <div className="px-4 pt-2 pb-6 space-y-2">
-                        <Link href="/#uslugi" onClick={closeMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50">
-                            Usługi
-                        </Link>
-                        <Link href="/produkty" onClick={closeMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50">
-                            Produkty
-                        </Link>
-                        <Link href="/wspolpraca" onClick={closeMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50">
-                            Współpraca
-                        </Link>
-                        <Link href="/#kontakt" onClick={closeMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50">
-                            Kontakt
-                        </Link>
+                        {menu.map((pozycja) => (
+                            <Link key={pozycja.id} href={pozycja.link} onClick={closeMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50">
+                                {pozycja.nazwa}
+                            </Link>
+                        ))}
                     </div>
                 </div>
             )}

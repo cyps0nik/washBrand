@@ -1,4 +1,5 @@
-import { firma } from '../data/content';
+import Link from 'next/link';
+import { firma, politykaPrywatnosci } from '../data/content';
 
 export default function Footer() {
     const rok = new Date().getFullYear();
@@ -12,8 +13,18 @@ export default function Footer() {
                 </div>
                 <div>
                     <h3 className="text-xl font-bold mb-4">Kontakt</h3>
-                    <p className="text-gray-400">Tel: {firma.telefon}</p>
-                    <p className="text-gray-400">Email: {firma.email}</p>
+                    <p className="text-gray-400">
+                        Tel:{' '}
+                        <a href={`tel:${firma.telefon.replace(/\s/g, '')}`} className="text-white hover:text-blue-300 underline underline-offset-2 whitespace-nowrap">
+                            {firma.telefon}
+                        </a>
+                    </p>
+                    <p className="text-gray-400">
+                        Email:{' '}
+                        <a href={`mailto:${firma.email}`} className="text-white hover:text-blue-300 underline underline-offset-2 break-all">
+                            {firma.email}
+                        </a>
+                    </p>
                     <p className="text-gray-400">{firma.miasto}</p>
                     {firma.facebook && (
                         <a
@@ -47,6 +58,9 @@ export default function Footer() {
                 <div>
                     <h3 className="text-xl font-bold mb-4">Informacje</h3>
                     <p className="text-gray-400">NIP: {firma.nip}</p>
+                    <Link href="/polityka-prywatnosci" className="inline-block mt-2 text-gray-400 hover:text-white underline transition-colors">
+                        {politykaPrywatnosci.tytul}
+                    </Link>
                 </div>
             </div>
             <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-gray-800 text-center text-gray-500">
