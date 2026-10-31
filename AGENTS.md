@@ -20,7 +20,7 @@ Ten plik musi zostać prosty i odporny na pomyłki.
 
 ## Stack (zweryfikowany w `package.json`)
 
-- **Next.js 16.2.9**, App Router (`app/`), **React 19.2**, JavaScript/JSX bez TypeScriptu.
+- **Next.js 16.4.3**, App Router (`app/`), **React 19.2**, JavaScript/JSX bez TypeScriptu.
 - **Tailwind CSS v4** (`@import "tailwindcss"` w `app/globals.css`, plugin `@tailwindcss/postcss`).
 - Czcionka **Inter** przez `next/font/google` (`latin` + `latin-ext`) w `app/layout.jsx`, podpięta jako `--font-sans`.
   Strona ma tylko jasny motyw (bez trybu ciemnego).
