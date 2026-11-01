@@ -99,21 +99,21 @@ export const uslugi = [
         id: "kostka",
         nazwa: "Mycie kostki brukowej",
         opis: "Usuwamy mech, glony i ciężkie zabrudzenia z chodników, podjazdów i placów.",
-        cena: "od 8 zł/m²",
+        cena: "od 8 zł/m² netto",
         ikona: "🧹",
     },
     {
         id: "elewacja",
         nazwa: "Czyszczenie elewacji",
         opis: "Mycie ciśnieniowe i chemiczne elewacji budynków jedno i wielorodzinnych.",
-        cena: "od 12 zł/m²",
+        cena: "od 12 zł/m² netto",
         ikona: "🏠",
     },
     {
         id: "panele",
         nazwa: "Mycie paneli fotowoltaicznych",
         opis: "Bezpieczne mycie wodą demineralizowaną, co pozwala przywrócić maksymalną wydajność instalacji bez ryzyka smug i zarysowań.",
-        cena: "od 12 zł/szt.",
+        cena: "od 12 zł/szt. netto",
         ikona: "💧",
     },
     {
@@ -282,7 +282,7 @@ export const kalkulator = {
     etykieta: "Szybka estymacja",
     naglowek: "Oblicz szacunkowy koszt usługi",
     opis: "Przesuń suwaki, aby poznać orientacyjną cenę czyszczenia Twojej posesji.",
-    podpisSumy: "Szacunkowy koszt brutto:",
+    podpisSumy: "Szacunkowy koszt netto:",  // TODO: klient prywatny powinien widzieć cenę z VAT; ustalić z właścicielem stawkę VAT
     przyciskFormularz: "Przekaż do wyceny",
     pokazWhatsApp: true,                     // false = przycisk znika
     przyciskWhatsApp: "Wyślij na WhatsApp",
@@ -290,7 +290,7 @@ export const kalkulator = {
     // Gdy ktoś wpisze więcej niż "max" suwaka, pod suwakiem pojawi się np. „Powyżej 500 m² – wycena indywidualna"
     ponadMax: "wycena indywidualna",
     // Ten opis trafia do pola „Metraż lub liczba paneli" w formularzu po kliknięciu „Przekaż do wyceny"
-    podpisWFormularzu: "szacunek z kalkulatora",
+    podpisWFormularzu: "szacunek netto z kalkulatora",
     // Suwaki: "id" musi być takie samo jak nazwa w `stawki` (np. kostka). Bez stawki suwak się nie pokaże.
     // jednostka = w czym liczymy, opisPola = opis pola dla czytników ekranu,
     // max = największa wartość, krok = o ile przeskakuje suwak, start = wartość na początku.
