@@ -26,7 +26,9 @@ Ten plik musi zostać prosty i odporny na pomyłki.
   Strona ma tylko jasny motyw (bez trybu ciemnego).
   Brak `tailwind.config.js`; ustawienia idą przez `@theme` w CSS. Nie dodawaj konfiguracji w stylu v3.
 - ESLint 9 flat config (`eslint-config-next/core-web-vitals`).
-- Hosting: Vercel, deploy po `git push` na `main`.
+- Hosting: **Cloudflare Workers (darmowy plan)**, eksport statyczny Next.js (`output: 'export'`, folder `out/`)
+  plus mały Worker na formularz (`worker/index.js`, `wrangler.jsonc`). Deploy po `git push` na `main` (Workers Builds).
+  **Nie używamy Vercela** (darmowy plan tylko niekomercyjnie). Bez SSR, Server Actions i optymalizacji zdjęć.
 - Zanim użyjesz API Next.js (metadata, `next/image`, sitemap, route handlers), przeczytaj odpowiedni
   przewodnik w `node_modules/next/dist/docs/` (patrz blok powyżej).
 
@@ -34,7 +36,8 @@ Ten plik musi zostać prosty i odporny na pomyłki.
 
 ```bash
 npm install
-npm run dev      # http://localhost:3000
+npm run dev      # http://localhost:3000 (bez Workera: formularz pokaże błąd z prośbą o telefon)
+npm run preview  # build + lokalny Cloudflare, http://localhost:8787 (formularz; klucz w .dev.vars)
 npm run lint
 npm run build    # uruchom przed uznaniem zmiany za gotową
 ```
@@ -43,19 +46,22 @@ npm run build    # uruchom przed uznaniem zmiany za gotową
 
 | Ścieżka | Rola |
 |---|---|
-| `data/content.js` | **Cała treść**: firma, menu, seo, kontakt, stopka, pasekMobilny, hero, uslugi, uslugiPrzyciski, produkty, dlaczegoMy, galeria, faq, zaufaliNam, opinie, opinieSekcja, stawki, kalkulator, formularz, politykaPrywatnosci |
+| `data/content.js` | **Cała treść**: firma, dostepnosc, widocznosc, menu, seo, kontakt, strona404, stopka, pasekMobilny, hero, uslugi, uslugiSekcja, uslugiPrzyciski, produkty, dlaczegoMy, galeria, faq, zaufaliNam, film, opinie, opinieSekcja, stawki, kalkulator, formularz, politykaPrywatnosci |
 | `app/layout.jsx` | Layout (Navbar + Footer + PasekMobilny), `metadata` (metadataBase, szablon tytułu, opis, Open Graph, ikony, manifest – z `seo` i `firma`) |
-| `app/sitemap.js`, `app/robots.js` | Mapa strony (bez ukrytych podstron) i robots.txt |
-| `lib/adresStrony.js` | Adres strony: `firma.adresStrony` → `VERCEL_PROJECT_PRODUCTION_URL` → `http://localhost:3000` |
-| `app/page.jsx` | Strona główna: Hero, Uslugi, KalkulatorWyceny, FormularzWyceny, DlaczegoMy, Galeria, Opinie, FAQ, Kontakt; JSON-LD firmy |
-| `app/actions/wycena.js` | Server action formularza wyceny (mail przez Resend; zmienne `RESEND_API_KEY`, opcjonalnie `RESEND_FROM`) |
-| `app/produkty/page.jsx` | Podstrona `/produkty` (dane: `produkty`) – **ukryta**: `noindex`, poza menu i sitemap |
-| `app/wspolpraca/page.jsx` | Podstrona `/wspolpraca` (dane: `zaufaliNam`) – **ukryta**: `noindex`, poza menu i sitemap |
+| `app/sitemap.js`, `app/robots.js` | Mapa strony (bez wyłączonych podstron) i robots.txt |
+| `app/not-found.jsx` | Polska strona 404 (`strona404`); w eksporcie to `out/404.html` |
+| `lib/adresStrony.js` | Adres strony: `firma.adresStrony` → `http://localhost:3000` |
+| `lib/limityFormularza.js` | Limity długości pól, wspólne dla formularza i Workera |
+| `app/page.jsx` | Strona główna: Hero, Uslugi, KalkulatorWyceny, FormularzWyceny, DlaczegoMy, Film, Galeria, Opinie, FAQ, Kontakt; JSON-LD firmy (`HomeAndConstructionBusiness`, podtyp `LocalBusiness`) |
+| `worker/index.js` | Worker: `POST /api/wycena` (walidacja, pułapki, mail przez API Resend zwykłym `fetch`; zmienne `RESEND_API_KEY`, opcjonalnie `RESEND_FROM`, `RESEND_TO`). Do logów nie trafiają dane klienta |
+| `wrangler.jsonc`, `.node-version` | Konfiguracja Cloudflare (pliki z `out/`, przez Workera tylko `/api/*`) i wersja Node do builda |
+| `app/produkty/page.produkty.jsx` | Podstrona `/produkty` (dane: `produkty`) – **wyłączona** w `widocznosc`: nie powstaje w buildzie, 404 |
+| `app/wspolpraca/page.wspolpraca.jsx` | Podstrona `/wspolpraca` (dane: `zaufaliNam`) – **wyłączona** w `widocznosc`: nie powstaje w buildzie, 404 |
 | `app/polityka-prywatnosci/page.jsx` | Podstrona `/polityka-prywatnosci` (dane: `politykaPrywatnosci` + administrator z `firma`); link w stopce i pod formularzem |
-| `components/` | PrzyciskWycen (client, „Wyceń" na kartach usług), Navbar (client, sticky, pozycje z `menu`, przycisk „Zadzwoń" także na mobile), PasekMobilny (przyklejony do dołu, tylko telefony), Opinie (ukryta, gdy `opinie` puste), Hero, Uslugi, KalkulatorWyceny (client, suwaki na `stawki`), DlaczegoMy, Galeria, FAQ, FormularzWyceny (client), Kontakt, Footer |
+| `components/` | PrzyciskWycen (client, „Wyceń" na kartach usług), Navbar (client, sticky, pozycje z `menu`, przycisk „Zadzwoń" także na mobile), PasekMobilny (przyklejony do dołu, tylko telefony), Opinie (ukryta, gdy `opinie` puste), Hero, Uslugi, KalkulatorWyceny (client, suwaki na `stawki`), DlaczegoMy, Film (client, YouTube po kliknięciu), Galeria (widoczna tylko przy `widocznosc.galeria`), FAQ, FormularzWyceny (client), Kontakt, Footer |
 | `public/` | Ikony/favicony i `site.webmanifest`; własne zdjęcia wrzucaj do `public/zdjecia/` |
 
-Kotwice na stronie głównej: `#uslugi`, `#kalkulator`, `#formularz`, `#galeria`, `#opinie`, `#faq`, `#kontakt`.
+Kotwice na stronie głównej: `#uslugi`, `#kalkulator`, `#formularz`, `#film`, `#galeria`, `#opinie`, `#faq`, `#kontakt`.
 `<html>` ma `scroll-pt-20`, żeby sticky Navbar nie zasłaniał nagłówków po skoku do kotwicy.
 
 Kalkulator przekazuje metraż do formularza zdarzeniem `window` o nazwie `kalkulator:metraz`
@@ -63,16 +69,27 @@ Kalkulator przekazuje metraż do formularza zdarzeniem `window` o nazwie `kalkul
 wysyła `kalkulator:wybierz` z `id` usługi; kalkulator przewija do wiersza `wiersz-<id>` i daje fokus
 polu `pole-<id>`.
 
-Formularz: wymagany tylko telefon (min. 9 cyfr), ukryte pole-pułapka `strona_www` na boty,
-po błędzie wpisane dane wracają z akcji (`wartosci`). Kolory pól formularzy są wymuszone
-w `@layer base` w `globals.css`.
+Formularz: wysyła JSON na `/api/wycena` i wymaga JavaScriptu. Wymagany tylko telefon (9–15 cyfr),
+ukryte pole-pułapka `strona_www` na boty, pułapka czasowa (min. 3 s, człowiek dostaje prośbę o ponowne
+wysłanie), po błędzie wpisane dane wracają z `wartosci`, a wynik dostaje fokus. Kolory pól formularzy
+są wymuszone w `@layer base` w `globals.css`.
+
+Włączniki: `widocznosc` w `content.js` steruje galerią, `/produkty` i `/wspolpraca`. Podstrony mają
+własne rozszerzenia plików, a `pageExtensions` w `next.config.mjs` buduje je tylko po włączeniu.
+Nie zastępuj tego `notFound()`: w eksporcie powstałby plik z kodem 200 zamiast prawdziwego 404.
+
+Kalkulator: panele liczone za sztukę; jednostkę i opis pola ma każdy suwak w `kalkulator.suwaki`.
+
+Film: `film.youtube` puste = brak sekcji. Do kliknięcia nie ma żadnych żądań do YouTube ani Google,
+dlatego podgląd to własny plik (`film.podglad`), a nie miniatura z YouTube.
 
 Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w edytorze.
 
 ## Kluczowe zasady
 
-1. **Treść tylko w `data/content.js`.** Nie wpisuj tekstów, cen, telefonów ani linków na sztywno
-   w komponentach. Wyjątek: teksty podstron `/produkty` i `/wspolpraca` (ukryte do czasu prawdziwych danych).
+1. **Treść tylko w `data/content.js`.** Nie wpisuj nowych tekstów, cen, telefonów ani linków na sztywno
+   w komponentach. Stare wyjątki: teksty `/produkty` i `/wspolpraca` oraz drobne napisy w Navbar, Galeria,
+   DlaczegoMy, Footer i polityce prywatności (przy okazji zmian przenoś je do `content.js`).
 2. **Nie zmieniaj nazw eksportów ani pól** w `content.js` bez aktualizacji komponentów
    (`grep -r "nazwaPola" app components`). `firma.miasto` zawiera **pełny adres**;
    do nazwy miejscowości służy `firma.miejscowosc`.
@@ -80,45 +97,53 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
    unikalne `id` w tablicach. Dane przykładowe oznaczaj `// TODO`.
 4. **Mobile-first.** Numer telefonu zawsze jako `tel:${firma.telefon.replace(/\s/g, '')}`
    (tak jest w istniejących komponentach; trzymaj ten wzorzec).
-5. **Zdjęcia:** obecnie zwykłe `<img>`. Przy zmianie na `next/image` skonfiguruj `remotePatterns`
-   w `next.config.mjs` dla domen zewnętrznych, albo użyj plików z `public/zdjecia/`.
-   Zawsze sensowny `alt` po polsku.
+5. **Zdjęcia:** `next/image` z `images.unoptimized`, więc nic ich nie zmniejsza przy wyświetlaniu.
+   Do `public/zdjecia/` wrzucaj pliki już zmniejszone (np. do 1200 px). Zawsze sensowny `alt` po polsku.
 6. **Interfejs po polsku**, z poprawnymi znakami diakrytycznymi.
 7. **Żadnych sekretów w repo.** Klucze API (np. do maili) tylko w zmiennych środowiskowych
-   (`.env*` jest w `.gitignore`; w Vercel jako Environment Variables).
+   (lokalnie `.dev.vars` w `.gitignore`; w Cloudflare: Worker → Settings → Variables and Secrets,
+   `RESEND_API_KEY` jako Secret, zmienne działają od razu, bez nowego builda).
 8. **Nie wymyślaj faktów o firmie** (referencje, liczby realizacji, ceny, certyfikaty, godziny).
    Braki zostaw jako `TODO` i zapytaj właściciela.
 9. **Uważaj na wklejane „fragmenty" w JSX.** Komentarze typu `// ...` wewnątrz JSX wyświetlają się
    na stronie jako tekst. W JSX używaj `{/* ... */}`.
 10. Małe kroki: jeden krok, `lint` + `build`, potem następny.
 
-## Znane problemy (stan na październik 2026)
+## Znane problemy (stan na listopad 2026)
 
-- `zaufaliNam` i `produkty` to **dane przykładowe** (wymyślone nazwy klientów, zdjęcia z picsum,
-  ceny). Strony `/wspolpraca` i `/produkty` są ukryte (poza menu i sitemap, `noindex`), ale nadal
-  dostępne pod bezpośrednim adresem. `kontakt.dopisek` wspomina o sprzedaży produktów – do potwierdzenia.
-- Brak domeny: `firma.adresStrony` jest puste (`TODO`), więc canonical/OG/sitemap używają adresu z Vercela.
+- **Pytania otwarte do właściciela:** czy ceny są brutto, czy zgłoszenia mają iść na `firma.email`
+  (`arti19-89@o2.pl`), wybór domeny.
+- `zaufaliNam`, `produkty` i `galeria` to **dane przykładowe** (wymyślone nazwy klientów, zdjęcia z picsum,
+  ceny). Zostają tylko w kodzie: `widocznosc` je wyłącza i nie trafiają do `out/`. Nikt nie zgodził się
+  na podanie nazwy firmy jako referencji. Właściciel nie ma jeszcze zdjęć ani produktów.
+- Brak domeny: `firma.adresStrony` jest puste (`TODO`), więc canonical/OG/sitemap wskazują `localhost`.
+  Po pierwszym wdrożeniu wpisz adres `*.workers.dev`, po zakupie domeny – domenę. Preferowana nazwa
+  bez myślnika (`ecopower...`); budżet: najwyżej 50 zł/mies. na wszystko.
+- Bez Profilu Firmy w Google (decyzja właściciela): widoczność opiera się na samej stronie i Search Console.
 - Obrazek Open Graph to tymczasowo ikona 512×512 (`seo.obrazek`, `TODO`: zdjęcie 1200×630).
-- `firma.obszar` (miejscowości w opisie i JSON-LD) do potwierdzenia z właścicielem.
 - `README.md` to opis projektu po angielsku (portfolio); osobnej instrukcji dla właściciela nie robimy.
   Brakuje w nim linku do działającej strony i zrzutów ekranu (`docs/desktop.png`, `docs/mobile.png`).
 - JSON-LD (w `app/page.jsx`) bierze wszystko z `content.js` (adres, `obszar`, usługi, social media).
-- Do potwierdzenia z właścicielem (`TODO` w `kalkulator` i `formularz`): czas oddzwonienia
-  „15 minut", czy ceny są brutto, czy firma używa WhatsAppa.
-- Formularz wysyła maile przez Resend tylko przy ustawionym `RESEND_API_KEY` (bez klucza zgłoszenie
-  trafia jedynie do logów serwera). Nadawca domyślny `onboarding@resend.dev` dostarcza tylko na adres
-  konta Resend; po weryfikacji domeny ustaw `RESEND_FROM`.
-- Polityka prywatności to wzór, nie porada prawna. Brakuje `firma.wlasciciel` (administrator danych)
-  i potwierdzenia okresu przechowywania danych (`TODO` w `politykaPrywatnosci`). Przy dodaniu
-  analityki lub cookies trzeba ją zaktualizować (dziś strona ich nie używa).
+- Kalkulator celowo pokazuje „ok." (decyzja właściciela), a `podpisSumy` bez słowa „brutto" do czasu potwierdzenia.
+- Formularz bez `RESEND_API_KEY` nie udaje sukcesu: pokazuje prośbę o telefon z numerem z `content.js`.
+- **Nadawca testowy:** bez `RESEND_FROM` mail idzie z `onboarding@resend.dev`, a ten dostarcza tylko na adres
+  konta Resend. Dopóki nie ma domeny, a adres konta różni się od `firma.email`, ustaw `RESEND_TO` na adres
+  konta Resend. **Po zakupie domeny:** zweryfikuj ją w Resend (rekordy DNS dodane w Cloudflare), ustaw
+  `RESEND_FROM`, np. `Eco-Power <wycena@domena.pl>`, i usuń `RESEND_TO`.
+- Limit zgłoszeń z jednego adresu IP nie istnieje; są tylko pułapki na boty (honeypot i czas).
+- Limity Cloudflare Free: Worker 100 tys. żądań dziennie i 10 ms CPU (błąd 1102), statyczne pliki bez limitu.
+- Polityka prywatności to wzór, nie porada prawna. Do sprawdzenia DPA Cloudflare i Resend (`TODO`). Przy
+  dodaniu analityki lub cookies trzeba ją zaktualizować (dziś strona ich nie używa; film z YouTube opisany).
 - Sekcja opinii jest gotowa, ale niewidoczna, dopóki `opinie` jest puste (brak prawdziwych opinii).
+- Lighthouse lokalnie (mobile, 3 przebiegi, listopad 2026): `/` wynik 77–84, dostępność 100, BP 100, SEO 100.
+  Porównuj wyniki tylko z tego samego dnia i maszyny. Wydajność na hostingu sprawdź po wdrożeniu.
 
 ## Plan prac
 
 - [x] Sticky przycisk „Zadzwoń" (jest w Navbarze, także na mobile)
 - [x] Galeria przed/po (obok siebie), FAQ, Kontakt, „Dlaczego my"
 - [ ] Naprawa wszystkich `TODO` w danych (prawdziwe zdjęcia, klienci, produkty)
-- [~] Formularz wyceny (Resend, server action) – działa, z klauzulą RODO; brakuje klucza w Vercel i własnej domeny nadawcy
+- [~] Formularz wyceny (Resend, Worker) – działa, z klauzulą RODO; brakuje klucza w Cloudflare i własnej domeny nadawcy
 - [x] Kalkulator orientacyjnej ceny (na `stawki`, suwaki)
 - [x] Sekcja opinii (`opinie`; pokaże się po dodaniu prawdziwych opinii)
 - [x] Pasek „Zadzwoń / Bezpłatna wycena" na dole ekranu telefonu, menu z kalkulatorem i wyceną, formularz zaraz po kalkulatorze
@@ -128,10 +153,15 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
       klikalny telefon/e-mail w stopce, `aria-label`/`aria-expanded` + Esc/klik obok w menu, focus-visible
       i `prefers-reduced-motion` w `globals.css`, FAQ z `id="faq"` i JSON-LD `FAQPage`
 - [x] SEO lokalne: `metadata` + Open Graph, JSON-LD (areaServed, sameAs, usługi), `sitemap`, `robots`
-- [x] Ukrycie `/produkty` i `/wspolpraca` (noindex), siatka usług 2×2 / 4, manifest, teksty Footer/Kontakt w `content.js`
-- [ ] Opcjonalnie: suwak przed/po zamiast układu obok siebie, `next/image`
+- [x] Ukrycie `/produkty` i `/wspolpraca` (włącznik `widocznosc`, prawdziwe 404), siatka usług 2×2 / 4, manifest, teksty Footer/Kontakt w `content.js`
+- [x] Migracja na Cloudflare (eksport statyczny + Worker), walidacja i pułapki w Workerze, dostępność, polska 404, `next/image`
+- [x] Film z YouTube po kliknięciu (`film`), panele za sztukę w kalkulatorze, lokalne SEO w tytule i nagłówkach
+- [ ] Pierwsze wdrożenie, wpisanie adresu w `firma.adresStrony`, test formularza i sprawdzenie błędów 1102
+- [ ] Opcjonalnie: suwak przed/po zamiast układu obok siebie
 - [x] Polityka prywatności i klauzula RODO pod formularzem (do uzupełnienia `TODO`)
-- [ ] Domena, analityka
+- [ ] Domena, weryfikacja domeny w Resend i `RESEND_FROM`
+- [ ] Po zakupie domeny: instrukcja Google Search Console dla Cypriana (to nie Profil Firmy)
+- [ ] Analityka (po decyzji)
 
 ## Przed zakończeniem zadania
 

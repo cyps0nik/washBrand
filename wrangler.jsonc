@@ -11,5 +11,7 @@
     "not_found_handling": "404-page",
     "run_worker_first": ["/api/*"]
   },
+  // Zmienne ustawione w panelu Cloudflare (RESEND_FROM, RESEND_TO) zostają po każdym wdrożeniu
+  "keep_vars": true,
   "observability": { "enabled": true }
 }
