@@ -23,15 +23,22 @@ export const firma = {
     instagram: "https://www.instagram.com/ecopower2023/"
 };
 
+// Włączniki części strony: true = widać, false = ukryte (nic nie trzeba kasować).
+// Włączaj dopiero, gdy niżej w tym pliku są PRAWDZIWE dane, bo teraz są tam przykłady.
+export const widocznosc = {
+    galeria: false,     // sekcja „Nasze realizacje" (dane: `galeria`)
+    produkty: false,    // podstrona /produkty (dane: `produkty`); wyłączona = „nie znaleziono"
+    wspolpraca: false   // podstrona /wspolpraca (dane: `zaufaliNam`); wyłączona = „nie znaleziono"
+};
+
 // Menu na górze strony. "link" z # prowadzi do sekcji na stronie głównej, bez # – do podstrony.
 export const menu = [
     { id: "uslugi", nazwa: "Usługi", link: "/#uslugi" },
     { id: "kalkulator", nazwa: "Kalkulator", link: "/#kalkulator" },
     { id: "wycena", nazwa: "Wycena", link: "/#formularz" },
-    // Ukryte, dopóki podstrony mają dane przykładowe. Aby przywrócić: usuń "// " z początku linii
-    // i w pliku app/produkty/page.jsx lub app/wspolpraca/page.jsx usuń blok "robots".
-    // { id: "produkty", nazwa: "Produkty", link: "/produkty" },
-    // { id: "wspolpraca", nazwa: "Współpraca", link: "/wspolpraca" },
+    // Te dwie pozycje pokażą się dopiero po włączeniu podstron w `widocznosc` poniżej
+    { id: "produkty", nazwa: "Produkty", link: "/produkty", tylkoGdy: "produkty" },
+    { id: "wspolpraca", nazwa: "Współpraca", link: "/wspolpraca", tylkoGdy: "wspolpraca" },
     { id: "kontakt", nazwa: "Kontakt", link: "/#kontakt" }
 ];
 
@@ -112,7 +119,7 @@ export const uslugiPrzyciski = {
     zapytaj: "Zapytaj o wycenę"
 };
 
-// TODO: dane przykładowe (zdjęcia z picsum, ceny i nazwy produktów) – podmienić lub usunąć sekcję
+// TODO: dane przykładowe (zdjęcia z picsum, ceny i nazwy produktów). Podstrona wyłączona w `widocznosc`.
 export const produkty = [
     {
         id: "p1",
@@ -168,7 +175,7 @@ export const dlaczegoMy = [
     },
 ];
 
-// TODO: zdjęcia przykładowe z picsum – podmienić na prawdziwe realizacje.
+// TODO: zdjęcia przykładowe z picsum. Sekcja wyłączona w `widocznosc` do czasu prawdziwych realizacji.
 // Własne zdjęcia wrzuć do public/zdjecia/ i wpisz ścieżkę, np. "/zdjecia/podjazd-przed.jpg"
 export const galeria = [
     {
@@ -209,8 +216,8 @@ export const faq = [
     }
 ];
 
-// TODO: to są NIEPRAWDZIWE nazwy przykładowe. Przed publikacją wpisać realnych
-// klientów (za ich zgodą) albo usunąć sekcję – fałszywe referencje to ryzyko prawne i wizerunkowe.
+// TODO: to są NIEPRAWDZIWE nazwy przykładowe, dlatego podstrona jest wyłączona w `widocznosc`.
+// Włączyć dopiero z realnymi klientami, za ich zgodą – fałszywe referencje to ryzyko prawne i wizerunkowe.
 export const zaufaliNam = [
     { id: "z1", nazwa: "Wspólnota Mieszkaniowa 'Słoneczna'" },
     { id: "z2", nazwa: "Firma Budowlana Kowalbud" },

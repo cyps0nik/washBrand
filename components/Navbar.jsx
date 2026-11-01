@@ -2,7 +2,10 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
-import { firma, menu } from '../data/content';
+import { firma, menu, widocznosc } from '../data/content';
+
+// Pozycje podstron wyłączonych w `widocznosc` nie pokazują się w menu
+const pozycjeMenu = menu.filter((pozycja) => !pozycja.tylkoGdy || widocznosc[pozycja.tylkoGdy]);
 
 export default function Navbar() {
     // Stan przechowujący informację, czy menu mobilne jest otwarte
@@ -43,7 +46,7 @@ export default function Navbar() {
 
                     {/* Menu na duże ekrany (komputery) */}
                     <div className="hidden md:flex gap-2 lg:gap-6 items-center">
-                        {menu.map((pozycja) => (
+                        {pozycjeMenu.map((pozycja) => (
                             <Link key={pozycja.id} href={pozycja.link} className="text-gray-700 hover:text-blue-600 px-2 py-2 font-medium transition-colors">
                                 {pozycja.nazwa}
                             </Link>
@@ -90,7 +93,7 @@ export default function Navbar() {
             {isMenuOpen && (
                 <div id="menu-mobilne" className="md:hidden bg-white border-t border-gray-100 shadow-xl absolute w-full left-0">
                     <div className="px-4 pt-2 pb-6 space-y-2">
-                        {menu.map((pozycja) => (
+                        {pozycjeMenu.map((pozycja) => (
                             <Link key={pozycja.id} href={pozycja.link} onClick={closeMenu} className="block px-3 py-3 rounded-md text-base font-medium text-gray-800 hover:text-blue-600 hover:bg-gray-50">
                                 {pozycja.nazwa}
                             </Link>

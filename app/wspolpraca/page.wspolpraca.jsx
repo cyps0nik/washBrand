@@ -1,9 +1,7 @@
 import { zaufaliNam, firma } from '../../data/content';
 
-// Podstrona ukryta (dane przykładowe): nie ma jej w menu ani w sitemap, a Google jej nie indeksuje.
-// Gdy pojawią się prawdziwe dane, usuń blok "robots" i przywróć link w `menu` w content.js.
+// Podstrona budowana tylko przy `widocznosc.wspolpraca: true` w content.js (patrz next.config.mjs)
 export const metadata = {
-    robots: { index: false, follow: false },
     title: 'Współpraca',
     description: 'Lista firm, instytucji i wspólnot, z którymi współpracowaliśmy.',
 };

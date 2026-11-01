@@ -1,6 +1,8 @@
-import { galeria } from '../data/content';
+import { galeria, widocznosc } from '../data/content';
 
 export default function Galeria() {
+    if (!widocznosc.galeria) return null;
+
     return (
         <section id="galeria" className="py-16 bg-white px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
