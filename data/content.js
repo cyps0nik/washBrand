@@ -8,7 +8,7 @@
 export const firma = {
     nazwa: "Eco-Power",
     telefon: "+48 609 447 056",
-    email: "arti19-89@o2.pl",                         // TODO: potwierdzić, że na ten adres mają przychodzić zgłoszenia
+    email: "arti19-89@o2.pl",                         // na ten adres przychodzą też zgłoszenia z formularza
     miasto: "ul. Targowa 29 lok. 25, 99-210 Uniejów", // UWAGA: to pełny adres (nazwa pola historyczna)
     miejscowosc: "Uniejów",                           // do SEO i nagłówków
     ulica: "ul. Targowa 29 lok. 25",                  // do danych dla Google (sama ulica i numer)
@@ -282,7 +282,7 @@ export const kalkulator = {
     etykieta: "Szybka estymacja",
     naglowek: "Oblicz szacunkowy koszt usługi",
     opis: "Przesuń suwaki, aby poznać orientacyjną cenę czyszczenia Twojej posesji.",
-    podpisSumy: "Szacunkowy koszt:",        // TODO: potwierdzić z właścicielem, czy ceny są brutto; do tego czasu bez tego słowa
+    podpisSumy: "Szacunkowy koszt brutto:",
     przyciskFormularz: "Przekaż do wyceny",
     pokazWhatsApp: true,                     // false = przycisk znika
     przyciskWhatsApp: "Wyślij na WhatsApp",
