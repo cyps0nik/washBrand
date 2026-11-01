@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { galeria, widocznosc } from '../data/content';
 
 export default function Galeria() {
@@ -20,13 +21,11 @@ export default function Galeria() {
                   <span className="absolute top-3 left-3 bg-red-600 text-white text-xs font-black px-3 py-1 rounded-md z-10 shadow-md">
                     PRZED
                   </span>
-                                    <img
+                                    <Image
                                         src={projekt.zdjeciePrzed}
                                         alt={`Przed: ${projekt.tytul}`}
                                         width={800}
                                         height={600}
-                                        loading="lazy"
-                                        decoding="async"
                                         className="w-full h-48 sm:h-64 object-cover hover:scale-105 transition-transform duration-500"
                                     />
                                 </div>
@@ -36,13 +35,11 @@ export default function Galeria() {
                   <span className="absolute top-3 left-3 bg-green-700 text-white text-xs font-black px-3 py-1 rounded-md z-10 shadow-md">
                     PO
                   </span>
-                                    <img
+                                    <Image
                                         src={projekt.zdjeciePo}
                                         alt={`Po: ${projekt.tytul}`}
                                         width={800}
                                         height={600}
-                                        loading="lazy"
-                                        decoding="async"
                                         className="w-full h-48 sm:h-64 object-cover hover:scale-105 transition-transform duration-500"
                                     />
                                 </div>

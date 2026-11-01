@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { produkty, firma } from '../../data/content';
 
 // Podstrona budowana tylko przy `widocznosc.produkty: true` w content.js (patrz next.config.mjs)
@@ -50,9 +51,11 @@ export default function ProduktyPage() {
                             {/* Sekcja zdjęcia produktu */}
                             <div className="aspect-square w-full bg-slate-100 relative border-b border-slate-100">
                                 {produkt.zdjecie ? (
-                                    <img
+                                    <Image
                                         src={produkt.zdjecie}
                                         alt={`Zdjęcie produktu: ${produkt.nazwa}`}
+                                        width={400}
+                                        height={400}
                                         className="w-full h-full object-cover"
                                     />
                                 ) : (
