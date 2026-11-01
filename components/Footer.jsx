@@ -10,6 +10,9 @@ export default function Footer() {
                 <div>
                     <h3 className="text-xl font-bold mb-4">{firma.nazwa}</h3>
                     <p className="text-gray-400">{stopka.opis}</p>
+                    <p className="text-gray-400 mt-4">
+                        {stopka.obszarNaglowek} {firma.obszar.join(', ')} i okolice do {firma.zasiegKm} km.
+                    </p>
                 </div>
                 <div>
                     <h3 className="text-xl font-bold mb-4">Kontakt</h3>

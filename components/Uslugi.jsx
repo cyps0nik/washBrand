@@ -1,4 +1,4 @@
-import { uslugi, uslugiPrzyciski, kalkulator, stawki } from '../data/content';
+import { uslugi, uslugiSekcja, uslugiPrzyciski, kalkulator, stawki } from '../data/content';
 import PrzyciskWycen from './PrzyciskWycen';
 
 // Usługi, które da się wycenić w kalkulatorze (mają suwak i stawkę)
@@ -13,8 +13,8 @@ export default function Uslugi() {
         <section id="uslugi" className="py-16 bg-white px-4 sm:px-6 lg:px-8">
             <div className="max-w-7xl mx-auto">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold text-gray-900">Nasze usługi</h2>
-                    <p className="mt-4 text-lg text-gray-600">Profesjonalne czyszczenie z wykorzystaniem najlepszego sprzętu</p>
+                    <h2 className="text-3xl font-bold text-gray-900">{uslugiSekcja.naglowek}</h2>
+                    <p className="mt-4 text-lg text-gray-600">{uslugiSekcja.opis}</p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 xl:gap-8">

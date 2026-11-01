@@ -45,8 +45,8 @@ export const menu = [
 // Opis strony dla Google i przy udostępnianiu linku (Facebook, Messenger, WhatsApp).
 // Tytuł najlepiej do ~60 znaków, opis do ~155 znaków.
 export const seo = {
-    tytul: "Eco-Power – mycie kostki, elewacji i paneli PV | Uniejów, Turek, Koło",
-    opis: "Mycie kostki brukowej, elewacji i paneli fotowoltaicznych oraz sprzątanie wspólnot. Uniejów, Turek, Koło, Poddębice i okolice do 70 km. Bezpłatna wycena.",
+    tytul: "Eco-Power Uniejów – mycie kostki, elewacji i paneli PV",
+    opis: "Eco-Power: mycie kostki, elewacji i paneli fotowoltaicznych oraz sprzątanie wspólnot. Uniejów, Turek, Koło, Poddębice i okolice do 70 km. Bezpłatna wycena.",
     // Obrazek przy udostępnianiu linku. TODO: podmienić na zdjęcie realizacji 1200×630 px, np. "/zdjecia/udostepnianie.jpg"
     obrazek: "/android-chrome-512x512.png"
 };
@@ -70,7 +70,8 @@ export const strona404 = {
 
 // Stopka (na każdej podstronie)
 export const stopka = {
-    opis: "Profesjonalne mycie kostki brukowej, elewacji i paneli fotowoltaicznych oraz sprzątanie wspólnot mieszkaniowych."
+    opis: "Profesjonalne mycie kostki brukowej, elewacji i paneli fotowoltaicznych oraz sprzątanie wspólnot mieszkaniowych.",
+    obszarNaglowek: "Obszar działania:"      // pod spodem strona pokazuje miejscowości z firma.obszar
 };
 
 // Pasek z przyciskami przyklejony do dołu ekranu (widoczny tylko na telefonach).
@@ -80,7 +81,7 @@ export const pasekMobilny = {
 };
 
 export const hero = {
-    naglowek: "Mycie elewacji, kostki brukowej i paneli fotowoltaicznych",
+    naglowek: "Mycie elewacji, kostki brukowej i paneli fotowoltaicznych – Uniejów i okolice",
     podtytul: "Przywracamy blask Twojej posesji. Działamy szybko, czysto i skutecznie na terenie Uniejowa i okolic.",
     przyciskGlosny: "Zadzwoń teraz",
     przyciskCichy: "Zobacz usługi",
@@ -118,6 +119,12 @@ export const uslugi = [
         ikona: "🏢",
     }
 ];
+
+// Nagłówek sekcji usług
+export const uslugiSekcja = {
+    naglowek: "Usługi Eco-Power w Uniejowie i okolicach",
+    opis: "Profesjonalne czyszczenie z wykorzystaniem najlepszego sprzętu"
+};
 
 // Przyciski na kartach usług. „Wyceń" pokazuje się przy usługach, które mają suwak w kalkulatorze;
 // pozostałe (np. wspólnoty) dostają przycisk prowadzący do formularza.
