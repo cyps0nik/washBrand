@@ -77,8 +77,45 @@ mogą się nieco różnić od opisanych.
 - [ ] Odtwórz film i podziel się linkiem na Messengerze, żeby zobaczyć podgląd.
 
 Panel Email Routing pokazuje wysłane maile jako „dropped” nawet po dostarczeniu, więc o wyniku decyduje skrzynka.
-Jeśli maile nie docierają do o2.pl, nie uruchamiaj formularza na stałe: wróć do Cypriana i wybierzcie inny adres
-odbiorcy lub dostawcę wysyłki. Strona pokazuje telefon, ale nie wie o mailu odrzuconym już po stronie o2.pl.
+Strona pokazuje telefon tylko wtedy, gdy Cloudflare odrzuci mail. Nie wie o mailu odrzuconym później przez o2.pl.
+Jeśli maile nie dochodzą, przejdź do planu awaryjnego poniżej.
+
+#### Plan awaryjny: maile w spamie lub niedochodzące
+
+Dopóki sprawa nie jest rozwiązana, klient widzi podziękowanie, a zgłoszenie może zginąć. Na ten czas zmień opis
+formularza w `content.js` tak, by zachęcał do telefonu, i sprawdzaj spam codziennie.
+
+**Co sprawdzić, po kolei:**
+- [ ] **Logi Workera:** czy jest `Formularz: wysyłka nieudana (kod)`. Kod `E_SENDER_NOT_VERIFIED` lub
+      `E_SENDER_DOMAIN_NOT_AVAILABLE` oznacza problem z domeną nadawcy, `E_RECIPIENT_NOT_ALLOWED` z adresem odbiorcy.
+      Pełna lista kodów jest w dokumentacji Cloudflare Email Service.
+- [ ] **Email Routing:** status domeny to **Enabled**, a `arti19-89@o2.pl` ma status zweryfikowanego.
+- [ ] **Nagłówki maila** (o2.pl → wiadomość → pokaż źródło), linia `Authentication-Results`:
+      - `spf=pass`: serwer miał prawo wysłać mail,
+      - `dkim=pass` z `d=ecopoweruniejow.pl`: podpis pasuje do naszej domeny,
+      - `dmarc=pass`: SPF lub DKIM zgadza się z domeną w polu „Od”.
+- [ ] **DNS w Cloudflare** (domena → DNS → Records):
+      - MX na `route1/2/3.mx.cloudflare.net`,
+      - TXT `@`: `v=spf1 include:_spf.mx.cloudflare.net ~all`,
+      - TXT `cf2024-1._domainkey` (DKIM).
+      Brakujące rekordy dodaje przycisk naprawy w ustawieniach Email Routing. Na domenie ma być tylko jeden rekord SPF.
+- [ ] **DMARC:** jeśli go nie ma, dodaj TXT `_dmarc` o treści `v=DMARC1; p=none`. Tryb `none` tylko obserwuje
+      i niczego nie blokuje. Ostrzejszy `quarantine` lub `reject` włączaj dopiero, gdy SPF i DKIM mają wynik `pass`.
+- [ ] **Skrzynka o2.pl:** dodaj `formularz@ecopoweruniejow.pl` do kontaktów, oznacz maile „to nie spam”,
+      a jeśli panel o2.pl na to pozwala, ustaw regułę przenoszącą je do odebranych.
+- [ ] **Test z innej skrzynki:** dodaj w Email Routing zweryfikowany adres Gmail i wyślij na niego próbny mail.
+      Jeśli w Gmailu nagłówki są poprawne, a w o2.pl mail nie dochodzi, problem leży po stronie o2.pl.
+
+**Opcje zapasowe, od najprostszej (żadnej nie wdrażamy teraz):**
+1. **Inna skrzynka odbiorcza:** zgłoszenia na zweryfikowany adres Gmail, a publiczny adres na stronie bez zmian.
+   Darmowe. Wymaga osobnego pola z adresem odbiorcy i Gmaila sprawdzanego przez wujka.
+2. **Dwóch odbiorców:** to samo, ale kopia idzie też na o2.pl. Darmowe, chroni przed awarią jednej skrzynki.
+3. **Resend z własną domeną:** powrót do poprzedniego rozwiązania, wymaga konta, klucza i rekordów DNS.
+   Przed wyborem sprawdź aktualne limity darmowego planu.
+4. **Cloudflare Email Sending:** pełna wysyłka z domeną nadawczą. Wymaga płatnego planu Workers
+   i mieści się w budżecie, ale to usługa w wersji beta. Przed wyborem sprawdź aktualną cenę.
+5. **Zapis zgłoszeń po stronie Cloudflare** jako kopia bezpieczeństwa: trzeba dopisać to do polityki prywatności
+   i ustalić usuwanie po 2 miesiącach, więc to opcja ostatnia.
 
 ### 7. Google Search Console (darmowe, to nie Profil Firmy)
 - [ ] Wejdź na [search.google.com/search-console](https://search.google.com/search-console) i zaloguj się kontem Google.
