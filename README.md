@@ -34,7 +34,7 @@ All business content lives in a single data module, completely separated from th
 - **Call-to-action hero** with a primary "call now" action and a secondary link to the services
 - **Contact and social links** – phone, e-mail, address, Facebook and Instagram, defined once and reused across the page
 - **Price calculator** – sliders per service (m² or pieces) with a live estimate, plus a shortcut to the quote form or WhatsApp
-- **Quote request form** – handled by a small Cloudflare Worker that validates the lead and e-mails it to the owner via [Resend](https://resend.com); input is HTML-escaped and customer data stays out of the logs
+- **Quote request form** – handled by a small Cloudflare Worker that validates the lead and e-mails it to the owner via Cloudflare Email Routing; input is HTML-escaped and customer data stays out of the logs
 - **Privacy policy and GDPR notice** – a `/polityka-prywatnosci` page and an information clause under the form, both driven by data
 - **Local SEO** – title/description and Open Graph from data, JSON-LD (`LocalBusiness` with service area, services and social profiles, plus `FAQPage`), `sitemap.xml` and `robots.txt`
 
@@ -52,7 +52,7 @@ All business content lives in a single data module, completely separated from th
 | Framework  | Next.js 16 (App Router)                     |
 | UI         | React 19                                    |
 | Styling    | Tailwind CSS 4 (via `@tailwindcss/postcss`) |
-| E-mail     | Resend (quote form)                         |
+| E-mail     | Cloudflare Email Routing (quote form)       |
 | Linting    | ESLint 9 with `eslint-config-next`          |
 | Hosting    | Cloudflare Workers (static assets + Worker) |
 
@@ -74,17 +74,9 @@ npm run dev
 
 The site is now available at [http://localhost:3000](http://localhost:3000).
 
-### Environment variables
+### E-mail
 
-The site runs without any configuration. Only the quote form needs a key to send e-mails; without it, the form asks the visitor to call instead.
-
-| Variable         | Required | Description                                                                                   |
-| ---------------- | -------- | --------------------------------------------------------------------------------------------- |
-| `RESEND_API_KEY` | for e-mail | API key from Resend. Leads are sent to `firma.email` from `data/content.js`.                |
-| `RESEND_FROM`    | no       | Sender address, e.g. `Eco-Power <wycena@your-domain.pl>`. Defaults to `onboarding@resend.dev`, which Resend only delivers to the address the Resend account was created with – verify your own domain in Resend and set this for production. |
-| `RESEND_TO`      | no       | Overrides the recipient. Use it with the test sender, set to the Resend account address, until a domain is verified. |
-
-Locally, put them in `.dev.vars` (ignored by git). On Cloudflare, add them under **Worker → Settings → Variables and Secrets**, with `RESEND_API_KEY` as a Secret.
+No API keys or environment variables are needed. The Worker sends leads through the `EMAIL` binding (`send_email` in `wrangler.jsonc`), which requires Cloudflare Email Routing on the sender's domain and `firma.email` from `data/content.js` as a verified destination address. If sending fails, the form asks the visitor to call instead. Under `npm run preview` e-mails are only simulated and saved in `.wrangler/`.
 
 ### Scripts
 
@@ -154,7 +146,7 @@ The project runs on the free plan of [Cloudflare Workers](https://workers.cloudf
 
 1. In the Cloudflare dashboard, import the repository (Workers Builds). The project name must match `name` in `wrangler.jsonc` (`eco-power`).
 2. Set the build command to `npm run build` and the deploy command to `npx wrangler deploy`.
-3. Add the environment variables described above (at least `RESEND_API_KEY`) to the Worker.
+3. Enable Email Routing on the domain and verify the destination address.
 4. Put the live address in `firma.adresStrony`. Every push to `main` is built and published automatically.
 
 A custom domain can be attached under the Worker's **Settings → Domains & Routes**. Deployment from the command line is also possible with `npm run deploy`.

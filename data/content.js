@@ -365,8 +365,8 @@ export const politykaPrywatnosci = {
             naglowek: "Komu przekazujemy dane",
             akapity: [
                 "Nie sprzedajemy danych i nie przekazujemy ich innym firmom w celach marketingowych.",
-                "Dane mogą trafić do dostawców usług, z których korzystamy przy prowadzeniu strony i kontaktu: Cloudflare, Inc. (hosting strony), Resend (wysyłka wiadomości z formularza na naszą skrzynkę) oraz dostawca naszej poczty e-mail. Przetwarzają one dane wyłącznie na nasze zlecenie.",
-                "Cloudflare i Resend mają siedzibę w USA, więc dane mogą być przekazywane poza Europejski Obszar Gospodarczy. Odbywa się to na podstawie mechanizmów przewidzianych w RODO, takich jak standardowe klauzule umowne zatwierdzone przez Komisję Europejską.", // TODO: sprawdzić w umowach powierzenia (DPA) Cloudflare i Resend
+                "Dane mogą trafić do dostawców usług, z których korzystamy przy prowadzeniu strony i kontaktu: Cloudflare, Inc. (hosting strony i wysyłka wiadomości z formularza na naszą skrzynkę) oraz dostawca naszej poczty e-mail. Przetwarzają one dane wyłącznie na nasze zlecenie.",
+                "Cloudflare ma siedzibę w USA, więc dane mogą być przekazywane poza Europejski Obszar Gospodarczy. Odbywa się to na podstawie mechanizmów przewidzianych w RODO, takich jak standardowe klauzule umowne zatwierdzone przez Komisję Europejską.", // TODO: sprawdzić w umowie powierzenia (DPA) Cloudflare
                 "Jeśli piszesz do nas przez WhatsApp, Facebooka lub Instagram, dane przetwarza także operator tej usługi (Meta) na własnych zasadach.",
                 "Jeśli odtworzysz film na stronie, dane techniczne otrzymuje Google (YouTube) – szczegóły w sekcji o plikach cookies."
             ]

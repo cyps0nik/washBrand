@@ -27,7 +27,8 @@ Ten plik musi zostać prosty i odporny na pomyłki.
   Brak `tailwind.config.js`; ustawienia idą przez `@theme` w CSS. Nie dodawaj konfiguracji w stylu v3.
 - ESLint 9 flat config (`eslint-config-next/core-web-vitals`).
 - Hosting: **Cloudflare Workers (darmowy plan)**, eksport statyczny Next.js (`output: 'export'`, folder `out/`)
-  plus mały Worker na formularz (`worker/index.js`, `wrangler.jsonc`). Deploy po `git push` na `main` (Workers Builds).
+  plus mały Worker na formularz (`worker/index.js`, `wrangler.jsonc`). Deploy po `git push` na `main` (Workers Builds). **Strona nie jest wdrożona:
+  start dopiero po zakupie domeny i dostaniu zdjęć** (lista kroków: `docs/START.md`).
   **Nie używamy Vercela** (darmowy plan tylko niekomercyjnie). Bez SSR, Server Actions i optymalizacji zdjęć.
 - Zanim użyjesz API Next.js (metadata, `next/image`, sitemap, route handlers), przeczytaj odpowiedni
   przewodnik w `node_modules/next/dist/docs/` (patrz blok powyżej).
@@ -37,7 +38,7 @@ Ten plik musi zostać prosty i odporny na pomyłki.
 ```bash
 npm install
 npm run dev      # http://localhost:3000 (bez Workera: formularz pokaże błąd z prośbą o telefon)
-npm run preview  # build + lokalny Cloudflare, http://localhost:8787 (formularz; klucz w .dev.vars)
+npm run preview  # build + lokalny Cloudflare, http://localhost:8787 (mail tylko symulowany, zapis w .wrangler/)
 npm run lint
 npm run build    # uruchom przed uznaniem zmiany za gotową
 ```
@@ -53,7 +54,7 @@ npm run build    # uruchom przed uznaniem zmiany za gotową
 | `lib/adresStrony.js` | Adres strony: `firma.adresStrony` → `http://localhost:3000` |
 | `lib/limityFormularza.js` | Limity długości pól, wspólne dla formularza i Workera |
 | `app/page.jsx` | Strona główna: Hero, Uslugi, KalkulatorWyceny, FormularzWyceny, DlaczegoMy, Film, Galeria, Opinie, FAQ, Kontakt; JSON-LD firmy (`HomeAndConstructionBusiness`, podtyp `LocalBusiness`) |
-| `worker/index.js` | Worker: `POST /api/wycena` (walidacja, pułapki, mail przez API Resend zwykłym `fetch`; zmienne `RESEND_API_KEY`, opcjonalnie `RESEND_FROM`, `RESEND_TO`). Do logów nie trafiają dane klienta |
+| `worker/index.js` | Worker: `POST /api/wycena` (walidacja, pułapki, mail przez wiązanie `EMAIL`, czyli Cloudflare Email Routing, bez kluczy API). Do logów nie trafiają dane klienta |
 | `wrangler.jsonc`, `.node-version` | Konfiguracja Cloudflare (pliki z `out/`, przez Workera tylko `/api/*`) i wersja Node do builda |
 | `app/produkty/page.produkty.jsx` | Podstrona `/produkty` (dane: `produkty`) – **wyłączona** w `widocznosc`: nie powstaje w buildzie, 404 |
 | `app/wspolpraca/page.wspolpraca.jsx` | Podstrona `/wspolpraca` (dane: `zaufaliNam`) – **wyłączona** w `widocznosc`: nie powstaje w buildzie, 404 |
@@ -100,9 +101,8 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
 5. **Zdjęcia:** `next/image` z `images.unoptimized`, więc nic ich nie zmniejsza przy wyświetlaniu.
    Do `public/zdjecia/` wrzucaj pliki już zmniejszone (np. do 1200 px). Zawsze sensowny `alt` po polsku.
 6. **Interfejs po polsku**, z poprawnymi znakami diakrytycznymi.
-7. **Żadnych sekretów w repo.** Klucze API (np. do maili) tylko w zmiennych środowiskowych
-   (lokalnie `.dev.vars` w `.gitignore`; w Cloudflare: Worker → Settings → Variables and Secrets,
-   `RESEND_API_KEY` jako Secret, zmienne działają od razu, bez nowego builda).
+7. **Żadnych sekretów w repo.** Klucze API tylko w zmiennych środowiskowych (lokalnie `.dev.vars`
+   w `.gitignore`; w Cloudflare: Worker → Settings → Variables and Secrets). Dziś projekt żadnych nie używa.
 8. **Nie wymyślaj faktów o firmie** (referencje, liczby realizacji, ceny, certyfikaty, godziny).
    Braki zostaw jako `TODO` i zapytaj właściciela.
 9. **Uważaj na wklejane „fragmenty" w JSX.** Komentarze typu `// ...` wewnątrz JSX wyświetlają się
@@ -111,28 +111,30 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
 
 ## Znane problemy (stan na listopad 2026)
 
-- **Pytania otwarte do właściciela:** czy ceny są brutto, czy zgłoszenia mają iść na `firma.email`
-  (`arti19-89@o2.pl`), wybór domeny.
+- **Czekamy na:** zakup domeny `ecopoweruniejow.pl` (właściciel, Hostido, na swoje dane), zdjęcia i link do filmu.
 - `zaufaliNam`, `produkty` i `galeria` to **dane przykładowe** (wymyślone nazwy klientów, zdjęcia z picsum,
   ceny). Zostają tylko w kodzie: `widocznosc` je wyłącza i nie trafiają do `out/`. Nikt nie zgodził się
   na podanie nazwy firmy jako referencji. Właściciel nie ma jeszcze zdjęć ani produktów.
 - Brak domeny: `firma.adresStrony` jest puste (`TODO`), więc canonical/OG/sitemap wskazują `localhost`.
-  Po pierwszym wdrożeniu wpisz adres `*.workers.dev`, po zakupie domeny – domenę. Preferowana nazwa
-  bez myślnika (`ecopower...`); budżet: najwyżej 50 zł/mies. na wszystko.
+  Domenę wpisz dopiero po potwierdzeniu zakupu. Budżet: najwyżej 50 zł/mies. na wszystko.
 - Bez Profilu Firmy w Google (decyzja właściciela): widoczność opiera się na samej stronie i Search Console.
 - Obrazek Open Graph to tymczasowo ikona 512×512 (`seo.obrazek`, `TODO`: zdjęcie 1200×630).
 - `README.md` to opis projektu po angielsku (portfolio); osobnej instrukcji dla właściciela nie robimy.
   Brakuje w nim linku do działającej strony i zrzutów ekranu (`docs/desktop.png`, `docs/mobile.png`).
 - JSON-LD (w `app/page.jsx`) bierze wszystko z `content.js` (adres, `obszar`, usługi, social media).
 - Kalkulator celowo pokazuje „ok." (decyzja właściciela), a `podpisSumy` bez słowa „brutto" do czasu potwierdzenia.
-- Formularz bez `RESEND_API_KEY` nie udaje sukcesu: pokazuje prośbę o telefon z numerem z `content.js`.
-- **Nadawca testowy:** bez `RESEND_FROM` mail idzie z `onboarding@resend.dev`, a ten dostarcza tylko na adres
-  konta Resend. Dopóki nie ma domeny, a adres konta różni się od `firma.email`, ustaw `RESEND_TO` na adres
-  konta Resend. **Po zakupie domeny:** zweryfikuj ją w Resend (rekordy DNS dodane w Cloudflare), ustaw
-  `RESEND_FROM`, np. `Eco-Power <wycena@domena.pl>`, i usuń `RESEND_TO`.
+- Formularz przy braku wiązania `EMAIL` lub błędzie wysyłki nie udaje sukcesu: pokazuje prośbę o telefon
+  z numerem z `content.js`.
+- **Maile przez Cloudflare Email Routing** (Free): odbiorca `firma.email` musi być zweryfikowanym adresem
+  docelowym na koncie Cloudflare, nadawca `formularz@ecopoweruniejow.pl` (stała `NADAWCA` w `worker/index.js`)
+  musi być w domenie z włączonym Email Routing, a domena używać DNS Cloudflare. Bez domeny wysyłka nie zadziała.
+  Nowy adres w `firma.email` trzeba najpierw zweryfikować w Cloudflare. Wysyłka do dowolnych adresów wymagałaby
+  płatnego planu, ale nie jest potrzebna. Wysłane maile panel pokazuje jako „dropped" nawet po dostarczeniu.
+- Dostarczalność do o2.pl jest niepotwierdzona (dokumentacja Cloudflare o tym milczy): sprawdź w dniu startu,
+  także folder spam. Worker wie tylko, że Cloudflare przyjął mail, a nie że trafił do skrzynki.
 - Limit zgłoszeń z jednego adresu IP nie istnieje; są tylko pułapki na boty (honeypot i czas).
 - Limity Cloudflare Free: Worker 100 tys. żądań dziennie i 10 ms CPU (błąd 1102), statyczne pliki bez limitu.
-- Polityka prywatności to wzór, nie porada prawna. Do sprawdzenia DPA Cloudflare i Resend (`TODO`). Przy
+- Polityka prywatności to wzór, nie porada prawna. Do sprawdzenia DPA Cloudflare (`TODO`). Przy
   dodaniu analityki lub cookies trzeba ją zaktualizować (dziś strona ich nie używa; film z YouTube opisany).
 - Sekcja opinii jest gotowa, ale niewidoczna, dopóki `opinie` jest puste (brak prawdziwych opinii).
 - Lighthouse lokalnie (mobile, 3 przebiegi, listopad 2026): `/` wynik 77–84, dostępność 100, BP 100, SEO 100.
@@ -143,7 +145,7 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
 - [x] Sticky przycisk „Zadzwoń" (jest w Navbarze, także na mobile)
 - [x] Galeria przed/po (obok siebie), FAQ, Kontakt, „Dlaczego my"
 - [ ] Naprawa wszystkich `TODO` w danych (prawdziwe zdjęcia, klienci, produkty)
-- [~] Formularz wyceny (Resend, Worker) – działa, z klauzulą RODO; brakuje klucza w Cloudflare i własnej domeny nadawcy
+- [~] Formularz wyceny (Worker, Cloudflare Email Routing) – przetestowany na symulatorze, z klauzulą RODO; do włączenia po zakupie domeny
 - [x] Kalkulator orientacyjnej ceny (na `stawki`, suwaki)
 - [x] Sekcja opinii (`opinie`; pokaże się po dodaniu prawdziwych opinii)
 - [x] Pasek „Zadzwoń / Bezpłatna wycena" na dole ekranu telefonu, menu z kalkulatorem i wyceną, formularz zaraz po kalkulatorze
@@ -156,11 +158,10 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
 - [x] Ukrycie `/produkty` i `/wspolpraca` (włącznik `widocznosc`, prawdziwe 404), siatka usług 2×2 / 4, manifest, teksty Footer/Kontakt w `content.js`
 - [x] Migracja na Cloudflare (eksport statyczny + Worker), walidacja i pułapki w Workerze, dostępność, polska 404, `next/image`
 - [x] Film z YouTube po kliknięciu (`film`), panele za sztukę w kalkulatorze, lokalne SEO w tytule i nagłówkach
-- [ ] Pierwsze wdrożenie, wpisanie adresu w `firma.adresStrony`, test formularza i sprawdzenie błędów 1102
+- [ ] Start według `docs/START.md`: domena, Email Routing, wdrożenie, zdjęcia, film, test formularza
 - [ ] Opcjonalnie: suwak przed/po zamiast układu obok siebie
 - [x] Polityka prywatności i klauzula RODO pod formularzem (do uzupełnienia `TODO`)
-- [ ] Domena, weryfikacja domeny w Resend i `RESEND_FROM`
-- [ ] Po zakupie domeny: instrukcja Google Search Console dla Cypriana (to nie Profil Firmy)
+- [ ] Po starcie: Google Search Console (`docs/START.md`; to nie Profil Firmy)
 - [ ] Analityka (po decyzji)
 
 ## Przed zakończeniem zadania

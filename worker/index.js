@@ -2,7 +2,8 @@ import { firma, formularz } from '../data/content.js';
 import { limityFormularza } from '../lib/limityFormularza.js';
 
 // Worker Cloudflare obsługuje tylko formularz wyceny (POST /api/wycena).
-// Zmienne: RESEND_API_KEY (Secret), opcjonalnie RESEND_FROM i RESEND_TO.
+// Mail wychodzi przez wiązanie EMAIL (Cloudflare Email Routing, patrz wrangler.jsonc). Odbiorca musi być
+// zweryfikowanym adresem docelowym na koncie Cloudflare, a domena nadawcy mieć włączony Email Routing.
 // Do logów nie trafiają dane klienta, tylko informacja techniczna.
 
 // Zamienia znaki specjalne HTML, żeby tekst od klienta nie wstawił do maila linków ani kodu
@@ -29,33 +30,31 @@ const tekst = (wartosc) => (typeof wartosc === 'string' ? wartosc.trim() : '');
 // Pola jednowierszowe: bez znaków nowej linii (trafiają m.in. do tematu maila)
 const wiersz = (wartosc) => tekst(wartosc).replace(/\s+/g, ' ');
 
-// Nadawca testowy Resend dostarcza maile tylko na adres, na który założono konto Resend.
-// Do czasu weryfikacji domeny ten adres można wpisać w RESEND_TO.
-const NADAWCA_TESTOWY = 'Eco-Power Leads <onboarding@resend.dev>';
+// Adres nadawcy musi być w domenie z włączonym Email Routing. Nie musi istnieć jako skrzynka.
+const NADAWCA = { name: 'Eco-Power – formularz', email: 'formularz@ecopoweruniejow.pl' };
 
 async function wyslijMail(env, { imie, telefon, miejscowosc, metraz, opis }) {
-    const wynik = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${env.RESEND_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            // Po weryfikacji domeny w Resend ustaw RESEND_FROM, np. "Eco-Power <wycena@twoja-domena.pl>"
-            from: env.RESEND_FROM || NADAWCA_TESTOWY,
-            to: env.RESEND_TO || firma.email,
-            subject: `Nowy lead: ${imie || telefon} (${miejscowosc || 'Brak miasta'})`,
-            html: `
-                <h2>Nowe zapytanie o wycenę</h2>
-                <p><strong>Klient:</strong> ${escapeHtml(imie || 'Nie podano')}</p>
-                <p><strong>Telefon:</strong> <a href="tel:${escapeHtml(telefon.replace(/\s/g, ''))}">${escapeHtml(telefon)}</a></p>
-                <p><strong>Miejscowość:</strong> ${escapeHtml(miejscowosc || 'Nie podano')}</p>
-                <p><strong>Metraż lub liczba paneli:</strong> ${escapeHtml(metraz || 'Brak')}</p>
-                <p><strong>Opis:</strong> ${escapeHtml(opis || 'Brak uwag')}</p>
-            `,
-        }),
+    await env.EMAIL.send({
+        from: NADAWCA,
+        to: firma.email,
+        subject: `Nowy lead: ${imie || telefon} (${miejscowosc || 'Brak miasta'})`,
+        text: [
+            'Nowe zapytanie o wycenę',
+            `Klient: ${imie || 'Nie podano'}`,
+            `Telefon: ${telefon}`,
+            `Miejscowość: ${miejscowosc || 'Nie podano'}`,
+            `Metraż lub liczba paneli: ${metraz || 'Brak'}`,
+            `Opis: ${opis || 'Brak uwag'}`,
+        ].join('\n'),
+        html: `
+            <h2>Nowe zapytanie o wycenę</h2>
+            <p><strong>Klient:</strong> ${escapeHtml(imie || 'Nie podano')}</p>
+            <p><strong>Telefon:</strong> <a href="tel:${escapeHtml(telefon.replace(/\s/g, ''))}">${escapeHtml(telefon)}</a></p>
+            <p><strong>Miejscowość:</strong> ${escapeHtml(miejscowosc || 'Nie podano')}</p>
+            <p><strong>Metraż lub liczba paneli:</strong> ${escapeHtml(metraz || 'Brak')}</p>
+            <p><strong>Opis:</strong> ${escapeHtml(opis || 'Brak uwag')}</p>
+        `,
     });
-    if (!wynik.ok) throw new Error(`Resend: status ${wynik.status}`);
 }
 
 async function obsluzWycene(request, env) {
@@ -103,9 +102,9 @@ async function obsluzWycene(request, env) {
         return odpowiedz({ success: false, error: formularz.bladZaSzybko }, 400);
     }
 
-    // Bez klucza nic by nie dotarło do firmy, więc nie udajemy sukcesu, tylko prosimy o telefon
-    if (!env.RESEND_API_KEY) {
-        console.error('Formularz: brak zmiennej RESEND_API_KEY');
+    // Bez wiązania nic by nie dotarło do firmy, więc nie udajemy sukcesu, tylko prosimy o telefon
+    if (!env.EMAIL) {
+        console.error('Formularz: brak wiązania EMAIL');
         return odpowiedz({ success: false, error: formularz.bladNiedostepny, zadzwon: true }, 503);
     }
 
@@ -113,10 +112,8 @@ async function obsluzWycene(request, env) {
         await wyslijMail(env, pola);
         return odpowiedz({ success: true, error: null });
     } catch (err) {
-        console.error(err.message);
-        if (!env.RESEND_FROM) {
-            console.error('Formularz: brak RESEND_FROM. Nadawca testowy Resend dostarcza tylko na adres konta Resend (RESEND_TO).');
-        }
+        // Sam kod błędu: treść wyjątku mogłaby zawierać adresy
+        console.error(`Formularz: wysyłka nieudana (${err.code || 'bez kodu'}). Sprawdź Email Routing i zweryfikowany adres odbiorcy.`);
         return odpowiedz({ success: false, error: formularz.bladWysylki, zadzwon: true }, 502);
     }
 }
