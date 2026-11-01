@@ -1,4 +1,5 @@
 import { firma, formularz } from '../data/content.js';
+import { limityFormularza } from '../lib/limityFormularza.js';
 
 // Worker Cloudflare obsługuje tylko formularz wyceny (POST /api/wycena).
 // Zmienne: RESEND_API_KEY (Secret), opcjonalnie RESEND_FROM.
@@ -14,6 +15,15 @@ const escapeHtml = (tekst) =>
     })[znak]);
 
 const odpowiedz = (dane, status = 200) => Response.json(dane, { status });
+
+// Prawdziwe zgłoszenie mieści się w tym rozmiarze (bajty)
+const MAKS_ROZMIAR = 16 * 1024;
+
+// Boty mogą przysłać cokolwiek, więc liczą się tylko teksty
+const tekst = (wartosc) => (typeof wartosc === 'string' ? wartosc.trim() : '');
+
+// Pola jednowierszowe: bez znaków nowej linii (trafiają m.in. do tematu maila)
+const wiersz = (wartosc) => tekst(wartosc).replace(/\s+/g, ' ');
 
 async function wyslijMail(env, { imie, telefon, miejscowosc, metraz, opis }) {
     const wynik = await fetch('https://api.resend.com/emails', {
@@ -41,10 +51,17 @@ async function wyslijMail(env, { imie, telefon, miejscowosc, metraz, opis }) {
 }
 
 async function obsluzWycene(request, env) {
+    if (Number(request.headers.get('content-length')) > MAKS_ROZMIAR) {
+        return odpowiedz({ success: false, error: formularz.bladZaDlugie }, 413);
+    }
+
     let dane;
     try {
         dane = await request.json();
     } catch {
+        dane = null;
+    }
+    if (!dane || typeof dane !== 'object') {
         return odpowiedz({ success: false, error: formularz.bladWysylki }, 400);
     }
 
@@ -52,17 +69,24 @@ async function obsluzWycene(request, env) {
     // udajemy sukces i nic nie wysyłamy.
     if (dane.strona_www) return odpowiedz({ success: true, error: null });
 
-    const imie = dane.imie?.trim();
-    const telefon = dane.telefon?.trim();
-    const miejscowosc = dane.miejscowosc?.trim();
-    const metraz = dane.metraz?.trim();
-    const opis = dane.opis?.trim();
+    const pola = {
+        imie: wiersz(dane.imie),
+        telefon: wiersz(dane.telefon),
+        miejscowosc: wiersz(dane.miejscowosc),
+        metraz: wiersz(dane.metraz),
+        opis: tekst(dane.opis),
+    };
+    const { imie, telefon, miejscowosc, metraz, opis } = pola;
 
     if (!telefon) {
         return odpowiedz({ success: false, error: formularz.bladBrakDanych }, 400);
     }
-    // Polski numer to 9 cyfr (z kierunkowym więcej); mniej oznacza literówkę
-    if (telefon.replace(/\D/g, '').length < 9) {
+    if (Object.entries(limityFormularza).some(([nazwa, limit]) => pola[nazwa].length > limit)) {
+        return odpowiedz({ success: false, error: formularz.bladZaDlugie }, 400);
+    }
+    // Polski numer to 9 cyfr, z kierunkowym więcej (najwięcej 15 w numeracji międzynarodowej)
+    const cyfry = telefon.replace(/\D/g, '').length;
+    if (!/^[+\d\s()./-]+$/.test(telefon) || cyfry < 9 || cyfry > 15) {
         return odpowiedz({ success: false, error: formularz.bladTelefon }, 400);
     }
 

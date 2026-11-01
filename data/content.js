@@ -285,7 +285,8 @@ export const formularz = {
     klauzulaRodo: "Administratorem Twoich danych jest Eco-Power. Podane dane wykorzystamy tylko do przygotowania wyceny i kontaktu w tej sprawie. Szczegóły i Twoje prawa:",
     linkPolityka: "polityka prywatności",
     bladBrakDanych: "Podaj numer telefonu, żebyśmy mogli oddzwonić.",
-    bladTelefon: "Numer telefonu wygląda na niepełny. Sprawdź go, proszę.",
+    bladTelefon: "Numer telefonu wygląda na niepełny albo błędny. Sprawdź go, proszę.",
+    bladZaDlugie: "Wpisany tekst jest za długi. Skróć go, proszę.",
     bladWysylki: "Błąd wysyłki. Skontaktuj się bezpośrednio pod numerem telefonu."
 };
 

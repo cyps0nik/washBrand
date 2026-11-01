@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useActionState, useEffect, useState } from 'react';
 import { firma, formularz } from '../data/content';
+import { limityFormularza } from '../lib/limityFormularza';
 
 // Wysyła zgłoszenie do Workera (worker/index.js). Przy błędzie odsyłamy wpisane dane do formularza,
 // żeby ich nie wyczyścił. Pod `npm run dev` Workera nie ma, więc formularz testuj przez `npm run preview`.
@@ -69,6 +70,7 @@ export default function FormularzWyceny() {
                                     type="text"
                                     id="wycena-imie"
                                     name="imie"
+                                    maxLength={limityFormularza.imie}
                                     defaultValue={wartosci.imie}
                                     autoComplete="name"
                                     placeholder={formularz.przykladImie}
@@ -82,6 +84,7 @@ export default function FormularzWyceny() {
                                     type="tel"
                                     id="wycena-telefon"
                                     name="telefon"
+                                    maxLength={limityFormularza.telefon}
                                     inputMode="tel"
                                     defaultValue={wartosci.telefon}
                                     autoComplete="tel"
@@ -98,6 +101,7 @@ export default function FormularzWyceny() {
                                     type="text"
                                     id="wycena-miejscowosc"
                                     name="miejscowosc"
+                                    maxLength={limityFormularza.miejscowosc}
                                     defaultValue={wartosci.miejscowosc}
                                     placeholder={formularz.przykladMiejscowosc}
                                     className="w-full px-4 py-2.5 rounded-lg border border-slate-300 bg-white text-gray-900 placeholder:text-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
@@ -109,6 +113,7 @@ export default function FormularzWyceny() {
                                     type="text"
                                     id="wycena-metraz"
                                     name="metraz"
+                                    maxLength={limityFormularza.metraz}
                                     value={metraz}
                                     onChange={(e) => setMetraz(e.target.value)}
                                     placeholder={formularz.przykladMetraz}
@@ -122,6 +127,7 @@ export default function FormularzWyceny() {
                             <textarea
                                 id="wycena-opis"
                                 name="opis"
+                                maxLength={limityFormularza.opis}
                                 defaultValue={wartosci.opis}
                                 rows="3"
                                 placeholder={formularz.przykladOpis}
