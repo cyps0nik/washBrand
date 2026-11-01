@@ -2,6 +2,7 @@ import Hero from '../components/Hero';
 import Uslugi from '../components/Uslugi';
 import KalkulatorWyceny from '../components/KalkulatorWyceny';
 import DlaczegoMy from '../components/DlaczegoMy';
+import Film from '../components/Film';
 import Galeria from '../components/Galeria';
 import Opinie from '../components/Opinie';
 import FAQ from '../components/FAQ';
@@ -57,6 +58,7 @@ export default function Home() {
             <KalkulatorWyceny />
             <FormularzWyceny />
             <DlaczegoMy />
+            <Film />
             <Galeria />
             <Opinie />
             <FAQ />

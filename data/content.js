@@ -226,6 +226,17 @@ export const zaufaliNam = [
     { id: "z5", nazwa: "Zarząd Dróg i Zieleni" }
 ];
 
+// Film z YouTube. Dopóki "youtube" jest puste, sekcji nie ma na stronie.
+// YouTube ładuje się dopiero po kliknięciu „Odtwórz", dlatego podgląd to własne zdjęcie z public/zdjecia/.
+export const film = {
+    youtube: "",        // TODO: wkleić link do filmu z drona, np. "https://www.youtube.com/watch?v=abc123def45"
+    podglad: "",        // opcjonalnie zdjęcie podglądu, np. "/zdjecia/film.jpg" (puste = ciemne tło z przyciskiem)
+    naglowek: "Mycie elewacji bloku z lotu drona",
+    opis: "Zobacz, jak wygląda nasza praca na dużym budynku.",
+    przycisk: "Odtwórz film",
+    informacja: "Po kliknięciu film wczyta się z YouTube."
+};
+
 // Opinie klientów. Sekcja pojawi się na stronie dopiero, gdy dodasz tu pierwszą opinię.
 // Dodawaj tylko PRAWDZIWE opinie, najlepiej za zgodą klienta. "ocena" to liczba gwiazdek od 1 do 5. Wzór:
 // { id: "o1", imie: "Anna K.", miejscowosc: "Uniejów", tresc: "Kostka jak nowa, polecam!", ocena: 5 },
@@ -336,7 +347,8 @@ export const politykaPrywatnosci = {
                 "Nie sprzedajemy danych i nie przekazujemy ich innym firmom w celach marketingowych.",
                 "Dane mogą trafić do dostawców usług, z których korzystamy przy prowadzeniu strony i kontaktu: Cloudflare, Inc. (hosting strony), Resend (wysyłka wiadomości z formularza na naszą skrzynkę) oraz dostawca naszej poczty e-mail. Przetwarzają one dane wyłącznie na nasze zlecenie.",
                 "Cloudflare i Resend mają siedzibę w USA, więc dane mogą być przekazywane poza Europejski Obszar Gospodarczy. Odbywa się to na podstawie mechanizmów przewidzianych w RODO, takich jak standardowe klauzule umowne zatwierdzone przez Komisję Europejską.", // TODO: sprawdzić w umowach powierzenia (DPA) Cloudflare i Resend
-                "Jeśli piszesz do nas przez WhatsApp, Facebooka lub Instagram, dane przetwarza także operator tej usługi (Meta) na własnych zasadach."
+                "Jeśli piszesz do nas przez WhatsApp, Facebooka lub Instagram, dane przetwarza także operator tej usługi (Meta) na własnych zasadach.",
+                "Jeśli odtworzysz film na stronie, dane techniczne otrzymuje Google (YouTube) – szczegóły w sekcji o plikach cookies."
             ]
         },
         {
@@ -360,7 +372,8 @@ export const politykaPrywatnosci = {
             naglowek: "Pliki cookies i analityka",
             akapity: [
                 "Strona nie używa plików cookies do śledzenia ani narzędzi analitycznych i nie wyświetla reklam.",
-                "Linki do Facebooka, Instagrama i WhatsAppa prowadzą do zewnętrznych serwisów, które mają własne polityki prywatności."
+                "Linki do Facebooka, Instagrama i WhatsAppa prowadzą do zewnętrznych serwisów, które mają własne polityki prywatności.",
+                "Film na stronie pochodzi z YouTube i jest osadzony w trybie o podwyższonej prywatności (youtube-nocookie.com). Wczytuje się dopiero po kliknięciu przycisku odtwarzania; wcześniej strona nie łączy się z YouTube. Po kliknięciu Google (operator YouTube) otrzymuje dane techniczne, np. adres IP, może zapisać informacje na Twoim urządzeniu i przetwarza te dane na własnych zasadach."
             ]
         }
     ]
