@@ -39,7 +39,7 @@ export default function Navbar() {
 
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center">
-                        <Link href="/" onClick={closeMenu} className="font-bold text-xl text-blue-700">
+                        <Link href="/" onClick={closeMenu} className="inline-flex items-center min-h-11 font-bold text-xl text-blue-700">
                             {firma.nazwa}
                         </Link>
                     </div>

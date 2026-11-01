@@ -56,7 +56,7 @@ export default function KalkulatorWyceny() {
     const opisMetrazu = wybrane.map((suwak) => `${suwak.nazwa} ${naLiczbe(metraze[suwak.id])} ${suwak.jednostka}`).join(', ');
 
     const buildWhatsAppMsg = () => {
-        const text = `${kalkulator.wiadomoscWhatsApp} ${opisMetrazu || '-'}. Szacunek z kalkulatora: ok. ${suma} zł.`;
+        const text = `${kalkulator.wiadomoscWhatsApp} ${opisMetrazu || '-'}, szacunek z kalkulatora: ok. ${suma} zł.`;
         return `https://wa.me/${firma.telefon.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(text)}`;
     };
 
