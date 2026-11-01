@@ -16,7 +16,7 @@ export const firma = {
     zasiegKm: 70,                                     // promień dojazdu; zgodny z FAQ
     // Miejscowości w zasięgu – do opisu w Google i danych o obszarze działania
     obszar: ["Uniejów", "Turek", "Koło", "Poddębice", "Dąbie", "Łęczyca", "Konin", "Sieradz"],
-    adresStrony: "",                                  // TODO: po pierwszym wdrożeniu wpisać adres *.workers.dev, po zakupie domeny – domenę (np. "https://ecopoweruniejow.pl")
+    adresStrony: "",                                  // TODO: po potwierdzeniu zakupu domeny wpisać "https://ecopoweruniejow.pl"
     nip: "8281383349",
     wlasciciel: "Artur Tomczyk",                      // administrator danych w polityce prywatności
     facebook: "https://www.facebook.com/profile.php?id=100048712626636",
