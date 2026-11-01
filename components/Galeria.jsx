@@ -33,7 +33,7 @@ export default function Galeria() {
 
                                 {/* Zdjęcie PO */}
                                 <div className="flex-1 relative rounded-xl overflow-hidden shadow-inner border border-slate-200">
-                  <span className="absolute top-3 left-3 bg-green-600 text-white text-xs font-black px-3 py-1 rounded-md z-10 shadow-md">
+                  <span className="absolute top-3 left-3 bg-green-700 text-white text-xs font-black px-3 py-1 rounded-md z-10 shadow-md">
                     PO
                   </span>
                                     <img

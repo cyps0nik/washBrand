@@ -63,7 +63,7 @@ export default function Footer() {
                     </Link>
                 </div>
             </div>
-            <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-gray-800 text-center text-gray-500">
+            <div className="max-w-7xl mx-auto mt-8 pt-8 border-t border-gray-800 text-center text-gray-400">
                 &copy; {rok} {firma.nazwa}. Wszelkie prawa zastrzeżone.
             </div>
         </footer>
