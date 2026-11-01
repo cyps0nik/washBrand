@@ -87,6 +87,7 @@ No API keys or environment variables are needed. The Worker sends leads through 
 | `npm run build` | Create the static export in `out/`   |
 | `npm run deploy` | Build and deploy with Wrangler      |
 | `npm run lint`  | Run ESLint                           |
+| `npm run zdjecia` | Resize photos from `zdjecia-surowe/` into `public/zdjecia/` |
 
 ## Project structure
 

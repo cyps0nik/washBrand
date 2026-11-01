@@ -41,6 +41,7 @@ npm run dev      # http://localhost:3000 (bez Workera: formularz pokaże błąd 
 npm run preview  # build + lokalny Cloudflare, http://localhost:8787 (mail tylko symulowany, zapis w .wrangler/)
 npm run lint
 npm run build    # uruchom przed uznaniem zmiany za gotową
+npm run zdjecia  # zmniejsza zdjęcia z zdjecia-surowe/ do public/zdjecia/ (sharp z Next.js)
 ```
 
 ## Mapa repozytorium
@@ -60,7 +61,9 @@ npm run build    # uruchom przed uznaniem zmiany za gotową
 | `app/wspolpraca/page.wspolpraca.jsx` | Podstrona `/wspolpraca` (dane: `zaufaliNam`) – **wyłączona** w `widocznosc`: nie powstaje w buildzie, 404 |
 | `app/polityka-prywatnosci/page.jsx` | Podstrona `/polityka-prywatnosci` (dane: `politykaPrywatnosci` + administrator z `firma`); link w stopce i pod formularzem |
 | `components/` | PrzyciskWycen (client, „Wyceń" na kartach usług), Navbar (client, sticky, pozycje z `menu`, przycisk „Zadzwoń" także na mobile), PasekMobilny (przyklejony do dołu, tylko telefony), Opinie (ukryta, gdy `opinie` puste), Hero, Uslugi, KalkulatorWyceny (client, suwaki na `stawki`), DlaczegoMy, Film (client, YouTube po kliknięciu), Galeria (widoczna tylko przy `widocznosc.galeria`), FAQ, FormularzWyceny (client), Kontakt, Footer |
-| `public/` | Ikony/favicony i `site.webmanifest`; własne zdjęcia wrzucaj do `public/zdjecia/` |
+| `public/` | Ikony/favicony i `site.webmanifest`; zdjęcia strony w `public/zdjecia/` |
+| `scripts/zmniejsz-zdjecia.mjs` | Przygotowanie zdjęć (`npm run zdjecia`) |
+| `docs/START.md` | Lista na dzień startu i wiadomość do właściciela o zdjęciach |
 
 Kotwice na stronie głównej: `#uslugi`, `#kalkulator`, `#formularz`, `#film`, `#galeria`, `#opinie`, `#faq`, `#kontakt`.
 `<html>` ma `scroll-pt-20`, żeby sticky Navbar nie zasłaniał nagłówków po skoku do kotwicy.
@@ -99,7 +102,8 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
 4. **Mobile-first.** Numer telefonu zawsze jako `tel:${firma.telefon.replace(/\s/g, '')}`
    (tak jest w istniejących komponentach; trzymaj ten wzorzec).
 5. **Zdjęcia:** `next/image` z `images.unoptimized`, więc nic ich nie zmniejsza przy wyświetlaniu.
-   Do `public/zdjecia/` wrzucaj pliki już zmniejszone (np. do 1200 px). Zawsze sensowny `alt` po polsku.
+   Oryginały z `zdjecia-surowe/` przepuść przez `npm run zdjecia` (do 1600 px, JPG, bez GPS; `udostepnianie.*`
+   kadrowane do 1200×630). Wynik trafia do `public/zdjecia/`. Zawsze sensowny `alt` po polsku.
 6. **Interfejs po polsku**, z poprawnymi znakami diakrytycznymi.
 7. **Żadnych sekretów w repo.** Klucze API tylko w zmiennych środowiskowych (lokalnie `.dev.vars`
    w `.gitignore`; w Cloudflare: Worker → Settings → Variables and Secrets). Dziś projekt żadnych nie używa.
