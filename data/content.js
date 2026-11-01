@@ -16,7 +16,7 @@ export const firma = {
     zasiegKm: 70,                                     // promień dojazdu; zgodny z FAQ
     // Miejscowości w zasięgu – do opisu w Google i danych o obszarze działania
     obszar: ["Uniejów", "Turek", "Koło", "Poddębice", "Dąbie", "Łęczyca", "Konin", "Sieradz"], // TODO: potwierdzić z właścicielem, które miejscowości wymieniać
-    adresStrony: "",                                  // TODO: adres strony, np. "https://eco-power-uniejow.pl" (pusty = adres z Vercela)
+    adresStrony: "",                                  // TODO: po pierwszym wdrożeniu wpisać adres *.workers.dev, po zakupie domeny – domenę (np. "https://ecopower-uniejow.pl")
     nip: "8281383349",
     wlasciciel: "",                                   // TODO: imię i nazwisko właściciela (administrator danych w polityce prywatności)
     facebook: "https://www.facebook.com/profile.php?id=100048712626636",
@@ -323,8 +323,8 @@ export const politykaPrywatnosci = {
             naglowek: "Komu przekazujemy dane",
             akapity: [
                 "Nie sprzedajemy danych i nie przekazujemy ich innym firmom w celach marketingowych.",
-                "Dane mogą trafić do dostawców usług, z których korzystamy przy prowadzeniu strony i kontaktu: Vercel Inc. (hosting strony), Resend (wysyłka wiadomości z formularza na naszą skrzynkę) oraz dostawca naszej poczty e-mail. Przetwarzają one dane wyłącznie na nasze zlecenie.",
-                "Vercel i Resend mają siedzibę w USA, więc dane mogą być przekazywane poza Europejski Obszar Gospodarczy. Odbywa się to na podstawie mechanizmów przewidzianych w RODO, takich jak standardowe klauzule umowne zatwierdzone przez Komisję Europejską.", // TODO: sprawdzić w umowach powierzenia (DPA) Vercel i Resend
+                "Dane mogą trafić do dostawców usług, z których korzystamy przy prowadzeniu strony i kontaktu: Cloudflare, Inc. (hosting strony), Resend (wysyłka wiadomości z formularza na naszą skrzynkę) oraz dostawca naszej poczty e-mail. Przetwarzają one dane wyłącznie na nasze zlecenie.",
+                "Cloudflare i Resend mają siedzibę w USA, więc dane mogą być przekazywane poza Europejski Obszar Gospodarczy. Odbywa się to na podstawie mechanizmów przewidzianych w RODO, takich jak standardowe klauzule umowne zatwierdzone przez Komisję Europejską.", // TODO: sprawdzić w umowach powierzenia (DPA) Cloudflare i Resend
                 "Jeśli piszesz do nas przez WhatsApp, Facebooka lub Instagram, dane przetwarza także operator tej usługi (Meta) na własnych zasadach."
             ]
         },

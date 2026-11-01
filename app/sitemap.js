@@ -1,5 +1,7 @@
 import { adresStrony } from '../lib/adresStrony';
 
+export const dynamic = 'force-static';
+
 // Mapa strony dla Google. Podstron /produkty i /wspolpraca celowo tu nie ma (dane przykładowe).
 export default function sitemap() {
     return [

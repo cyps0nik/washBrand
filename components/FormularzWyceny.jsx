@@ -2,8 +2,24 @@
 
 import Link from 'next/link';
 import { useActionState, useEffect, useState } from 'react';
-import { wyslijWycene } from '../app/actions/wycena';
 import { firma, formularz } from '../data/content';
+
+// Wysyła zgłoszenie do Workera (worker/index.js). Przy błędzie odsyłamy wpisane dane do formularza,
+// żeby ich nie wyczyścił. Pod `npm run dev` Workera nie ma, więc formularz testuj przez `npm run preview`.
+async function wyslijWycene(_poprzedni, formData) {
+    const wartosci = Object.fromEntries(formData);
+    try {
+        const odpowiedz = await fetch('/api/wycena', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(wartosci),
+        });
+        const wynik = await odpowiedz.json();
+        return { ...wynik, wartosci };
+    } catch {
+        return { success: false, error: formularz.bladWysylki, wartosci };
+    }
+}
 
 export default function FormularzWyceny() {
     const [state, formAction, isPending] = useActionState(wyslijWycene, { success: false, error: null });

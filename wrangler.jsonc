@@ -1,0 +1,15 @@
+{
+  // Konfiguracja Cloudflare: pliki z out/ są serwowane bezpośrednio,
+  // a przez Workera (worker/index.js) idą tylko adresy /api/*.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "eco-power",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./out",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "run_worker_first": ["/api/*"]
+  },
+  "observability": { "enabled": true }
+}
