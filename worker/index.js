@@ -17,6 +17,9 @@ const escapeHtml = (tekst) =>
 
 const odpowiedz = (dane, status = 200) => Response.json(dane, { status });
 
+// Formularza nie da się wypełnić szybciej (milisekundy od jego wczytania); tak robią boty
+const MIN_CZAS_MS = 3000;
+
 // Prawdziwe zgłoszenie mieści się w tym rozmiarze (bajty)
 const MAKS_ROZMIAR = 16 * 1024;
 
@@ -93,6 +96,11 @@ async function obsluzWycene(request, env) {
     const cyfry = telefon.replace(/\D/g, '').length;
     if (!/^[+\d\s()./-]+$/.test(telefon) || cyfry < 9 || cyfry > 15) {
         return odpowiedz({ success: false, error: formularz.bladTelefon, pole: 'telefon' }, 400);
+    }
+
+    // Człowieka też może to spotkać (np. autouzupełnianie), więc zamiast udawać sukces prosimy o ponowne wysłanie
+    if (!(Number(dane.czas_ms) >= MIN_CZAS_MS)) {
+        return odpowiedz({ success: false, error: formularz.bladZaSzybko }, 400);
     }
 
     // Bez klucza nic by nie dotarło do firmy, więc nie udajemy sukcesu, tylko prosimy o telefon

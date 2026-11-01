@@ -7,13 +7,13 @@ import { limityFormularza } from '../lib/limityFormularza';
 
 // Wysyła zgłoszenie do Workera (worker/index.js). Przy błędzie odsyłamy wpisane dane do formularza,
 // żeby ich nie wyczyścił. Pod `npm run dev` Workera nie ma, więc formularz testuj przez `npm run preview`.
-async function wyslijWycene(_poprzedni, formData) {
+async function wyslijWycene(formData, czasWypelniania) {
     const wartosci = Object.fromEntries(formData);
     try {
         const odpowiedz = await fetch('/api/wycena', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(wartosci),
+            body: JSON.stringify({ ...wartosci, czas_ms: czasWypelniania }),
         });
         const wynik = await odpowiedz.json();
         return { ...wynik, wartosci };
@@ -23,7 +23,16 @@ async function wyslijWycene(_poprzedni, formData) {
 }
 
 export default function FormularzWyceny() {
-    const [state, formAction, isPending] = useActionState(wyslijWycene, { success: false, error: null });
+    // Pułapka czasowa: Worker odrzuca zgłoszenia wysłane w pierwszych sekundach po wczytaniu formularza
+    const poczatek = useRef(0);
+    useEffect(() => {
+        poczatek.current = Date.now();
+    }, []);
+
+    const [state, formAction, isPending] = useActionState(
+        (_poprzedni, formData) => wyslijWycene(formData, Date.now() - poczatek.current),
+        { success: false, error: null }
+    );
     // Metraż jest sterowany przez stan, bo może go wpisać kalkulator (zdarzenie „kalkulator:metraz")
     const [metraz, setMetraz] = useState('');
     const wartosci = state.wartosci || {};

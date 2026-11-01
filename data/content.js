@@ -325,6 +325,7 @@ export const formularz = {
     bladBrakDanych: "Podaj numer telefonu, żebyśmy mogli oddzwonić.",
     bladTelefon: "Numer telefonu wygląda na niepełny albo błędny. Sprawdź go, proszę.",
     bladZaDlugie: "Wpisany tekst jest za długi. Skróć go, proszę.",
+    bladZaSzybko: "Sprawdź dane i kliknij przycisk wysyłania jeszcze raz.",
     // Pod tymi dwoma komunikatami strona sama pokazuje przycisk z numerem telefonu
     bladWysylki: "Nie udało się wysłać zgłoszenia. Zadzwoń do nas, chętnie pomożemy:",
     bladNiedostepny: "Formularz chwilowo nie działa. Zadzwoń do nas, chętnie pomożemy:"
