@@ -63,7 +63,7 @@ export default function Navbar() {
                     <div className="flex items-center gap-3 md:hidden">
                         <a
                             href={`tel:${firma.telefon.replace(/\s/g, '')}`}
-                            className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-md font-bold text-sm shadow-sm transition-colors"
+                            className="inline-flex items-center min-h-11 bg-blue-600 hover:bg-blue-700 text-white px-4 rounded-md font-bold text-sm shadow-sm transition-colors"
                         >
                             Zadzwoń
                         </a>
@@ -74,7 +74,7 @@ export default function Navbar() {
                             aria-label={isMenuOpen ? 'Zamknij menu' : 'Otwórz menu'}
                             aria-expanded={isMenuOpen}
                             aria-controls="menu-mobilne"
-                            className="text-gray-600 hover:text-gray-900 p-1 rounded-md"
+                            className="text-gray-600 hover:text-gray-900 p-2 rounded-md"
                         >
                             <svg aria-hidden="true" className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 {isMenuOpen ? (

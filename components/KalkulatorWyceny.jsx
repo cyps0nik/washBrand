@@ -100,7 +100,7 @@ export default function KalkulatorWyceny() {
                                                 onChange={(e) => zPola(suwak.id, e.target.value)}
                                                 onBlur={() => ustaw(suwak.id, String(wartosc))}
                                                 onFocus={(e) => e.target.select()}
-                                                className="w-20 px-2 py-1 text-right font-bold text-gray-900 bg-white placeholder:text-gray-500 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+                                                className="w-20 min-h-11 px-2 py-1 text-right font-bold text-gray-900 bg-white placeholder:text-gray-500 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                             />
                                             <span className="text-blue-600 font-bold">{suwak.jednostka}</span>
                                         </div>
@@ -113,7 +113,7 @@ export default function KalkulatorWyceny() {
                                         step={suwak.krok}
                                         value={Math.min(wartosc, suwak.max)}
                                         onChange={(e) => ustaw(suwak.id, e.target.value)}
-                                        className="w-full accent-blue-600 cursor-pointer"
+                                        className="w-full h-11 accent-blue-600 cursor-pointer"
                                     />
                                     {wartosc > suwak.max && (
                                         <p className="mt-1 text-sm font-semibold text-amber-700">
