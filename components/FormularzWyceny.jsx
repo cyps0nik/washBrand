@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { useActionState, useEffect, useState } from 'react';
+import { useActionState, useEffect, useRef, useState } from 'react';
 import { firma, formularz } from '../data/content';
 import { limityFormularza } from '../lib/limityFormularza';
 
@@ -27,6 +27,18 @@ export default function FormularzWyceny() {
     // Metraż jest sterowany przez stan, bo może go wpisać kalkulator (zdarzenie „kalkulator:metraz")
     const [metraz, setMetraz] = useState('');
     const wartosci = state.wartosci || {};
+    const bladTelefonu = state.pole === 'telefon';
+    const wynikRef = useRef(null);
+    const telefonRef = useRef(null);
+
+    // Po wysłaniu pokazujemy wynik: przewijamy do niego i przenosimy fokus (ważne na telefonach)
+    // na komunikat albo na pole z błędem, żeby czytnik ekranu też go odczytał
+    useEffect(() => {
+        if (!state.success && !state.error) return;
+        const bezRuchu = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        wynikRef.current?.scrollIntoView({ behavior: bezRuchu ? 'auto' : 'smooth', block: 'center' });
+        (bladTelefonu ? telefonRef : wynikRef).current?.focus({ preventScroll: true });
+    }, [state, bladTelefonu]);
 
     useEffect(() => {
         const odbierz = (e) => setMetraz(e.detail);
@@ -43,7 +55,7 @@ export default function FormularzWyceny() {
                 </div>
 
                 {state.success ? (
-                    <div className="p-6 bg-green-50 border border-green-200 rounded-xl text-center text-green-800">
+                    <div ref={wynikRef} tabIndex={-1} role="status" className="p-6 bg-green-50 border border-green-200 rounded-xl text-center text-green-800 outline-none">
                         <span className="text-3xl block mb-2">✅</span>
                         <h3 className="font-bold text-lg">{formularz.sukcesNaglowek}</h3>
                         <p>{formularz.sukcesOpis}</p>
@@ -58,7 +70,7 @@ export default function FormularzWyceny() {
                 ) : (
                     <form action={formAction} className="space-y-4">
                         {state.error && (
-                            <div role="alert" className="p-4 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200">
+                            <div ref={wynikRef} id="wycena-blad" tabIndex={-1} role="alert" className="p-4 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200 outline-none">
                                 {state.error}
                                 {state.zadzwon && (
                                     <a
@@ -89,6 +101,9 @@ export default function FormularzWyceny() {
                                 <label htmlFor="wycena-telefon" className="block text-sm font-semibold text-gray-700 mb-1">{formularz.poleTelefon}</label>
                                 <input
                                     required
+                                    ref={telefonRef}
+                                    aria-invalid={bladTelefonu || undefined}
+                                    aria-describedby={bladTelefonu ? 'wycena-blad' : undefined}
                                     type="tel"
                                     id="wycena-telefon"
                                     name="telefon"

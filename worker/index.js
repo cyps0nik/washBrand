@@ -67,7 +67,7 @@ async function obsluzWycene(request, env) {
         dane = null;
     }
     if (!dane || typeof dane !== 'object') {
-        return odpowiedz({ success: false, error: formularz.bladWysylki }, 400);
+        return odpowiedz({ success: false, error: formularz.bladWysylki, zadzwon: true }, 400);
     }
 
     // Pułapka na boty: ukryte pole, którego człowiek nie widzi. Jeśli jest wypełnione,
@@ -84,7 +84,7 @@ async function obsluzWycene(request, env) {
     const { imie, telefon, miejscowosc, metraz, opis } = pola;
 
     if (!telefon) {
-        return odpowiedz({ success: false, error: formularz.bladBrakDanych }, 400);
+        return odpowiedz({ success: false, error: formularz.bladBrakDanych, pole: 'telefon' }, 400);
     }
     if (Object.entries(limityFormularza).some(([nazwa, limit]) => pola[nazwa].length > limit)) {
         return odpowiedz({ success: false, error: formularz.bladZaDlugie }, 400);
@@ -92,7 +92,7 @@ async function obsluzWycene(request, env) {
     // Polski numer to 9 cyfr, z kierunkowym więcej (najwięcej 15 w numeracji międzynarodowej)
     const cyfry = telefon.replace(/\D/g, '').length;
     if (!/^[+\d\s()./-]+$/.test(telefon) || cyfry < 9 || cyfry > 15) {
-        return odpowiedz({ success: false, error: formularz.bladTelefon }, 400);
+        return odpowiedz({ success: false, error: formularz.bladTelefon, pole: 'telefon' }, 400);
     }
 
     // Bez klucza nic by nie dotarło do firmy, więc nie udajemy sukcesu, tylko prosimy o telefon
