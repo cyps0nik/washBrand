@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PasekMobilny from '../components/PasekMobilny';
-import { firma, seo } from '../data/content';
+import { dostepnosc, firma, seo } from '../data/content';
 import { adresStrony } from '../lib/adresStrony';
 import { Inter } from 'next/font/google';
 import './globals.css';
@@ -44,8 +44,14 @@ export default function RootLayout({ children }) {
   return (
       <html lang="pl" className={`${inter.variable} scroll-smooth scroll-pt-20`} data-scroll-behavior="smooth">
       <body className="font-sans bg-white text-gray-900 antialiased flex flex-col min-h-screen">
+      <a
+        href="#tresc"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[60] focus:bg-white focus:text-blue-700 focus:font-bold focus:px-4 focus:py-3 focus:rounded-md focus:shadow-lg"
+      >
+        {dostepnosc.przejdzDoTresci}
+      </a>
       <Navbar />
-      <main className="flex-grow">
+      <main id="tresc" tabIndex={-1} className="flex-grow outline-none">
         {children}
       </main>
       <Footer />

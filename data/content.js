@@ -23,6 +23,11 @@ export const firma = {
     instagram: "https://www.instagram.com/ecopower2023/"
 };
 
+// Link dla osób używających klawiatury i czytników ekranu (widoczny po naciśnięciu Tab)
+export const dostepnosc = {
+    przejdzDoTresci: "Przejdź do treści"
+};
+
 // Włączniki części strony: true = widać, false = ukryte (nic nie trzeba kasować).
 // Włączaj dopiero, gdy niżej w tym pliku są PRAWDZIWE dane, bo teraz są tam przykłady.
 export const widocznosc = {
