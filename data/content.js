@@ -99,21 +99,21 @@ export const uslugi = [
         id: "kostka",
         nazwa: "Mycie kostki brukowej",
         opis: "Usuwamy mech, glony i ciężkie zabrudzenia z chodników, podjazdów i placów.",
-        cena: "od 8 zł/m² netto",
+        cena: "od 9,84 zł/m² brutto (8 zł netto)",
         ikona: "🧹",
     },
     {
         id: "elewacja",
         nazwa: "Czyszczenie elewacji",
         opis: "Mycie ciśnieniowe i chemiczne elewacji budynków jedno i wielorodzinnych.",
-        cena: "od 12 zł/m² netto",
+        cena: "od 14,76 zł/m² brutto (12 zł netto)",
         ikona: "🏠",
     },
     {
         id: "panele",
         nazwa: "Mycie paneli fotowoltaicznych",
         opis: "Bezpieczne mycie wodą demineralizowaną, co pozwala przywrócić maksymalną wydajność instalacji bez ryzyka smug i zarysowań.",
-        cena: "od 12 zł/szt. netto",
+        cena: "od 14,76 zł/szt. brutto (12 zł netto)",
         ikona: "💧",
     },
     {
@@ -270,7 +270,8 @@ export const opinieSekcja = {
 };
 
 // Stawki do kalkulatora orientacyjnej ceny (zgodne z cennikiem w `uslugi`).
-// Klucz = id usługi, wartość = zł za m² (panele: zł za sztukę). Zmiana tutaj nie zmienia wyświetlanej ceny w `uslugi`.
+// Klucz = id usługi, wartość = zł NETTO za m² (panele: za sztukę). VAT dolicza kalkulator (`vatProcent` niżej).
+// Zmiana tutaj nie zmienia wyświetlanej ceny w `uslugi`, tam popraw netto i brutto ręcznie.
 export const stawki = {
     kostka: 8,
     elewacja: 12,
@@ -282,7 +283,10 @@ export const kalkulator = {
     etykieta: "Szybka estymacja",
     naglowek: "Oblicz szacunkowy koszt usługi",
     opis: "Przesuń suwaki, aby poznać orientacyjną cenę czyszczenia Twojej posesji.",
-    podpisSumy: "Szacunkowy koszt netto:",  // TODO: klient prywatny powinien widzieć cenę z VAT; ustalić z właścicielem stawkę VAT
+    vatProcent: 23,                          // stawka VAT doliczana do cen netto ze `stawki`
+    podpisSumy: "Szacunkowy koszt brutto:",
+    podpisNetto: "netto + VAT",              // pod sumą, np. „ok. 800 zł netto + VAT 23%"
+    podpisStawki: "netto",                   // przy stawce nad suwakiem
     przyciskFormularz: "Przekaż do wyceny",
     pokazWhatsApp: true,                     // false = przycisk znika
     przyciskWhatsApp: "Wyślij na WhatsApp",
@@ -290,7 +294,7 @@ export const kalkulator = {
     // Gdy ktoś wpisze więcej niż "max" suwaka, pod suwakiem pojawi się np. „Powyżej 500 m² – wycena indywidualna"
     ponadMax: "wycena indywidualna",
     // Ten opis trafia do pola „Metraż lub liczba paneli" w formularzu po kliknięciu „Przekaż do wyceny"
-    podpisWFormularzu: "szacunek netto z kalkulatora",
+    podpisWFormularzu: "szacunek brutto z kalkulatora",
     // Suwaki: "id" musi być takie samo jak nazwa w `stawki` (np. kostka). Bez stawki suwak się nie pokaże.
     // jednostka = w czym liczymy, opisPola = opis pola dla czytników ekranu,
     // max = największa wartość, krok = o ile przeskakuje suwak, start = wartość na początku.

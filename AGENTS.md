@@ -130,8 +130,8 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
 - `README.md` to opis projektu po angielsku (portfolio); osobnej instrukcji dla właściciela nie robimy.
   Brakuje w nim linku do działającej strony i zrzutów ekranu (`docs/desktop.png`, `docs/mobile.png`).
 - JSON-LD (w `app/page.jsx`) bierze wszystko z `content.js` (adres, `obszar`, usługi, social media).
-- Kalkulator celowo pokazuje „ok." (decyzja właściciela), a ceny są oznaczone jako netto (informacja od właściciela).
-  Otwarte: klient prywatny powinien znać cenę z VAT, a stawka VAT nie jest ustalona (`TODO` w `kalkulator`).
+- Kalkulator celowo pokazuje „ok." (decyzja właściciela), a ceny pokazują brutto z netto obok.
+  `stawki` są netto, VAT 23% dolicza kalkulator (`kalkulator.vatProcent`); teksty w `uslugi.cena` zmieniaj ręcznie.
 - Formularz przy braku wiązania `EMAIL` lub błędzie wysyłki nie udaje sukcesu: pokazuje prośbę o telefon
   z numerem z `content.js`.
 - **Maile przez Cloudflare Email Routing** (Free): odbiorca `firma.email` musi być zweryfikowanym adresem

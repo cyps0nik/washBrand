@@ -52,18 +52,20 @@ export default function KalkulatorWyceny() {
 
     const suma = suwaki.reduce((razem, suwak) => razem + naLiczbe(metraze[suwak.id]) * stawki[suwak.id], 0);
 
+    const sumaBrutto = Math.round(suma * (100 + kalkulator.vatProcent) / 100);
+
     const wybrane = suwaki.filter((suwak) => naLiczbe(metraze[suwak.id]) > 0);
     const opisMetrazu = wybrane.map((suwak) => `${suwak.nazwa} ${naLiczbe(metraze[suwak.id])} ${suwak.jednostka}`).join(', ');
 
     const buildWhatsAppMsg = () => {
-        const text = `${kalkulator.wiadomoscWhatsApp} ${opisMetrazu || '-'}, ${kalkulator.podpisWFormularzu}: ok. ${suma} zł.`;
+        const text = `${kalkulator.wiadomoscWhatsApp} ${opisMetrazu || '-'}, ${kalkulator.podpisWFormularzu}: ok. ${sumaBrutto} zł.`;
         return `https://wa.me/${firma.telefon.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(text)}`;
     };
 
     // Przekazuje metraż do formularza wyceny (FormularzWyceny nasłuchuje tego zdarzenia)
     const przekazDoFormularza = () => {
         if (!opisMetrazu) return;
-        const tekst = `${opisMetrazu} (${kalkulator.podpisWFormularzu}: ok. ${suma} zł)`;
+        const tekst = `${opisMetrazu} (${kalkulator.podpisWFormularzu}: ok. ${sumaBrutto} zł)`;
         window.dispatchEvent(new CustomEvent('kalkulator:metraz', { detail: tekst }));
     };
 
@@ -88,7 +90,7 @@ export default function KalkulatorWyceny() {
                                 >
                                     <div className="flex justify-between items-center gap-4 mb-2">
                                         <label htmlFor={`suwak-${suwak.id}`} className="font-semibold text-gray-800">
-                                            {suwak.nazwa} ({stawki[suwak.id]} zł/{suwak.jednostka})
+                                            {suwak.nazwa} ({stawki[suwak.id]} zł/{suwak.jednostka} {kalkulator.podpisStawki})
                                         </label>
                                         <div className="flex items-center gap-1.5 shrink-0">
                                             <input
@@ -129,7 +131,12 @@ export default function KalkulatorWyceny() {
                     <div className="mt-8 pt-6 border-t border-slate-200 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
                         <div>
                             <span className="text-sm text-gray-500 block">{kalkulator.podpisSumy}</span>
-                            <span className="text-3xl font-black text-gray-900">{suma > 0 ? `ok. ${suma} zł` : '0 zł'}</span>
+                            <span className="text-3xl font-black text-gray-900">{suma > 0 ? `ok. ${sumaBrutto} zł` : '0 zł'}</span>
+                            {suma > 0 && (
+                                <span className="text-sm text-gray-600 block mt-1">
+                                    ok. {suma} zł {kalkulator.podpisNetto} {kalkulator.vatProcent}%
+                                </span>
+                            )}
                         </div>
                         <div className="flex flex-col sm:flex-row gap-3">
                             <a
