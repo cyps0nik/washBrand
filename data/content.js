@@ -290,6 +290,7 @@ export const kalkulator = {
     przyciskFormularz: "Przekaż do wyceny",
     pokazWhatsApp: true,                     // false = przycisk znika
     przyciskWhatsApp: "Wyślij na WhatsApp",
+    dopisekWhatsApp: "Możesz wysłać nam zdjęcie miejsca do wyceny.", // pokazuje się razem z przyciskiem WhatsApp
     wiadomoscWhatsApp: "Dzień dobry, interesuje mnie wycena:",
     // Gdy ktoś wpisze więcej niż "max" suwaka, pod suwakiem pojawi się np. „Powyżej 500 m² – wycena indywidualna"
     ponadMax: "wycena indywidualna",

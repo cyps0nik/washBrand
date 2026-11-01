@@ -158,6 +158,9 @@ export default function KalkulatorWyceny() {
                             )}
                         </div>
                     </div>
+                    {kalkulator.pokazWhatsApp && (
+                        <p className="mt-4 text-sm text-gray-600 sm:text-right">{kalkulator.dopisekWhatsApp}</p>
+                    )}
                 </div>
             </div>
         </section>
