@@ -1,4 +1,4 @@
-import { politykaPrywatnosci, firma } from '../../data/content';
+import { analityka, politykaPrywatnosci, firma } from '../../data/content';
 
 export const metadata = {
     title: politykaPrywatnosci.tytul,
@@ -38,7 +38,10 @@ export default function PolitykaPrywatnosciPage() {
                         <section key={sekcja.id}>
                             <h2 className="text-xl font-bold text-gray-900 mb-3">{sekcja.naglowek}</h2>
                             <div className="space-y-2">
-                                {sekcja.akapity.map((akapit, i) => (
+                                {[
+                                    ...sekcja.akapity,
+                                    ...((analityka.wlaczona ? sekcja.akapityZAnalityka : sekcja.akapityBezAnalityki) ?? []),
+                                ].map((akapit, i) => (
                                     <p key={i}>{akapit}</p>
                                 ))}
                             </div>

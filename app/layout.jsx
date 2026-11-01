@@ -1,9 +1,10 @@
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import PasekMobilny from '../components/PasekMobilny';
-import { dostepnosc, firma, seo } from '../data/content';
+import { analityka, dostepnosc, firma, seo } from '../data/content';
 import { adresStrony } from '../lib/adresStrony';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 
 // Czcionka z polskimi znakami (latin-ext), wczytywana lokalnie przez Next.js – bez skoków układu
@@ -56,6 +57,13 @@ export default function RootLayout({ children }) {
       </main>
       <Footer />
       <PasekMobilny />
+      {/* Skrypt ręczny tylko z tokenem; przy automatycznej konfiguracji Cloudflare wstawia go sam */}
+      {analityka.wlaczona && analityka.token && (
+        <Script
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({ token: analityka.token })}
+        />
+      )}
       </body>
       </html>
   );

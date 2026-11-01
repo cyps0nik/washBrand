@@ -44,6 +44,12 @@ export const widocznosc = {
     }
 };
 
+// Statystyki odwiedzin (Cloudflare Web Analytics). Włączane w dniu startu, patrz docs/START.md.
+export const analityka = {
+    wlaczona: false,    // true = polityka prywatności opisuje statystyki
+    token: ""           // tylko jeśli Cloudflare nie wstawi skryptu sam: token z panelu Web Analytics
+};
+
 // Menu na górze strony. "link" z # prowadzi do sekcji na stronie głównej, bez # – do podstrony.
 export const menu = [
     { id: "uslugi", nazwa: "Usługi", link: "/#uslugi" },
@@ -479,9 +485,17 @@ export const politykaPrywatnosci = {
             id: "cookies",
             naglowek: "Pliki cookies i analityka",
             akapity: [
-                "Strona nie używa plików cookies do śledzenia ani narzędzi analitycznych i nie wyświetla reklam.",
+                "Strona nie używa plików cookies do śledzenia i nie wyświetla reklam.",
                 "Linki do Facebooka, Instagrama i WhatsAppa prowadzą do zewnętrznych serwisów, które mają własne polityki prywatności.",
                 "Film na stronie pochodzi z YouTube i jest osadzony w trybie o podwyższonej prywatności (youtube-nocookie.com). Wczytuje się dopiero po kliknięciu przycisku odtwarzania; wcześniej strona nie łączy się z YouTube. Po kliknięciu Google (operator YouTube) otrzymuje dane techniczne, np. adres IP, może zapisać informacje na Twoim urządzeniu i przetwarza te dane na własnych zasadach."
+            ],
+            // Strona pokazuje jeden z tych zestawów, zależnie od `analityka.wlaczona`
+            akapityBezAnalityki: [
+                "Strona nie korzysta z narzędzi analitycznych."
+            ],
+            akapityZAnalityka: [
+                "Do zbiorczych statystyk odwiedzin (np. liczby wejść, oglądanych podstron, stron, z których trafiają odwiedzający, i czasu ładowania) używamy Cloudflare Web Analytics. Korzystamy z nich, żeby sprawdzać, jak działa strona – to nasz prawnie uzasadniony interes (art. 6 ust. 1 lit. f RODO).",
+                "Według dostawcy to narzędzie nie zapisuje w Twojej przeglądarce plików cookies ani innych danych i nie tworzy „odcisku” urządzenia. Adres IP dociera do Cloudflare jak przy każdym połączeniu, ale na potrzeby tych statystyk jest odrzucany w najbliższym centrum danych i nie jest zapisywany."
             ]
         }
     ]
