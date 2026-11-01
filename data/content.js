@@ -61,6 +61,13 @@ export const kontakt = {
     przyciskEmail: "Napisz do nas"
 };
 
+// Strona „nie znaleziono" (błąd 404)
+export const strona404 = {
+    naglowek: "Nie znaleziono strony",
+    opis: "Ta strona nie istnieje albo została przeniesiona.",
+    przycisk: "Wróć na stronę główną"
+};
+
 // Stopka (na każdej podstronie)
 export const stopka = {
     opis: "Profesjonalne mycie kostki brukowej, elewacji i paneli fotowoltaicznych oraz sprzątanie wspólnot mieszkaniowych."
