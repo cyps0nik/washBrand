@@ -33,7 +33,15 @@ export const dostepnosc = {
 export const widocznosc = {
     galeria: false,     // sekcja „Nasze realizacje" (dane: `galeria`)
     produkty: false,    // podstrona /produkty (dane: `produkty`); wyłączona = „nie znaleziono"
-    wspolpraca: false   // podstrona /wspolpraca (dane: `zaufaliNam`); wyłączona = „nie znaleziono"
+    wspolpraca: false,  // podstrona /wspolpraca (dane: `zaufaliNam`); wyłączona = „nie znaleziono"
+    // Podstrony usług (dane: `podstrona` w `uslugi`). Każdą włączasz osobno, gdy ma prawdziwą treść.
+    // Bez wpisanego pola "wstep" podstrona i tak się nie pojawi.
+    podstronyUslug: {
+        kostka: false,
+        elewacja: false,
+        panele: false,
+        wspolnoty: false
+    }
 };
 
 // Menu na górze strony. "link" z # prowadzi do sekcji na stronie głównej, bez # – do podstrony.
@@ -94,6 +102,15 @@ export const hero = {
     atuty: ["Bezpłatna wycena", "Dojazd do 70 km", "Własny sprzęt"]
 };
 
+// Pole "podstrona" w każdej usłudze to treść jej osobnej strony. Wzór wypełnienia:
+//   opisSeo: "Jedno zdanie do wyników Google, do ~155 znaków.",
+//   wstep: "Kilka zdań o usłudze własnymi słowami.",
+//   kroki: ["Pierwszy krok", "Drugi krok"],             a tak samo wCenie i czegoNieRobimy
+//   informacje: ["Minimalne zlecenie: ...", "Typowy czas pracy: ...", "Najlepszy termin: ..."],
+//   miejscowosci: ["Turek", "Koło"],                    tylko tam, gdzie naprawdę to robiliśmy
+//   pytania: [{ id: "p1", pytanie: "...", odpowiedz: "..." }],
+//   zdjecia: [{ id: "z1", plik: "/zdjecia/podjazd-po.jpg", opis: "Czysty podjazd po myciu" }]
+// Zmieniając "adres", zmieniasz link do podstrony: same małe litery, cyfry i myślniki.
 export const uslugi = [
     {
         id: "kostka",
@@ -101,6 +118,19 @@ export const uslugi = [
         opis: "Usuwamy mech, glony i ciężkie zabrudzenia z chodników, podjazdów i placów.",
         cena: "od 9,84 zł/m² brutto (8 zł netto)",
         ikona: "🧹",
+        // TODO: treść od właściciela. Puste pola nie pokazują się na stronie.
+        podstrona: {
+            adres: "mycie-kostki-brukowej",
+            opisSeo: "",
+            wstep: "",
+            kroki: [],
+            wCenie: [],
+            czegoNieRobimy: [],
+            informacje: [],
+            miejscowosci: [],
+            pytania: [],
+            zdjecia: []
+        },
     },
     {
         id: "elewacja",
@@ -108,6 +138,19 @@ export const uslugi = [
         opis: "Mycie ciśnieniowe i chemiczne elewacji budynków jedno i wielorodzinnych.",
         cena: "od 14,76 zł/m² brutto (12 zł netto)",
         ikona: "🏠",
+        // TODO: treść od właściciela. Puste pola nie pokazują się na stronie.
+        podstrona: {
+            adres: "czyszczenie-elewacji",
+            opisSeo: "",
+            wstep: "",
+            kroki: [],
+            wCenie: [],
+            czegoNieRobimy: [],
+            informacje: [],
+            miejscowosci: [],
+            pytania: [],
+            zdjecia: []
+        },
     },
     {
         id: "panele",
@@ -115,6 +158,19 @@ export const uslugi = [
         opis: "Bezpieczne mycie wodą demineralizowaną, co pozwala przywrócić maksymalną wydajność instalacji bez ryzyka smug i zarysowań.",
         cena: "od 14,76 zł/szt. brutto (12 zł netto)",
         ikona: "💧",
+        // TODO: treść od właściciela. Puste pola nie pokazują się na stronie.
+        podstrona: {
+            adres: "mycie-paneli-fotowoltaicznych",
+            opisSeo: "",
+            wstep: "",
+            kroki: [],
+            wCenie: [],
+            czegoNieRobimy: [],
+            informacje: [],
+            miejscowosci: [],
+            pytania: [],
+            zdjecia: []
+        },
     },
     {
         id: "wspolnoty",
@@ -122,8 +178,34 @@ export const uslugi = [
         opis: "Regularne sprzątanie i utrzymanie czystości terenów wspólnot oraz części wspólnych.",
         cena: "wycena indywidualna",
         ikona: "🏢",
+        // TODO: treść od właściciela. Puste pola nie pokazują się na stronie.
+        podstrona: {
+            adres: "sprzatanie-wspolnot-mieszkaniowych",
+            opisSeo: "",
+            wstep: "",
+            kroki: [],
+            wCenie: [],
+            czegoNieRobimy: [],
+            informacje: [],
+            miejscowosci: [],
+            pytania: [],
+            zdjecia: []
+        },
     }
 ];
+
+// Stałe napisy na podstronach usług
+export const podstronyUslugTeksty = {
+    wrocDoUslug: "Wszystkie usługi",
+    kroki: "Jak wygląda praca",
+    wCenie: "Co jest w cenie",
+    czegoNieRobimy: "Czego nie obejmuje usługa",
+    informacje: "Warto wiedzieć",
+    miejscowosci: "Gdzie już pracowaliśmy",
+    zdjecia: "Zdjęcia z realizacji",
+    pytania: "Częste pytania",
+    wycena: "Zamów bezpłatną wycenę"
+};
 
 // Nagłówek sekcji usług
 export const uslugiSekcja = {
@@ -135,7 +217,8 @@ export const uslugiSekcja = {
 // pozostałe (np. wspólnoty) dostają przycisk prowadzący do formularza.
 export const uslugiPrzyciski = {
     wycen: "Wyceń w kalkulatorze",
-    zapytaj: "Zapytaj o wycenę"
+    zapytaj: "Zapytaj o wycenę",
+    wiecej: "Więcej o usłudze"   // link na karcie, widoczny po włączeniu podstrony
 };
 
 // TODO: dane przykładowe (zdjęcia z picsum, ceny i nazwy produktów). Podstrona wyłączona w `widocznosc`.

@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import { uslugi, uslugiSekcja, uslugiPrzyciski, kalkulator, stawki } from '../data/content';
+import { adresPodstrony, uslugiZPodstrona } from '../lib/podstronyUslug';
 import PrzyciskWycen from './PrzyciskWycen';
 
 // Usługi, które da się wycenić w kalkulatorze (mają suwak i stawkę)
@@ -34,6 +36,11 @@ export default function Uslugi() {
                                 <a href="#formularz" className={klasaPrzycisku}>
                                     {uslugiPrzyciski.zapytaj}
                                 </a>
+                            )}
+                            {uslugiZPodstrona.includes(usluga) && (
+                                <Link href={adresPodstrony(usluga)} className="mt-2 inline-flex items-center justify-center min-h-11 text-blue-700 font-semibold underline">
+                                    {uslugiPrzyciski.wiecej}
+                                </Link>
                             )}
                         </div>
                     ))}

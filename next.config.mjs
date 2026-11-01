@@ -1,4 +1,5 @@
 import { widocznosc } from './data/content.js';
+import { uslugiZPodstrona } from './lib/podstronyUslug.js';
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -13,6 +14,8 @@ const nextConfig = {
     'jsx',
     'js',
     ...['produkty', 'wspolpraca'].filter((nazwa) => widocznosc[nazwa]).map((nazwa) => `${nazwa}.jsx`),
+    // Eksport nie przyjmuje trasy dynamicznej bez żadnej strony, więc bez podstron usług jej nie budujemy
+    ...(uslugiZPodstrona.length > 0 ? ['uslugi.jsx'] : []),
   ],
 };
 
