@@ -18,7 +18,7 @@ async function wyslijWycene(_poprzedni, formData) {
         const wynik = await odpowiedz.json();
         return { ...wynik, wartosci };
     } catch {
-        return { success: false, error: formularz.bladWysylki, wartosci };
+        return { success: false, error: formularz.bladWysylki, zadzwon: true, wartosci };
     }
 }
 
@@ -60,6 +60,14 @@ export default function FormularzWyceny() {
                         {state.error && (
                             <div role="alert" className="p-4 bg-red-50 text-red-700 rounded-lg text-sm border border-red-200">
                                 {state.error}
+                                {state.zadzwon && (
+                                    <a
+                                        href={`tel:${firma.telefon.replace(/\s/g, '')}`}
+                                        className="block mt-3 bg-blue-600 hover:bg-blue-700 text-white text-base font-bold py-3 px-6 rounded-xl text-center shadow-md transition-colors"
+                                    >
+                                        📞 {firma.telefon}
+                                    </a>
+                                )}
                             </div>
                         )}
 

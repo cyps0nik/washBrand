@@ -287,7 +287,9 @@ export const formularz = {
     bladBrakDanych: "Podaj numer telefonu, żebyśmy mogli oddzwonić.",
     bladTelefon: "Numer telefonu wygląda na niepełny albo błędny. Sprawdź go, proszę.",
     bladZaDlugie: "Wpisany tekst jest za długi. Skróć go, proszę.",
-    bladWysylki: "Błąd wysyłki. Skontaktuj się bezpośrednio pod numerem telefonu."
+    // Pod tymi dwoma komunikatami strona sama pokazuje przycisk z numerem telefonu
+    bladWysylki: "Nie udało się wysłać zgłoszenia. Zadzwoń do nas, chętnie pomożemy:",
+    bladNiedostepny: "Formularz chwilowo nie działa. Zadzwoń do nas, chętnie pomożemy:"
 };
 
 // Polityka prywatności (podstrona /polityka-prywatnosci).

@@ -2,7 +2,8 @@ import { firma, formularz } from '../data/content.js';
 import { limityFormularza } from '../lib/limityFormularza.js';
 
 // Worker Cloudflare obsługuje tylko formularz wyceny (POST /api/wycena).
-// Zmienne: RESEND_API_KEY (Secret), opcjonalnie RESEND_FROM.
+// Zmienne: RESEND_API_KEY (Secret), opcjonalnie RESEND_FROM i RESEND_TO.
+// Do logów nie trafiają dane klienta, tylko informacja techniczna.
 
 // Zamienia znaki specjalne HTML, żeby tekst od klienta nie wstawił do maila linków ani kodu
 const escapeHtml = (tekst) =>
@@ -25,6 +26,10 @@ const tekst = (wartosc) => (typeof wartosc === 'string' ? wartosc.trim() : '');
 // Pola jednowierszowe: bez znaków nowej linii (trafiają m.in. do tematu maila)
 const wiersz = (wartosc) => tekst(wartosc).replace(/\s+/g, ' ');
 
+// Nadawca testowy Resend dostarcza maile tylko na adres, na który założono konto Resend.
+// Do czasu weryfikacji domeny ten adres można wpisać w RESEND_TO.
+const NADAWCA_TESTOWY = 'Eco-Power Leads <onboarding@resend.dev>';
+
 async function wyslijMail(env, { imie, telefon, miejscowosc, metraz, opis }) {
     const wynik = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -34,8 +39,8 @@ async function wyslijMail(env, { imie, telefon, miejscowosc, metraz, opis }) {
         },
         body: JSON.stringify({
             // Po weryfikacji domeny w Resend ustaw RESEND_FROM, np. "Eco-Power <wycena@twoja-domena.pl>"
-            from: env.RESEND_FROM || 'Eco-Power Leads <onboarding@resend.dev>',
-            to: firma.email,
+            from: env.RESEND_FROM || NADAWCA_TESTOWY,
+            to: env.RESEND_TO || firma.email,
             subject: `Nowy lead: ${imie || telefon} (${miejscowosc || 'Brak miasta'})`,
             html: `
                 <h2>Nowe zapytanie o wycenę</h2>
@@ -90,16 +95,21 @@ async function obsluzWycene(request, env) {
         return odpowiedz({ success: false, error: formularz.bladTelefon }, 400);
     }
 
+    // Bez klucza nic by nie dotarło do firmy, więc nie udajemy sukcesu, tylko prosimy o telefon
+    if (!env.RESEND_API_KEY) {
+        console.error('Formularz: brak zmiennej RESEND_API_KEY');
+        return odpowiedz({ success: false, error: formularz.bladNiedostepny, zadzwon: true }, 503);
+    }
+
     try {
-        if (env.RESEND_API_KEY) {
-            await wyslijMail(env, { imie, telefon, miejscowosc, metraz, opis });
-        } else {
-            console.log('LEAD (brak RESEND_API_KEY):', { imie, telefon, miejscowosc, metraz, opis });
-        }
+        await wyslijMail(env, pola);
         return odpowiedz({ success: true, error: null });
     } catch (err) {
-        console.error(err);
-        return odpowiedz({ success: false, error: formularz.bladWysylki }, 502);
+        console.error(err.message);
+        if (!env.RESEND_FROM) {
+            console.error('Formularz: brak RESEND_FROM. Nadawca testowy Resend dostarcza tylko na adres konta Resend (RESEND_TO).');
+        }
+        return odpowiedz({ success: false, error: formularz.bladWysylki, zadzwon: true }, 502);
     }
 }
 
