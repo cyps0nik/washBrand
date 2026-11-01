@@ -8,17 +8,17 @@
 export const firma = {
     nazwa: "Eco-Power",
     telefon: "+48 609 447 056",
-    email: "arti19-89@o2.pl",
+    email: "arti19-89@o2.pl",                         // TODO: potwierdzić, że na ten adres mają przychodzić zgłoszenia
     miasto: "ul. Targowa 29 lok. 25, 99-210 Uniejów", // UWAGA: to pełny adres (nazwa pola historyczna)
     miejscowosc: "Uniejów",                           // do SEO i nagłówków
     ulica: "ul. Targowa 29 lok. 25",                  // do danych dla Google (sama ulica i numer)
     kodPocztowy: "99-210",                            // do danych dla Google
     zasiegKm: 70,                                     // promień dojazdu; zgodny z FAQ
     // Miejscowości w zasięgu – do opisu w Google i danych o obszarze działania
-    obszar: ["Uniejów", "Turek", "Koło", "Poddębice", "Dąbie", "Łęczyca", "Konin", "Sieradz"], // TODO: potwierdzić z właścicielem, które miejscowości wymieniać
+    obszar: ["Uniejów", "Turek", "Koło", "Poddębice", "Dąbie", "Łęczyca", "Konin", "Sieradz"],
     adresStrony: "",                                  // TODO: po pierwszym wdrożeniu wpisać adres *.workers.dev, po zakupie domeny – domenę (np. "https://ecopower-uniejow.pl")
     nip: "8281383349",
-    wlasciciel: "",                                   // TODO: imię i nazwisko właściciela (administrator danych w polityce prywatności)
+    wlasciciel: "Artur Tomczyk",                      // administrator danych w polityce prywatności
     facebook: "https://www.facebook.com/profile.php?id=100048712626636",
     instagram: "https://www.instagram.com/ecopower2023/"
 };
@@ -86,21 +86,21 @@ export const uslugi = [
         id: "kostka",
         nazwa: "Mycie kostki brukowej",
         opis: "Usuwamy mech, glony i ciężkie zabrudzenia z chodników, podjazdów i placów.",
-        cena: "od 10 zł/m²",
+        cena: "od 8 zł/m²",
         ikona: "🧹",
     },
     {
         id: "elewacja",
         nazwa: "Czyszczenie elewacji",
         opis: "Mycie ciśnieniowe i chemiczne elewacji budynków jedno i wielorodzinnych.",
-        cena: "od 13 zł/m²",
+        cena: "od 12 zł/m²",
         ikona: "🏠",
     },
     {
         id: "panele",
         nazwa: "Mycie paneli fotowoltaicznych",
         opis: "Bezpieczne mycie wodą demineralizowaną, co pozwala przywrócić maksymalną wydajność instalacji bez ryzyka smug i zarysowań.",
-        cena: "od 12 zł/m²",
+        cena: "od 12 zł/szt.",
         ikona: "💧",
     },
     {
@@ -239,55 +239,56 @@ export const opinieSekcja = {
     linkTekst: "Zobacz więcej opinii"
 };
 
-// NOWE: stawki do kalkulatora orientacyjnej ceny (zgodne z cennikiem w `uslugi`).
-// Klucz = id usługi, wartość = zł za m². Zmiana tutaj nie zmienia wyświetlanej ceny w `uslugi`.
+// Stawki do kalkulatora orientacyjnej ceny (zgodne z cennikiem w `uslugi`).
+// Klucz = id usługi, wartość = zł za m² (panele: zł za sztukę). Zmiana tutaj nie zmienia wyświetlanej ceny w `uslugi`.
 export const stawki = {
-    kostka: 10,
-    elewacja: 13,
+    kostka: 8,
+    elewacja: 12,
     panele: 12
 };
 
-// Teksty kalkulatora ceny (sekcja z suwakami). Ceny za m² ustawiasz wyżej w `stawki`.
+// Teksty kalkulatora ceny (sekcja z suwakami). Ceny ustawiasz wyżej w `stawki`.
 export const kalkulator = {
     etykieta: "Szybka estymacja",
     naglowek: "Oblicz szacunkowy koszt usługi",
     opis: "Przesuń suwaki, aby poznać orientacyjną cenę czyszczenia Twojej posesji.",
-    podpisSumy: "Szacunkowy koszt brutto:", // TODO: potwierdzić z właścicielem, czy ceny są brutto
-    przyciskFormularz: "Zarezerwuj ten metraż",
-    pokazWhatsApp: true,                     // TODO: potwierdzić, czy firma używa WhatsAppa (false = przycisk znika)
+    podpisSumy: "Szacunkowy koszt:",        // TODO: potwierdzić z właścicielem, czy ceny są brutto; do tego czasu bez tego słowa
+    przyciskFormularz: "Przekaż do wyceny",
+    pokazWhatsApp: true,                     // false = przycisk znika
     przyciskWhatsApp: "Wyślij na WhatsApp",
     wiadomoscWhatsApp: "Dzień dobry, interesuje mnie wycena:",
-    // Gdy ktoś wpisze metraż większy niż "max" suwaka, pod suwakiem pojawi się np. „Powyżej 500 m² – wycena indywidualna"
+    // Gdy ktoś wpisze więcej niż "max" suwaka, pod suwakiem pojawi się np. „Powyżej 500 m² – wycena indywidualna"
     ponadMax: "wycena indywidualna",
-    // Ten opis trafia do pola „Orientacyjny metraż" w formularzu po kliknięciu „Zarezerwuj ten metraż"
+    // Ten opis trafia do pola „Metraż lub liczba paneli" w formularzu po kliknięciu „Przekaż do wyceny"
     podpisWFormularzu: "szacunek z kalkulatora",
     // Suwaki: "id" musi być takie samo jak nazwa w `stawki` (np. kostka). Bez stawki suwak się nie pokaże.
-    // max = największy metraż, krok = o ile m² przeskakuje suwak, start = wartość na początku.
+    // jednostka = w czym liczymy, opisPola = opis pola dla czytników ekranu,
+    // max = największa wartość, krok = o ile przeskakuje suwak, start = wartość na początku.
     suwaki: [
-        { id: "kostka", nazwa: "Kostka brukowa", max: 500, krok: 10, start: 100 },
-        { id: "elewacja", nazwa: "Czyszczenie elewacji", max: 500, krok: 10, start: 0 },
-        { id: "panele", nazwa: "Panele fotowoltaiczne", max: 300, krok: 5, start: 0 }
+        { id: "kostka", nazwa: "Kostka brukowa", jednostka: "m²", opisPola: "metraż w m²", max: 500, krok: 10, start: 100 },
+        { id: "elewacja", nazwa: "Czyszczenie elewacji", jednostka: "m²", opisPola: "metraż w m²", max: 500, krok: 10, start: 0 },
+        { id: "panele", nazwa: "Panele fotowoltaiczne", jednostka: "szt.", opisPola: "liczba paneli", max: 200, krok: 1, start: 0 }
     ]
 };
 
 // Teksty formularza „Zamów bezpłatną wycenę".
 export const formularz = {
     naglowek: "Zamów bezpłatną wycenę",
-    opis: "Zostaw numer — oddzwonimy w ciągu 15 minut z konkretną ofertą.", // TODO: potwierdzić z właścicielem czas oddzwonienia
+    opis: "Zostaw numer — oddzwonimy w ciągu 2 godzin z konkretną ofertą.",
     poleImie: "Imię (opcjonalnie)",
     przykladImie: "np. Jan Kowalski",
     poleTelefon: "Numer telefonu *",
     przykladTelefon: "np. 609 000 000",
     poleMiejscowosc: "Miejscowość",          // strona sama dopisze zasięg, np. „(do 70 km)"
     przykladMiejscowosc: "np. Uniejów, Turek, Koło",
-    poleMetraz: "Orientacyjny metraż",
-    przykladMetraz: "np. 150 m² kostki",
+    poleMetraz: "Metraż lub liczba paneli",
+    przykladMetraz: "np. 150 m² kostki lub 20 paneli",
     poleOpis: "Dodatkowe uwagi (opcjonalnie)",
     przykladOpis: "Głębokie zabrudzenia olejowe, stary mech, dostęp do kranu na zewnątrz...",
     przycisk: "Wyślij zapytanie o bezpłatną wycenę",
     przyciskWysylanie: "Wysyłanie zgłoszenia...",
     sukcesNaglowek: "Dziękujemy za kontakt!",
-    sukcesOpis: "Otrzymaliśmy Twoje zapytanie. Skontaktujemy się z Tobą najszybciej jak to możliwe.",
+    sukcesOpis: "Otrzymaliśmy Twoje zapytanie. Oddzwonimy w ciągu 2 godzin.",
     sukcesPilne: "Pilne? Zadzwoń:",
     klauzulaRodo: "Administratorem Twoich danych jest Eco-Power. Podane dane wykorzystamy tylko do przygotowania wyceny i kontaktu w tej sprawie. Szczegóły i Twoje prawa:",
     linkPolityka: "polityka prywatności",
@@ -306,7 +307,7 @@ export const formularz = {
 // dostawca maili) trzeba zaktualizować treść.
 export const politykaPrywatnosci = {
     tytul: "Polityka prywatności",
-    aktualizacja: "29 października 2026", // data ostatniej zmiany tej polityki
+    aktualizacja: "1 listopada 2026", // data ostatniej zmiany tej polityki
     wstep: "Poniżej wyjaśniamy, jakie dane osobowe zbieramy przez tę stronę, w jakim celu i jakie masz prawa. Stosujemy przepisy RODO (rozporządzenie UE 2016/679).",
     sekcje: [
         {
@@ -342,8 +343,7 @@ export const politykaPrywatnosci = {
             id: "okres",
             naglowek: "Jak długo przechowujemy dane",
             akapity: [
-                // TODO: potwierdzić z właścicielem, jak długo przechowuje zapytania (np. 12 miesięcy)
-                "Dane z zapytania przechowujemy przez czas potrzebny do przygotowania wyceny i kontaktu w tej sprawie. Jeśli zamówisz usługę – przez czas jej realizacji, a potem przez okres wymagany przepisami (np. podatkowymi) lub do przedawnienia ewentualnych roszczeń."
+                "Dane z zapytania przechowujemy przez 2 miesiące. Jeśli zamówisz usługę – przez czas jej realizacji, a potem przez okres wymagany przepisami (np. podatkowymi) lub do przedawnienia ewentualnych roszczeń."
             ]
         },
         {

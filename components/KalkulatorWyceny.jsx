@@ -53,7 +53,7 @@ export default function KalkulatorWyceny() {
     const suma = suwaki.reduce((razem, suwak) => razem + naLiczbe(metraze[suwak.id]) * stawki[suwak.id], 0);
 
     const wybrane = suwaki.filter((suwak) => naLiczbe(metraze[suwak.id]) > 0);
-    const opisMetrazu = wybrane.map((suwak) => `${suwak.nazwa} ${naLiczbe(metraze[suwak.id])} m²`).join(', ');
+    const opisMetrazu = wybrane.map((suwak) => `${suwak.nazwa} ${naLiczbe(metraze[suwak.id])} ${suwak.jednostka}`).join(', ');
 
     const buildWhatsAppMsg = () => {
         const text = `${kalkulator.wiadomoscWhatsApp} ${opisMetrazu || '-'}. Szacunek z kalkulatora: ok. ${suma} zł.`;
@@ -88,21 +88,21 @@ export default function KalkulatorWyceny() {
                                 >
                                     <div className="flex justify-between items-center gap-4 mb-2">
                                         <label htmlFor={`suwak-${suwak.id}`} className="font-semibold text-gray-800">
-                                            {suwak.nazwa} ({stawki[suwak.id]} zł/m²)
+                                            {suwak.nazwa} ({stawki[suwak.id]} zł/{suwak.jednostka})
                                         </label>
                                         <div className="flex items-center gap-1.5 shrink-0">
                                             <input
                                                 id={`pole-${suwak.id}`}
                                                 type="text"
                                                 inputMode="numeric"
-                                                aria-label={`${suwak.nazwa} – metraż w m²`}
+                                                aria-label={`${suwak.nazwa} – ${suwak.opisPola}`}
                                                 value={metraze[suwak.id]}
                                                 onChange={(e) => zPola(suwak.id, e.target.value)}
                                                 onBlur={() => ustaw(suwak.id, String(wartosc))}
                                                 onFocus={(e) => e.target.select()}
                                                 className="w-20 px-2 py-1 text-right font-bold text-gray-900 bg-white placeholder:text-gray-500 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                                             />
-                                            <span className="text-blue-600 font-bold">m²</span>
+                                            <span className="text-blue-600 font-bold">{suwak.jednostka}</span>
                                         </div>
                                     </div>
                                     <input
@@ -117,7 +117,7 @@ export default function KalkulatorWyceny() {
                                     />
                                     {wartosc > suwak.max && (
                                         <p className="mt-1 text-sm font-semibold text-amber-700">
-                                            Powyżej {suwak.max} m² – {kalkulator.ponadMax}
+                                            Powyżej {suwak.max} {suwak.jednostka} – {kalkulator.ponadMax}
                                         </p>
                                     )}
                                 </div>

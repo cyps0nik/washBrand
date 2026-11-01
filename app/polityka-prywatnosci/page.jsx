@@ -24,7 +24,7 @@ export default function PolitykaPrywatnosciPage() {
                     <section>
                         <h2 className="text-xl font-bold text-gray-900 mb-3">Administrator danych</h2>
                         <p>
-                            Administratorem Twoich danych osobowych jest {firma.wlasciciel ? `${firma.wlasciciel}, prowadzący(-a) działalność pod nazwą ` : ''}
+                            Administratorem Twoich danych osobowych jest {firma.wlasciciel ? `${firma.wlasciciel}, działalność gospodarcza pod nazwą ` : ''}
                             {firma.nazwa}, {firma.miasto}, NIP: {firma.nip}.
                         </p>
                         <p className="mt-2">

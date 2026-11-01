@@ -47,7 +47,7 @@ async function wyslijMail(env, { imie, telefon, miejscowosc, metraz, opis }) {
                 <p><strong>Klient:</strong> ${escapeHtml(imie || 'Nie podano')}</p>
                 <p><strong>Telefon:</strong> <a href="tel:${escapeHtml(telefon.replace(/\s/g, ''))}">${escapeHtml(telefon)}</a></p>
                 <p><strong>Miejscowość:</strong> ${escapeHtml(miejscowosc || 'Nie podano')}</p>
-                <p><strong>Szacowany metraż:</strong> ${escapeHtml(metraz || 'Brak')}</p>
+                <p><strong>Metraż lub liczba paneli:</strong> ${escapeHtml(metraz || 'Brak')}</p>
                 <p><strong>Opis:</strong> ${escapeHtml(opis || 'Brak uwag')}</p>
             `,
         }),
