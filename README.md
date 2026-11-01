@@ -29,6 +29,7 @@ All business content lives in a single data module, completely separated from th
 - **Service offer with pricing** – per-m² prices for paving and facades, per-panel prices for photovoltaic panels
 - **Product catalog** – cleaning chemicals with price and an availability flag (switched off until real data exists)
 - **Before / after gallery** – paired images showing the effect of each job (switched off until real photos exist)
+- **Service subpages** – one page per service with content from `uslugi`, switched on individually once real texts exist
 - **Video section** – a YouTube embed (`youtube-nocookie.com`) loaded only after a click
 - **"Why us" section, FAQ and social proof** – all rendered from data
 - **Call-to-action hero** with a primary "call now" action and a secondary link to the services
@@ -94,7 +95,7 @@ No API keys or environment variables are needed. The Worker sends leads through 
 ```
 .
 ├── app/            # Routes, layout and global styles (App Router)
-│   ├── polityka-prywatnosci/, produkty/, wspolpraca/   # Subpages
+│   ├── polityka-prywatnosci/, produkty/, uslugi/, wspolpraca/   # Subpages
 ├── components/     # Presentational components
 ├── data/
 │   └── content.js  # Single source of truth for all site content
@@ -109,12 +110,13 @@ No API keys or environment variables are needed. The Worker sends leads through 
 | Export        | Purpose                                                        |
 | ------------- | -------------------------------------------------------------- |
 | `firma`       | Company name, phone, e-mail, address, tax ID, social links, service area, site URL |
-| `widocznosc`  | On/off switches for the gallery and the hidden subpages        |
+| `widocznosc`  | On/off switches for the gallery and optional subpages          |
+| `analityka`   | Cloudflare Web Analytics switch and optional token             |
 | `menu`        | Navigation items                                               |
 | `seo`         | Page title, description and share image                        |
 | `kontakt`, `stopka` | Contact section and footer texts                         |
 | `hero`        | Headline, subtitle and button labels                           |
-| `uslugi`      | Services: name, description, price, icon                       |
+| `uslugi`      | Services: name, description, price, icon, subpage content      |
 | `produkty`    | Products: name, description, price, image, availability flag   |
 | `dlaczegoMy`  | "Why us" value propositions                                    |
 | `galeria`     | Before/after image pairs with a title                          |
@@ -134,7 +136,7 @@ Example: adding a service means appending one object to `uslugi`.
   id: "kostka",
   nazwa: "Mycie kostki brukowej",
   opis: "Usuwamy mech, glony i ciężkie zabrudzenia z chodników, podjazdów i placów.",
-  cena: "od 8 zł/m²",
+  cena: "od 9,84 zł/m² brutto (8 zł netto)",
   ikona: "🧹",
 }
 ```

@@ -52,7 +52,7 @@ npm run zdjecia  # zmniejsza zdjęcia z zdjecia-surowe/ do public/zdjecia/ (shar
 
 | Ścieżka | Rola |
 |---|---|
-| `data/content.js` | **Cała treść**: firma, dostepnosc, widocznosc, menu, seo, kontakt, strona404, stopka, pasekMobilny, hero, uslugi, uslugiSekcja, uslugiPrzyciski, produkty, dlaczegoMy, galeria, faq, zaufaliNam, film, opinie, opinieSekcja, stawki, kalkulator, formularz, politykaPrywatnosci |
+| `data/content.js` | **Cała treść**: firma, dostepnosc, widocznosc, analityka, menu, seo, kontakt, strona404, stopka, pasekMobilny, hero, uslugi, podstronyUslugTeksty, uslugiSekcja, uslugiPrzyciski, produkty, dlaczegoMy, galeria, faq, zaufaliNam, film, opinie, opinieSekcja, stawki, kalkulator, formularz, politykaPrywatnosci |
 | `app/layout.jsx` | Layout (Navbar + Footer + PasekMobilny), `metadata` (metadataBase, szablon tytułu, opis, Open Graph, ikony, manifest – z `seo` i `firma`) |
 | `app/sitemap.js`, `app/robots.js` | Mapa strony (bez wyłączonych podstron) i robots.txt |
 | `app/not-found.jsx` | Polska strona 404 (`strona404`); w eksporcie to `out/404.html` |
@@ -63,11 +63,13 @@ npm run zdjecia  # zmniejsza zdjęcia z zdjecia-surowe/ do public/zdjecia/ (shar
 | `wrangler.jsonc`, `.node-version` | Konfiguracja Cloudflare (pliki z `out/`, przez Workera tylko `/api/*`) i wersja Node do builda |
 | `app/produkty/page.produkty.jsx` | Podstrona `/produkty` (dane: `produkty`) – **wyłączona** w `widocznosc`: nie powstaje w buildzie, 404 |
 | `app/wspolpraca/page.wspolpraca.jsx` | Podstrona `/wspolpraca` (dane: `zaufaliNam`) – **wyłączona** w `widocznosc`: nie powstaje w buildzie, 404 |
-| `app/polityka-prywatnosci/page.jsx` | Podstrona `/polityka-prywatnosci` (dane: `politykaPrywatnosci` + administrator z `firma`); link w stopce i pod formularzem |
+| `app/uslugi/[adres]/page.uslugi.jsx` | Podstrony usług (dane: `podstrona` w `uslugi`, napisy: `podstronyUslugTeksty`) – **wyłączone**; plik budowany tylko, gdy włączona jest choć jedna |
+| `lib/podstronyUslug.js` | Lista włączonych podstron usług (włącznik w `widocznosc.podstronyUslug` i niepusty `wstep`) |
+| `app/polityka-prywatnosci/page.jsx` | Podstrona `/polityka-prywatnosci` (dane: `politykaPrywatnosci` + administrator z `firma`; akapity o statystykach zależne od `analityka.wlaczona`); link w stopce i pod formularzem |
 | `components/` | PrzyciskWycen (client, „Wyceń" na kartach usług), Navbar (client, sticky, pozycje z `menu`, przycisk „Zadzwoń" także na mobile), PasekMobilny (przyklejony do dołu, tylko telefony), Opinie (ukryta, gdy `opinie` puste), Hero, Uslugi, KalkulatorWyceny (client, suwaki na `stawki`), DlaczegoMy, Film (client, YouTube po kliknięciu), Galeria (widoczna tylko przy `widocznosc.galeria`), FAQ, FormularzWyceny (client), Kontakt, Footer |
 | `public/` | Ikony/favicony i `site.webmanifest`; zdjęcia strony w `public/zdjecia/` |
 | `scripts/zmniejsz-zdjecia.mjs` | Przygotowanie zdjęć (`npm run zdjecia`) |
-| `docs/START.md` | Lista na dzień startu i wiadomość do właściciela o zdjęciach |
+| `docs/START.md` | Lista na dzień startu, wiadomości do właściciela (zdjęcia, opisy usług), włączanie podstron |
 
 Kotwice na stronie głównej: `#uslugi`, `#kalkulator`, `#formularz`, `#film`, `#galeria`, `#opinie`, `#faq`, `#kontakt`.
 `<html>` ma `scroll-pt-20`, żeby sticky Navbar nie zasłaniał nagłówków po skoku do kotwicy.
@@ -82,8 +84,10 @@ ukryte pole-pułapka `strona_www` na boty, pułapka czasowa (min. 3 s, człowiek
 wysłanie), po błędzie wpisane dane wracają z `wartosci`, a wynik dostaje fokus. Kolory pól formularzy
 są wymuszone w `@layer base` w `globals.css`.
 
-Włączniki: `widocznosc` w `content.js` steruje galerią, `/produkty` i `/wspolpraca`. Podstrony mają
-własne rozszerzenia plików, a `pageExtensions` w `next.config.mjs` buduje je tylko po włączeniu.
+Włączniki: `widocznosc` w `content.js` steruje galerią, `/produkty`, `/wspolpraca` i każdą podstroną usługi
+(`podstronyUslug`). Podstrony mają własne rozszerzenia plików, a `pageExtensions` w `next.config.mjs` buduje je
+tylko po włączeniu. Eksport nie przyjmuje też trasy dynamicznej bez żadnej strony. Podstrony usług: po jednej
+na usługę, bez stron pod miasta (zasady Google o doorway pages). Linki trafiają tylko na karty i do sitemap.
 Nie zastępuj tego `notFound()`: w eksporcie powstałby plik z kodem 200 zamiast prawdziwego 404.
 
 Kalkulator: panele liczone za sztukę; jednostkę i opis pola ma każdy suwak w `kalkulator.suwaki`.
@@ -119,7 +123,8 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
 
 ## Znane problemy (stan na listopad 2026)
 
-- **Czekamy na:** zakup domeny `ecopoweruniejow.pl` (właściciel, Hostido, na swoje dane), zdjęcia i link do filmu.
+- **Czekamy na:** zakup domeny `ecopoweruniejow.pl` (właściciel, Hostido, na swoje dane), zdjęcia, link do filmu
+  i opisy usług. Komunikat sezonowy: po starcie, gdy właściciel poda prawdziwą treść i termin.
 - `zaufaliNam`, `produkty` i `galeria` to **dane przykładowe** (wymyślone nazwy klientów, zdjęcia z picsum,
   ceny). Zostają tylko w kodzie: `widocznosc` je wyłącza i nie trafiają do `out/`. Nikt nie zgodził się
   na podanie nazwy firmy jako referencji. Właściciel nie ma jeszcze zdjęć ani produktów.
@@ -143,8 +148,9 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
   także folder spam. Worker wie tylko, że Cloudflare przyjął mail, a nie że trafił do skrzynki.
 - Limit zgłoszeń z jednego adresu IP nie istnieje; są tylko pułapki na boty (honeypot i czas).
 - Limity Cloudflare Free: Worker 100 tys. żądań dziennie i 10 ms CPU (błąd 1102), statyczne pliki bez limitu.
-- Polityka prywatności to wzór, nie porada prawna. Do sprawdzenia DPA Cloudflare (`TODO`). Przy
-  dodaniu analityki lub cookies trzeba ją zaktualizować (dziś strona ich nie używa; film z YouTube opisany).
+- Polityka prywatności to wzór, nie porada prawna. Do sprawdzenia DPA Cloudflare (`TODO`). Nowe
+  cookies lub narzędzia trzeba w niej opisać. Film z YouTube i Web Analytics są opisane; Cloudflare podaje, że
+  statystyki nie używają cookies, a IP odrzuca przy zbieraniu. Skrypt ręczny wymaga `analityka.token`.
 - Sekcja opinii jest gotowa, ale niewidoczna, dopóki `opinie` jest puste (brak prawdziwych opinii).
 - Lighthouse lokalnie (mobile, 3 przebiegi, listopad 2026): `/` wynik 77–84, dostępność 100, BP 100, SEO 100.
   Porównuj wyniki tylko z tego samego dnia i maszyny. Wydajność na hostingu sprawdź po wdrożeniu.
@@ -168,10 +174,13 @@ Końce linii: `.gitattributes` wymusza LF w repozytorium. Nie zmieniaj tego w ed
 - [x] Migracja na Cloudflare (eksport statyczny + Worker), walidacja i pułapki w Workerze, dostępność, polska 404, `next/image`
 - [x] Film z YouTube po kliknięciu (`film`), panele za sztukę w kalkulatorze, lokalne SEO w tytule i nagłówkach
 - [ ] Start według `docs/START.md`: domena, Email Routing, wdrożenie, zdjęcia, film, test formularza
-- [ ] Opcjonalnie: suwak przed/po zamiast układu obok siebie
 - [x] Polityka prywatności i klauzula RODO pod formularzem (do uzupełnienia `TODO`)
 - [ ] Po starcie: Google Search Console (`docs/START.md`; to nie Profil Firmy)
-- [ ] Analityka (po decyzji)
+- [ ] Web Analytics w dniu startu (`docs/START.md`, kod gotowy, włącznik `analityka.wlaczona`)
+- [ ] Podstrony usług: treść od właściciela, włączanie po jednej (`docs/START.md`)
+- [ ] Po starcie: komunikat sezonowy z prawdziwą treścią i terminem
+
+Odrzucone: suwak przed/po i zdjęcie w formularzu (zamiast tego dopisek o wysłaniu zdjęcia przez WhatsApp).
 
 ## Przed zakończeniem zadania
 

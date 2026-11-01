@@ -17,6 +17,36 @@ mogą się nieco różnić od opisanych.
 > bo te je psują. Przy każdej parze napisz, co to za praca, np. „mycie podjazdu, Turek”. Nie musisz niczego
 > zmniejszać. Jeśli masz iPhone'a, ustaw Aparat → Formaty → Najbardziej zgodne, żeby zdjęcia były w JPG.
 
+## Wiadomość do wujka: opisy usług
+
+> Przygotowuję osobne strony dla każdej usługi, żeby łatwiej znajdowano Cię w Google. Pisz swoimi słowami,
+> tak jak mówisz klientowi. Może być nagranie głosowe albo punkty, ja to uporządkuję. Podawaj tylko to,
+> co naprawdę robisz. Jeśli na coś nie masz odpowiedzi, pomiń to pytanie.
+>
+> Odpowiedz osobno dla każdej usługi: **mycie kostki brukowej, czyszczenie elewacji, mycie paneli
+> fotowoltaicznych, sprzątanie wspólnot**.
+>
+> 1. Jak wygląda praca krok po kroku, od przyjazdu do końca?
+> 2. Jakich środków i sprzętu używasz?
+> 3. Co jest w cenie, a za co płaci się dodatkowo?
+> 4. Czego nie robisz albo w jakich sytuacjach odmawiasz?
+> 5. Czy jest minimalne zlecenie? Jeśli tak, jakie?
+> 6. Ile trwa typowe zlecenie, np. 100 m² kostki albo 20 paneli?
+> 7. Kiedy najlepiej to zamówić? Czy jest pora roku, w której tego nie robisz?
+> 8. O co klienci pytają najczęściej przez telefon? Napisz 2–3 pytania i swoje odpowiedzi.
+> 9. W których miejscowościach już to robiłeś?
+> 10. Masz zdjęcia z tej usługi? Dołącz je tak samo jak pozostałe.
+
+## Włączanie podstron usług
+
+1. Wpisz odpowiedzi do pola `podstrona` tej usługi w `uslugi` w `data/content.js` (wzór jest nad listą usług).
+   Nie dopisuj nic od siebie i nie twórz stron pod poszczególne miasta.
+2. W `widocznosc.podstronyUslug` ustaw tę usługę na `true`.
+3. `npm run lint`, `npm run build`. Podstrona pojawi się razem z linkiem na karcie usługi i w mapie strony.
+
+Bez pola `wstep` podstrona się nie pojawi, nawet przy `true`. Pozostałe puste pola są po prostu pomijane,
+ale podstrona z samym wstępem będzie zbyt uboga, więc włączaj ją dopiero z pełną odpowiedzią.
+
 ## Przygotowanie zdjęć
 
 1. Utwórz w projekcie folder `zdjecia-surowe/` (nie trafia do repozytorium) i wrzuć do niego pliki.
@@ -50,6 +80,7 @@ mogą się nieco różnić od opisanych.
 - [ ] Wgraj zdjęcia: uzupełnij `galeria` prawdziwymi plikami i tytułami, ustaw `widocznosc.galeria: true`
       oraz `seo.obrazek: "/zdjecia/udostepnianie.jpg"`.
 - [ ] Wklej link do filmu w `film.youtube`. Opcjonalnie dodaj podgląd `film.podglad`.
+- [ ] Włącz podstrony usług, które mają już treść (patrz wyżej). Pozostałe mogą dojść później.
 - [ ] `npm run lint`, `npm run build`, obejrzyj stronę przez `npm run preview` w widoku telefonu.
 - [ ] Wypchnij zmiany i połącz je z `main`:
       ```bash
@@ -66,7 +97,19 @@ mogą się nieco różnić od opisanych.
 - [ ] To samo dla `www.ecopoweruniejow.pl`, a w **Rules** dodaj przekierowanie z `www` na adres bez `www`.
 - [ ] Otwórz `https://ecopoweruniejow.pl` i sprawdź, czy kłódka jest prawidłowa.
 
-### 6. Test na telefonie
+### 6. Web Analytics
+- [ ] Cloudflare → **Web Analytics** → włącz dla `ecopoweruniejow.pl` (przy domenie w Cloudflare to automatyczna konfiguracja).
+- [ ] W `data/content.js` ustaw `analityka.wlaczona: true`, zmień `politykaPrywatnosci.aktualizacja` na dzisiejszą datę
+      i wypchnij zmianę. Polityka prywatności sama pokaże opis statystyk.
+- [ ] Otwórz stronę, a po chwili sprawdź, czy wejście widać w panelu Web Analytics.
+- [ ] Jeśli po kilku godzinach nic nie widać: skopiuj token z panelu (**Manage site**) do `analityka.token`
+      i wypchnij zmianę. Dokumentacja Cloudflare nie potwierdza automatycznego wstawiania skryptu dla Workers.
+- [ ] Narzędzia przeglądarki → **Application → Cookies**: sprawdź, czy strona nie zapisuje ciasteczek.
+      Jeśli pojawi się ciasteczko Cloudflare, np. `__cf_bm`, wyłącz funkcję, która je ustawia, albo dopisz je do polityki.
+
+Analityka nie liczy kliknięć w telefon. Wujek powinien pytać klientów, skąd znaleźli firmę.
+
+### 7. Test na telefonie
 - [ ] Przejdź kalkulator: kostka w m², panele w sztukach, przycisk „Przekaż do wyceny”, przycisk WhatsApp.
 - [ ] Wyślij formularz prawdziwym numerem i sprawdź, czy strona pokazuje podziękowanie.
 - [ ] Sprawdź skrzynkę o2.pl **i spam**. Jeśli mail jest w spamie: oznacz „to nie spam” i dodaj nadawcę do kontaktów.
@@ -117,7 +160,7 @@ formularza w `content.js` tak, by zachęcał do telefonu, i sprawdzaj spam codzi
 5. **Zapis zgłoszeń po stronie Cloudflare** jako kopia bezpieczeństwa: trzeba dopisać to do polityki prywatności
    i ustalić usuwanie po 2 miesiącach, więc to opcja ostatnia.
 
-### 7. Google Search Console (darmowe, to nie Profil Firmy)
+### 8. Google Search Console (darmowe, to nie Profil Firmy)
 - [ ] Wejdź na [search.google.com/search-console](https://search.google.com/search-console) i zaloguj się kontem Google.
 - [ ] Wybierz typ **Domena** i wpisz `ecopoweruniejow.pl`.
 - [ ] Skopiuj rekord TXT od Google i dodaj go w Cloudflare → DNS (typ TXT, nazwa `@`). Kliknij **Zweryfikuj**.
